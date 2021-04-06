@@ -1,0 +1,30 @@
+name: Gradle build
+description: Execute Common Build tasks for Gradle projects
+inputs:
+  ghEvent: {}
+  ghUser: {}
+  ghToken: {}
+  sonatypeUser: {}
+  sonatypePassword: {}
+  mavenSigningPrv: {}
+runs:
+  using: composite
+  steps:
+    - run: |
+        wget --quiet https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk
+        tar -xf adoptopenjdk
+        mv jdk-11* jdk11
+      shell: bash
+      working-directory: /tmp
+    - run: |
+        rm -rf .github/actions/cb-gradle-plugin
+        node .github/actions/cb-action/dist/main.js
+      shell: bash
+      env:
+        JAVA_HOME: /tmp/jdk11
+        GH_EVENT: ${{inputs.ghEvent}}
+        GH_USER: ${{inputs.ghUser}}
+        GH_TOKEN: ${{inputs.ghToken}}
+        SONATYPE_USER: ${{inputs.sonatypeUser}}
+        SONATYPE_PASSWORD: ${{inputs.sonatypePassword}}
+        MAVEN_SIGNING_PRV: ${{inputs.mavenSigningPrv}}

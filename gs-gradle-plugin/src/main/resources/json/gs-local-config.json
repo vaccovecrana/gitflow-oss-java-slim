@@ -1,0 +1,25 @@
+{
+  "$id": "https://github.com/vaccovecrana/gitflow-oss-java-slim/resources/json/gs-local-config.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Organization configuration for local development.",
+  "type": "object",
+  "required": ["id", "orgConfigUrl", "internalRepoUser", "internalRepoPassword"],
+  "properties": {
+    "orgId": {
+      "type": "string",
+      "description": "An organization id for this local configuration"
+    },
+    "orgConfigUrl": {
+      "type": "string",
+      "description": "A securely accessible URL to load the organization's build configuration. This URL will be refreshed every 48 hours."
+    },
+    "internalRepoUser": {
+      "type": "string",
+      "description": "A username to access this organization's internal artifact repository"
+    },
+    "internalRepoPassword": {
+      "type": "string",
+      "description": "A password to access this organization's internal artifact repository"
+    }
+  }
+}

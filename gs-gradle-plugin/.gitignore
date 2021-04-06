@@ -1,0 +1,10 @@
+.gradle/
+gradle/
+gradlew*
+
+.idea/
+build/
+
+.gsOrgConfig*
+
+node_modules/

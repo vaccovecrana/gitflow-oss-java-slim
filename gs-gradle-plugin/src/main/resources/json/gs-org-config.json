@@ -1,0 +1,86 @@
+{
+  "$id": "https://github.com/vaccovecrana/gitflow-oss-java-slim/resources/json/gs-org-config.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Organization configuration for Continuous Integration.",
+  "type": "object",
+  "required": ["orgId", "devConfig", "publishing"],
+  "properties": {
+    "orgId": {"type": "string", "description": "Organization ID"},
+    "internalRepo": {
+      "$ref": "#/$defs/gsOrgRepo",
+      "description": "Repository configuration for private artifacts. Note that this repository must accept both SNAPSHOT and RELEASE version Maven publications"
+    },
+    "snapshotsRepo": {
+      "$ref": "#/$defs/gsOrgRepo",
+      "description": "Repository configuration for publicly shared SNAPSHOT artifacts. Usually this is configured with Sonatype's OSS snapshots repository"
+    },
+    "releasesRepo": {
+      "$ref": "#/$defs/gsOrgRepo",
+      "description": "Repository configuration for publicly shared RELEASE artifacts. Usually this is configured with Sonatype's OSS staging repository"
+    },
+    "publishing": {
+      "$ref": "#/$defs/gsOrgPublication",
+      "description": "Publication metadata for artifact builds."
+    },
+    "devConfig": {
+      "$ref": "#/$defs/gsDevConfig",
+      "description": "Development feature configuration options, if any."
+    }
+  },
+  "$defs": {
+    "gsOrgRepo": {
+      "type": "object",
+      "required": ["id", "url"],
+      "properties": {
+        "id": {"type": "string", "description": "Repository ID"},
+        "url": {"type": "string", "description":  "Repository URL"},
+        "username": {"type": "string", "description": "Repository username"},
+        "password": {"type": "string", "description": "Repository password"},
+        "usernameEnvProperty": {"type": "string", "description": "Environment variable for repository username"},
+        "passwordEnvProperty": {"type": "string", "description": "Environment variable for repository password"}
+      }
+    },
+    "gsOrgPublication": {
+      "type": "object",
+      "required": ["id", "devId", "devContact", "devEmail", "mavenSigningKeyEnvProperty"],
+      "properties": {
+        "id": {"type": "string", "description": "Publication ID"},
+        "devId": {"type": "string", "description": "Developer ID"},
+        "devContact": {"type": "string", "description": "Developer contact name (e.g. your organization's name)"},
+        "devEmail": {"type": "string", "description": "Developer contact email"},
+        "mavenSigningKeyEnvProperty": {
+          "type": "string",
+          "description": "Environment variable containing an unencrypted, ASCII armoured Maven PGP signing key"
+        }
+      }
+    },
+    "gsVersionsConfig": {
+      "type": "object",
+      "description": "Default versions for core organization dependencies",
+      "properties": {
+        "j8Spec": {"type": "string", "description": "J8Spec version in Maven coordinates"},
+        "pmd": {"type": "string", "description": "PMD tool version"}
+      }
+    },
+    "gsDevConfig": {
+      "type": "object",
+      "required": ["ghEventEnvProperty", "dependencyExcludedGroups"],
+      "properties": {
+        "ghEventEnvProperty": {
+          "type": "string",
+          "description": "Environment variable for sourcing Github event JSON metadata"
+        },
+        "dependencyExcludedGroups": {
+          "type": "array",
+          "description": "Excluded Maven groups when checking for outdated dependencies",
+          "items": {"type": "string"}
+        },
+        "pmdRulesUrl": {
+          "type": "string",
+          "description": "Optional URL to find and apply organization-wide PMD coding standard XML rules"
+        },
+        "versions": {"$ref": "#/$defs/gsVersionsConfig"}
+      }
+    }
+  }
+}
