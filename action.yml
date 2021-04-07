@@ -1,12 +1,13 @@
-name: Gradle build
-description: Gitflow Slim tasks for Gradle projects
+name: "Gradle build"
+description: "Gitflow Slim tasks for Gradle projects"
+author: "Vaccove Crana, LLC."
 inputs:
   jdkUrl:
-    description: URL to grab a JDK distribution from in tar.gz format
+    description: "URL to grab a JDK distribution from in tar.gz format"
     required: false
     default: https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk
   orgConfig:
-    description: URL pointing to an Org config JSON file to drive the build
+    description: "URL pointing to an Org config JSON file to drive the build"
     required: true
 runs:
   using: composite
