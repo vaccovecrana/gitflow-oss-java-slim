@@ -8,8 +8,8 @@ repositories {
   gradlePluginPortal()
 }
 
-group = "io.vacco.oss"
-version = "1.0.0"
+group = "io.vacco.oss.gitflow"
+version = "0.9.0"
 
 dependencies {
   api(gradleApi())
