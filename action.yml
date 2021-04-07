@@ -9,6 +9,9 @@ inputs:
   orgConfig:
     description: "URL pointing to an Org config JSON file to drive the build"
     required: true
+  secretContext:
+    description: "The repository's secret context JSON for Org config defined secret variables. Usually: `toJson(secrets)`"
+    required: true
 runs:
   using: composite
   steps:
@@ -27,4 +30,4 @@ runs:
         JAVA_HOME: /tmp/jdk
         GS_GH_EVENT: ${{tojson(github.event)}}
         GS_CONFIG_URL: ${{inputs.orgConfig}}
-        GS_SECRETS: ${{toJson(secrets)}}
+        GS_SECRETS: ${{inputs.secretContext}}
