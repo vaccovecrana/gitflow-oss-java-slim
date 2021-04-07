@@ -22,7 +22,10 @@ runs:
         mv *jdk* jdk
       shell: bash
       working-directory: /tmp
-    - run: wget ${{inputs.orgConfig}} --output-document ./org-config.json
+    - run: |
+        wget ${{inputs.orgConfig}} --output-document ./org-config.json
+        pwd
+        ls -la
       shell: bash
     - run: node ./gs-action/dist/main.js
       shell: bash
