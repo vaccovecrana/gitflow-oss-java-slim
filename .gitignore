@@ -1,3 +1,5 @@
+.DS_Store
+
 build/*
 .idea/*
 *.iml
@@ -5,3 +7,5 @@ build/*
 
 gradle/wrapper/
 gradlew*
+
+node_modules/

@@ -88,7 +88,7 @@ public class GsPluginUtil {
         File orgConf = new File(localConfig.getParentFile(), format(GsConstants.GS_LOCAL_ORG_CONFIG_FMT, localConf.orgId));
 
         sync(new URL(localConf.orgConfigUrl), orgConf, lastModifiedMaxDelta);
-        log.warn("Executing local build.");
+        log.warn("Executing unmanaged build.");
 
         GsOrgConfig orgConfig = om.readValue(orgConf, GsOrgConfig.class);
         orgConfig.internalRepo.username = localConf.internalRepoUser;
@@ -105,7 +105,7 @@ public class GsPluginUtil {
   public static GsBranchCommit loadBuildCommit(GsOrgConfig config, ObjectMapper om) {
     try {
       GsBranchCommit commit = new GsBranchCommit();
-      String githubActionsJson = System.getenv(config.devConfig.ghEventEnvProperty);
+      String githubActionsJson = System.getenv(GsConstants.GS_GH_EVENT);
       if (githubActionsJson != null) {
         commit = om.readValue(githubActionsJson, GsBranchCommit.class);
       } else {

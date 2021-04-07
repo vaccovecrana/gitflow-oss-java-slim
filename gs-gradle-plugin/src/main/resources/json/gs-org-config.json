@@ -58,18 +58,15 @@
       "type": "object",
       "description": "Default versions for core organization dependencies",
       "properties": {
+        "gradle": {"type": "string", "description": "Gradle version to user inside Github actions"},
         "j8Spec": {"type": "string", "description": "J8Spec version in Maven coordinates"},
         "pmd": {"type": "string", "description": "PMD tool version"}
       }
     },
     "gsDevConfig": {
       "type": "object",
-      "required": ["ghEventEnvProperty", "dependencyExcludedGroups"],
+      "required": ["gradleVersion", "ghEventEnvProperty", "dependencyExcludedGroups"],
       "properties": {
-        "ghEventEnvProperty": {
-          "type": "string",
-          "description": "Environment variable for sourcing Github event JSON metadata"
-        },
         "dependencyExcludedGroups": {
           "type": "array",
           "description": "Excluded Maven groups when checking for outdated dependencies",

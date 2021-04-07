@@ -26,10 +26,10 @@
     "mavenSigningKeyEnvProperty": "MAVEN_SIGNING_PRV"
   },
   "devConfig": {
-    "ghEventEnvProperty": "VACCO_BRANCH_COMMIT",
     "pmdRulesUrl": "file:./src/test/resources/org-config/pmd-config.xml",
     "dependencyExcludedGroups": ["net.sourceforge.pmd"],
     "versions": {
+      "gradle": "gradle-6.8.3",
       "j8Spec": "io.github.j8spec:j8spec:3.0.0",
       "pmd": "6.27.0"
     }

@@ -1,30 +1,28 @@
 name: Gradle build
-description: Execute Common Build tasks for Gradle projects
+description: Gitflow Slim tasks for Gradle projects
 inputs:
-  ghEvent: {}
-  ghUser: {}
-  ghToken: {}
-  sonatypeUser: {}
-  sonatypePassword: {}
-  mavenSigningPrv: {}
+  jdkUrl:
+    description: URL to grab a JDK distribution from in tar.gz format
+    required: false
+    default: https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk
+  orgConfig:
+    description: URL pointing to an Org config JSON file to drive the build
+    required: true
 runs:
   using: composite
   steps:
     - run: |
-        wget --quiet https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk
-        tar -xf adoptopenjdk
-        mv jdk-11* jdk11
+        wget --quiet ${{inputs.jdkUrl}} --output-document jdk.tar.gz
+        tar -xf jdk.tar.gz
+        rm jdk.tar.gz
+        mv *jdk* jdk
       shell: bash
       working-directory: /tmp
-    - run: |
-        rm -rf .github/actions/cb-gradle-plugin
-        node .github/actions/cb-action/dist/main.js
+    - run: wget ${{inputs.orgConfig}} --output-document ./gs-action/dist/org-config.json
+    - run: node ./gs-action/dist/main.js
       shell: bash
       env:
-        JAVA_HOME: /tmp/jdk11
-        GH_EVENT: ${{inputs.ghEvent}}
-        GH_USER: ${{inputs.ghUser}}
-        GH_TOKEN: ${{inputs.ghToken}}
-        SONATYPE_USER: ${{inputs.sonatypeUser}}
-        SONATYPE_PASSWORD: ${{inputs.sonatypePassword}}
-        MAVEN_SIGNING_PRV: ${{inputs.mavenSigningPrv}}
+        JAVA_HOME: /tmp/jdk
+        GS_GH_EVENT: ${{tojson(github.event)}}
+        GS_CONFIG_URL: ${{inputs.orgConfig}}
+        GS_SECRETS: ${{toJson(secrets)}}

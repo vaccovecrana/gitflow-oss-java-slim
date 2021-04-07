@@ -1,14 +1,16 @@
 import { spawn } from "child_process"
 
 export enum BuildTarget {
-  Int = "Int",
-  Stage = "Stage",
-  Prod = "Prod",
-  PreRelease = "PreRelease",
-  Local = "Local"
+  SNAPSHOT = "SNAPSHOT",
+  MILESTONE = "MILESTONE",
+  RELEASE = "RELEASE",
+  PRE_RELEASE = "PRE_RELEASE",
+  LOCAL = "LOCAL"
 }
 
 export const tmp = "/tmp"
+export const GS_GH_EVENT = "GS_GH_EVENT"
+export const GS_SECRETS = "GS_SECRETS"
 
 export const runCmd = (cmd: string, args: string[], env: any = undefined) => {
   console.log(`Running: ${cmd} ${args}`)
