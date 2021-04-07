@@ -17,6 +17,7 @@ import java.net.URL;
 
 import static java.util.Collections.*;
 import static io.vacco.oss.gitflow.schema.GsConstants.*;
+import static io.vacco.oss.gitflow.GsPluginUtil.*;
 
 public class GsPluginProfileExtension {
 
@@ -64,8 +65,8 @@ public class GsPluginProfileExtension {
       plugins.apply(PmdPlugin.class);
       JavaPluginConvention javaPlugin = project.getConvention().getPlugin(JavaPluginConvention.class);
       SourceSetContainer sourceSets = javaPlugin.getSourceSets();
-      URL pmd = new URL(orgConfig.devConfig.pmdRulesUrl); // TODO perform file sync from org config's URL.
-      File pmdTmp = File.createTempFile(String.format(GS_PMD_XML_FMT, orgConfig.orgId), "");
+      URL pmd = new URL(orgConfig.devConfig.pmdRulesUrl);
+      File pmdTmp = fileAtTempDir(String.format(GS_PMD_XML_FMT, orgConfig.orgId));
 
       GsPluginUtil.sync(pmd, pmdTmp, localConfigUpdateDeltaMs);
       extensions.configure(PmdExtension.class, pmdXt -> {

@@ -65,6 +65,8 @@ public class GsPluginUtil {
     return new File(System.getProperty("user.home"), name);
   }
 
+  public static File fileAtTempDir(String name) { return new File(System.getProperty("java.io.tmpdir"), name); }
+
   public static void sync(URL src, File dst, long lastModifiedMaxDelta) throws IOException {
     long lastModifiedDelta = dst.exists() ? System.currentTimeMillis() - dst.lastModified() : Long.MAX_VALUE;
     if (lastModifiedDelta > lastModifiedMaxDelta) {
