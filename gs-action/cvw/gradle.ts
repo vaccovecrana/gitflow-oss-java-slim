@@ -27,7 +27,7 @@ export const loadGradle = (gradleDist: string, gradleVer: string): Promise<any> 
 }
 
 export const gradleBuild = (jdkRoot: string, gradleRoot: string, projectRoot: string, commit: any, orgConfigUrL: string): Promise<any> => {
-  const buildArgs: string[] = ["build", "--info", "-b", resolve(projectRoot, "build.gradle.kts")]
+  const buildArgs: string[] = ["build", "-b", resolve(projectRoot, "build.gradle.kts")]
   const {PATH} = process.env
   const gradleEnv = {...process.env, // secret values are passed in from the parent environment.
     JAVA_HOME: jdkRoot,

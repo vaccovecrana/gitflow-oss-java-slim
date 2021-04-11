@@ -509,7 +509,7 @@ const loadGradle = (gradleDist, gradleVer) => {
     return (0,external_fs_.existsSync)(gradleDist) ? Promise.resolve() : runCmd("wget", ["--quiet", `https://services.gradle.org/distributions/${gradleVer}-bin.zip`]).then(() => runCmd("unzip", ["-q", "-d", tmp, `${gradleVer}-bin.zip`]));
 };
 const gradleBuild = (jdkRoot, gradleRoot, projectRoot, commit, orgConfigUrL) => {
-    const buildArgs = ["build", "--info", "-b", (0,external_path_.resolve)(projectRoot, "build.gradle.kts")];
+    const buildArgs = ["build", "-b", (0,external_path_.resolve)(projectRoot, "build.gradle.kts")];
     const { PATH } = process.env;
     const gradleEnv = Object.assign(Object.assign({}, process.env), { JAVA_HOME: jdkRoot, PATH: `${PATH}:${(0,external_path_.resolve)(gradleRoot, "bin")}`, [GS_GH_EVENT]: JSON.stringify(commit), [GS_CONFIG_URL]: orgConfigUrL });
     return runCmd(gradle, buildArgs, gradleEnv);
