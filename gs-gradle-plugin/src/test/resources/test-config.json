@@ -26,6 +26,7 @@
     "mavenSigningKeyEnvProperty": "MAVEN_SIGNING_PRV"
   },
   "devConfig": {
+    "jdkDistribution": "https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk",
     "pmdRulesUrl": "file:./src/test/resources/org-config/pmd-config.xml",
     "dependencyExcludedGroups": ["net.sourceforge.pmd"],
     "versions": {

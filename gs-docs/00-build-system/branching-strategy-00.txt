@@ -1,0 +1,14 @@
+                 "my-library-0.1.0-MILESTONE-202104081246.jar"
+                 ^
+                 |  "my-library-0.1.0-SNAPSHOT.jar"
+                 |  ^
+                 |  |   "my-library-0.1.0-MILESTONE-20210412-0014.jar"
+                 |  |   ^
+"main"           |  |   |
+o-------*--------(--(---(----*--*-------------------->               .
+         \       |  |   |   ^   |
+          v      |  |   |  /    |
+"develop"  o--*--*--(---O-'     O "tags/0.1.0"
+               \    |  ^        | 
+                v   | /         # "my-library-0.1.0.jar"
+"feature/xyz"    o--*'                                               

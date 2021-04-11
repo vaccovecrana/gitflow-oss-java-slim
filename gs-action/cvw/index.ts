@@ -2,12 +2,10 @@ import { error, info, setFailed, warning } from "@actions/core"
 import { normalize, resolve } from "path"
 import * as fs from "fs";
 
-import { GS_GH_EVENT, BuildTarget, tmp } from "cvw/common"
-import { loadGradle, gradleBuild } from "cvw/gradle"
+import { jdkRoot, utf8, BuildTarget, tmp, INPUT_ORGCONFIG } from "cvw/common"
+import { loadJdk, loadGradle, gradleBuild, loadOrgConfig } from "cvw/gradle"
 
-const event = JSON.parse(process.env[GS_GH_EVENT])
-const orgConfigJson = fs.readFileSync("./org-config.json", "utf-8");
-const orgConfig = JSON.parse(orgConfigJson);
+const event = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, utf8))
 
 const errorHandler = (e: any) => {
   const eJson = JSON.stringify(e, null, 2)
@@ -17,10 +15,16 @@ const errorHandler = (e: any) => {
 }
 
 const buildInit = (commit: any, buildTarget: BuildTarget): Promise<void> => {
-  const gradleVer = orgConfig.devConfig.versions.gradle
-  const gradleDist = resolve(tmp, gradleVer)
-  commit.buildTarget = buildTarget
-  return loadGradle(gradleDist, gradleVer).then(() => gradleBuild(gradleDist, normalize(process.cwd()), commit))
+  const orgConfigUrl = process.env[INPUT_ORGCONFIG]
+  return loadOrgConfig(orgConfigUrl).then(orgConfig => {
+    const {jdkDistribution} = orgConfig.devConfig
+    const gradleVer = orgConfig.devConfig.versions.gradle
+    const gradleDist = resolve(tmp, gradleVer)
+    commit.buildTarget = buildTarget
+    return loadJdk(jdkDistribution, jdkRoot)
+      .then(() => loadGradle(gradleDist, gradleVer))
+      .then(() => gradleBuild(jdkRoot, gradleDist, normalize(process.cwd()), commit, orgConfigUrl))
+  })
 }
 
 const onCommit = (commit: any): Promise<any> => {

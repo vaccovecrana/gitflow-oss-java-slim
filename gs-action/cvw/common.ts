@@ -8,9 +8,14 @@ export enum BuildTarget {
   LOCAL = "LOCAL"
 }
 
+export const utf8 = "utf-8"
 export const tmp = "/tmp"
+export const jdkRoot = "/tmp/jdk"
+
 export const GS_GH_EVENT = "GS_GH_EVENT"
-export const GS_SECRETS = "GS_SECRETS"
+export const GS_CONFIG_URL = "GS_CONFIG_URL"
+
+export const INPUT_ORGCONFIG = "INPUT_ORGCONFIG"
 
 export const runCmd = (cmd: string, args: string[], env: any = undefined) => {
   console.log(`Running: ${cmd} ${args}`)

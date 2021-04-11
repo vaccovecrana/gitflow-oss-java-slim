@@ -25,9 +25,6 @@ public class GsSpec {
       System.out.println(om.writerWithDefaultPrettyPrinter().writeValueAsString(config));
       System.out.println(om.writerWithDefaultPrettyPrinter().writeValueAsString(commit));
       System.out.println(commit.buildTarget);
-      System.out.println(GsPluginUtil.loadCredentials(config.internalRepo));
-      System.out.println(GsPluginUtil.loadCredentials(config.snapshotsRepo));
-      System.out.println(GsPluginUtil.loadCredentials(config.releasesRepo));
     });
     it("Load the org configuration from local bootstrap file", () -> {
       File localConfig = new File("./src/test/resources/local-config.json");

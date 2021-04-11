@@ -458,9 +458,12 @@ var BuildTarget;
     BuildTarget["PRE_RELEASE"] = "PRE_RELEASE";
     BuildTarget["LOCAL"] = "LOCAL";
 })(BuildTarget || (BuildTarget = {}));
+const utf8 = "utf-8";
 const tmp = "/tmp";
+const jdkRoot = "/tmp/jdk";
 const GS_GH_EVENT = "GS_GH_EVENT";
-const GS_SECRETS = "GS_SECRETS";
+const GS_CONFIG_URL = "GS_CONFIG_URL";
+const INPUT_ORGCONFIG = "INPUT_ORGCONFIG";
 const runCmd = (cmd, args, env = undefined) => {
     console.log(`Running: ${cmd} ${args}`);
     return new Promise((resolve, reject) => {
@@ -488,16 +491,27 @@ const runCmd = (cmd, args, env = undefined) => {
 
 
 const gradle = "gradle";
-const loadGradle = (gradleDist, gradleVer) => {
-    return (0,external_fs_.existsSync)(gradleDist) ? Promise.resolve()
-        : runCmd("wget", ["--quiet", `https://services.gradle.org/distributions/${gradleVer}-bin.zip`]).then(() => runCmd("unzip", ["-q", "-d", tmp, `${gradleVer}-bin.zip`]));
+const loadOrgConfig = (srcUrl) => {
+    const configPath = (0,external_path_.resolve)(process.env.RUNNER_WORKSPACE, "org-config.json");
+    return runCmd("wget", ["--quiet", srcUrl, "--output-document", configPath])
+        .then(() => JSON.parse((0,external_fs_.readFileSync)(configPath, utf8)));
 };
-const gradleBuild = (gradleRoot, projectRoot, commit) => {
-    const buildArgs = ["build", "-b", (0,external_path_.resolve)(projectRoot, "build.gradle.kts")];
+const loadJdk = (srcUrl, localPath) => {
+    const cwd = process.cwd();
+    const archivePath = (0,external_path_.resolve)(localPath, "jdk.tar.gz");
+    return external_fs_.promises.mkdir(localPath, { recursive: true })
+        .then(() => process.chdir(localPath))
+        .then(() => runCmd("wget", ["--quiet", srcUrl, "--output-document", archivePath]))
+        .then(() => runCmd("tar", ["-xf", archivePath, "--strip-components=1"]))
+        .then(() => process.chdir(cwd));
+};
+const loadGradle = (gradleDist, gradleVer) => {
+    return (0,external_fs_.existsSync)(gradleDist) ? Promise.resolve() : runCmd("wget", ["--quiet", `https://services.gradle.org/distributions/${gradleVer}-bin.zip`]).then(() => runCmd("unzip", ["-q", "-d", tmp, `${gradleVer}-bin.zip`]));
+};
+const gradleBuild = (jdkRoot, gradleRoot, projectRoot, commit, orgConfigUrL) => {
+    const buildArgs = ["build", "--info", "-b", (0,external_path_.resolve)(projectRoot, "build.gradle.kts")];
     const { PATH } = process.env;
-    const secrets = JSON.parse(process.env[GS_SECRETS]);
-    const gradleEnv = Object.assign(Object.assign({}, process.env), { PATH: `${PATH}:${(0,external_path_.resolve)(gradleRoot, "bin")}`, [GS_GH_EVENT]: JSON.stringify(commit) });
-    Object.keys(secrets).forEach(k => gradleEnv[k] = secrets[k]);
+    const gradleEnv = Object.assign(Object.assign({}, process.env), { JAVA_HOME: jdkRoot, PATH: `${PATH}:${(0,external_path_.resolve)(gradleRoot, "bin")}`, [GS_GH_EVENT]: JSON.stringify(commit), [GS_CONFIG_URL]: orgConfigUrL });
     return runCmd(gradle, buildArgs, gradleEnv);
 };
 
@@ -507,9 +521,7 @@ const gradleBuild = (gradleRoot, projectRoot, commit) => {
 
 
 
-const cvw_event = JSON.parse(process.env[GS_GH_EVENT]);
-const orgConfigJson = external_fs_.readFileSync("./org-config.json", "utf-8");
-const orgConfig = JSON.parse(orgConfigJson);
+const cvw_event = JSON.parse(external_fs_.readFileSync(process.env.GITHUB_EVENT_PATH, utf8));
 const errorHandler = (e) => {
     const eJson = JSON.stringify(e, null, 2);
     if (Object.keys(e).length == 0) {
@@ -521,10 +533,16 @@ const errorHandler = (e) => {
     (0,core.setFailed)(e);
 };
 const buildInit = (commit, buildTarget) => {
-    const gradleVer = orgConfig.devConfig.versions.gradle;
-    const gradleDist = (0,external_path_.resolve)(tmp, gradleVer);
-    commit.buildTarget = buildTarget;
-    return loadGradle(gradleDist, gradleVer).then(() => gradleBuild(gradleDist, (0,external_path_.normalize)(process.cwd()), commit));
+    const orgConfigUrl = process.env[INPUT_ORGCONFIG];
+    return loadOrgConfig(orgConfigUrl).then(orgConfig => {
+        const { jdkDistribution } = orgConfig.devConfig;
+        const gradleVer = orgConfig.devConfig.versions.gradle;
+        const gradleDist = (0,external_path_.resolve)(tmp, gradleVer);
+        commit.buildTarget = buildTarget;
+        return loadJdk(jdkDistribution, jdkRoot)
+            .then(() => loadGradle(gradleDist, gradleVer))
+            .then(() => gradleBuild(jdkRoot, gradleDist, (0,external_path_.normalize)(process.cwd()), commit, orgConfigUrl));
+    });
 };
 const onCommit = (commit) => {
     const { ref } = commit;

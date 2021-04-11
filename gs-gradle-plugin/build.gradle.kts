@@ -9,7 +9,7 @@ repositories {
 }
 
 group = "io.vacco.oss.gitflow"
-version = "0.9.0"
+version = "0.9.2"
 
 dependencies {
   api(gradleApi())
@@ -25,6 +25,7 @@ configure<JavaPluginExtension> {
   sourceCompatibility = JavaVersion.VERSION_1_8
   targetCompatibility = JavaVersion.VERSION_1_8
   withSourcesJar()
+  withJavadocJar()
 }
 
 tasks.withType<JavaCompile> { options.compilerArgs.add("-Xlint:all") }
@@ -73,11 +74,11 @@ publishing {
   }
   repositories {
     maven {
-      name = "GithubPackages"
-      setUrl("https://maven.pkg.github.com/vaccovecrana/gitflow-oss-java-slim/")
+      name = "SonatypeOSS"
+      setUrl("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
       credentials {
-        username = System.getenv("VACCO_USER")
-        password = System.getenv("VACCO_PASSWORD")
+        username = System.getenv("SONATYPE_USER")
+        password = System.getenv("SONATYPE_PASSWORD")
       }
     }
   }

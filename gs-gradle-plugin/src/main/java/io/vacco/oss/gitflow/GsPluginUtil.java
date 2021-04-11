@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vacco.oss.gitflow.schema.*;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ModuleVersionSelector;
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
+import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.logging.*;
 
 import java.io.*;
@@ -13,17 +13,16 @@ import java.net.URL;
 import java.nio.channels.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.AbstractMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static io.vacco.oss.gitflow.schema.GsBuildTarget.*;
 
 public class GsPluginUtil {
 
   private static final Logger log = Logging.getLogger(GsPluginUtil.class);
-  public static final String MILESTONE = "MILESTONE", SNAPSHOT = "SNAPSHOT";
 
   public static String labelFor(ModuleVersionSelector mvs) {
     return format("%s:%s:%s", mvs.getGroup(), mvs.getName(), mvs.getVersion());
@@ -36,9 +35,9 @@ public class GsPluginUtil {
 
   public static String labelForVersion(String currentVersion, GsBranchCommit commit) {
     GsBuildTarget dt = commit.buildTarget;
-    if (dt.isMilestone() && !currentVersion.contains(MILESTONE)) {
+    if (dt.isMilestone() && !currentVersion.contains(MILESTONE.name())) {
       return format("%s-%s-%s", currentVersion, MILESTONE, commit.utcNow);
-    } else if (dt.isSnapshot() && !currentVersion.contains(SNAPSHOT)) {
+    } else if (dt.isSnapshot() && !currentVersion.contains(SNAPSHOT.name())) {
       return format("%s-%s", currentVersion, SNAPSHOT);
     }
     return currentVersion;
@@ -50,15 +49,6 @@ public class GsPluginUtil {
       p0.setVersion(labelForVersion(rawVersion != null ? rawVersion : p0.getVersion().toString(), commit));
       log.warn("Project build version: [{}, {}]", p0.getName(), p0.getVersion());
     }));
-  }
-
-  public static String loadUrl(URL src) {
-    try (InputStream in = src.openStream()) {
-      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-      return reader.lines().collect(Collectors.joining(System.lineSeparator()));
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
-    }
   }
 
   public static File fileAtHomeDir(String name) {
@@ -80,10 +70,23 @@ public class GsPluginUtil {
     }
   }
 
+  private static boolean isEmpty(String s) {
+    return s == null || s.length() == 0;
+  }
+
   public static GsOrgConfig loadOrgConfig(ObjectMapper om, File localConfig, String remoteConfigUrl, long lastModifiedMaxDelta) {
     try {
       if (remoteConfigUrl != null) {
-        return om.readValue(new URL(remoteConfigUrl), GsOrgConfig.class);
+        GsOrgConfig orgConfig = om.readValue(new URL(remoteConfigUrl), GsOrgConfig.class);
+        GsOrgRepo[] repos = { orgConfig.internalRepo, orgConfig.snapshotsRepo, orgConfig.releasesRepo };
+        Arrays.stream(repos).filter(Objects::nonNull).forEach(repo -> {
+          repo.username = System.getenv(repo.usernameEnvProperty);
+          repo.password = System.getenv(repo.passwordEnvProperty);
+          if (isEmpty(repo.username) || isEmpty(repo.password)) {
+            log.warn("Missing credentials for repository [{}]", repo.id);
+          }
+        });
+        return orgConfig;
       }
       else if (localConfig.exists()) {
         GsLocalConfig localConf = om.readValue(localConfig, GsLocalConfig.class);
@@ -93,8 +96,10 @@ public class GsPluginUtil {
         log.warn("Executing unmanaged build.");
 
         GsOrgConfig orgConfig = om.readValue(orgConf, GsOrgConfig.class);
-        orgConfig.internalRepo.username = localConf.internalRepoUser;
-        orgConfig.internalRepo.password = localConf.internalRepoPassword;
+        if (orgConfig.internalRepo != null) {
+          orgConfig.internalRepo.username = localConf.internalRepoUser;
+          orgConfig.internalRepo.password = localConf.internalRepoPassword;
+        }
         return orgConfig;
       } else throw new IllegalStateException(String.join("\n",
           "No CI org config found, and no local org config found.",
@@ -123,23 +128,21 @@ public class GsPluginUtil {
     }
   }
 
-  public static Map.Entry<String, String> loadCredentials(GsOrgRepo r) {
-    String user = r.username != null ? r.username : System.getenv(r.usernameEnvProperty);
-    String pass = r.password != null ? r.password : System.getenv(r.passwordEnvProperty);
-    return new AbstractMap.SimpleEntry<>(user, pass);
-  }
-
-  public static void configure(MavenArtifactRepository mvnRepo, GsOrgRepo orgRepo,
+  public static void configure(RepositoryHandler rh, GsOrgRepo orgRepo,
                                Function<GsOrgRepo, String> urlTransform) {
+    if (orgRepo == null) {
+      return;
+    }
     String targetUrl = urlTransform == null ? orgRepo.url : urlTransform.apply(orgRepo);
     log.warn("Adding repository URL: [{}]", targetUrl);
     try {
-      Map.Entry<String, String> creds = loadCredentials(orgRepo);
-      mvnRepo.setName(orgRepo.id);
-      mvnRepo.setUrl(targetUrl);
-      mvnRepo.credentials(crd -> {
-        crd.setUsername(creds.getKey());
-        crd.setPassword(creds.getValue());
+      rh.maven(mvnRepo -> {
+        mvnRepo.setName(orgRepo.id);
+        mvnRepo.setUrl(targetUrl);
+        mvnRepo.credentials(crd -> {
+          crd.setUsername(orgRepo.username);
+          crd.setPassword(orgRepo.password);
+        });
       });
     } catch (Exception e) {
       String msg = format(

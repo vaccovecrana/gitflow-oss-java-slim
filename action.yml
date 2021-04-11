@@ -1,36 +1,13 @@
-name: "Gradle build"
-description: "Gitflow Slim tasks for Gradle projects"
-author: "Vaccove Crana, LLC."
+name: gitflow-oss-java-slim
+description: "Common build conventions for OSS Gradle Java projects"
+author: vacco
+branding:
+  icon: aperture
+  color: white
 inputs:
-  jdkUrl:
-    description: "URL to grab a JDK distribution from in tar.gz format"
-    required: false
-    default: https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk
   orgConfig:
-    description: "URL pointing to an Org config JSON file to drive the build"
-    required: true
-  secretContext:
-    description: "The repository's secret context JSON for Org config defined secret variables. Usually: `toJson(secrets)`"
+    description: "URL pointing to an Org Config JSON file to drive the build."
     required: true
 runs:
-  using: composite
-  steps:
-    - run: |
-        wget --quiet ${{inputs.jdkUrl}} --output-document jdk.tar.gz
-        tar -xf jdk.tar.gz
-        rm jdk.tar.gz
-        mv *jdk* jdk
-      shell: bash
-      working-directory: /tmp
-    - run: |
-        wget ${{inputs.orgConfig}} --output-document ./org-config.json
-        pwd
-        ls -la
-      shell: bash
-    - run: node ./gs-action/dist/main.js
-      shell: bash
-      env:
-        JAVA_HOME: /tmp/jdk
-        GS_GH_EVENT: ${{tojson(github.event)}}
-        GS_CONFIG_URL: ${{inputs.orgConfig}}
-        GS_SECRETS: ${{inputs.secretContext}}
+  using: node12
+  main: gs-action/dist/main.js

@@ -3,6 +3,7 @@ package io.vacco.oss.gitflow.sharedlib;
 import io.vacco.oss.gitflow.schema.*;
 import io.vacco.oss.gitflow.GsPluginUtil;
 import org.gradle.api.*;
+import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.logging.*;
 import org.gradle.api.plugins.*;
 import org.gradle.api.publish.PublishingExtension;
@@ -77,8 +78,9 @@ public class GsSharedLibExtension {
       });
 
       if (commit.buildTarget.isPublication()) {
+        RepositoryHandler rh = pe.getRepositories();
         if (internal) {
-          pe.getRepositories().maven(m -> GsPluginUtil.configure(m, orgConfig.internalRepo, publishingUrlTransform));
+          GsPluginUtil.configure(rh, orgConfig.internalRepo, publishingUrlTransform);
         } else {
           project.getPlugins().apply(SigningPlugin.class);
           SigningExtension se = project.getExtensions().getByType(SigningExtension.class);
@@ -86,9 +88,9 @@ public class GsSharedLibExtension {
           se.sign(mvn);
           extensions.configure(JavaPluginExtension.class, JavaPluginExtension::withJavadocJar);
           if (commit.buildTarget.isSnapshot()) {
-            pe.getRepositories().maven(m -> GsPluginUtil.configure(m, orgConfig.snapshotsRepo, publishingUrlTransform));
+            GsPluginUtil.configure(rh, orgConfig.snapshotsRepo, publishingUrlTransform);
           } else {
-            pe.getRepositories().maven(m -> GsPluginUtil.configure(m, orgConfig.releasesRepo, publishingUrlTransform));
+            GsPluginUtil.configure(rh, orgConfig.releasesRepo, publishingUrlTransform);
           }
         }
       } else if (commit.buildTarget == GsBuildTarget.PRE_RELEASE) {

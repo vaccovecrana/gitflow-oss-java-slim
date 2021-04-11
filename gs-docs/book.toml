@@ -1,0 +1,14 @@
+[book]
+authors = ["Jesus Zazueta"]
+language = "en"
+multilingual = false
+src = "."
+title = "Gitflow Slim for Java OSS"
+
+[build]
+build-dir = "../docs"
+
+[output.html]
+theme = "rust"
+default-theme = "rust"
+preferred-dark-theme = "rust"

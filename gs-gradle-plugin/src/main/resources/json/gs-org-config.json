@@ -65,8 +65,12 @@
     },
     "gsDevConfig": {
       "type": "object",
-      "required": ["gradleVersion", "ghEventEnvProperty", "dependencyExcludedGroups"],
+      "required": ["jdkDistribution","gradleVersion", "ghEventEnvProperty", "dependencyExcludedGroups"],
       "properties": {
+        "jdkDistribution": {
+          "type": "string",
+          "description": "URL to grab a JDK distribution in tar.gz format"
+        },
         "dependencyExcludedGroups": {
           "type": "array",
           "description": "Excluded Maven groups when checking for outdated dependencies",

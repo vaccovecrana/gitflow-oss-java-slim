@@ -20,6 +20,7 @@ import org.gradle.testing.jacoco.plugins.JacocoPlugin;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static io.vacco.oss.gitflow.GsPluginUtil.*;
+import static io.vacco.oss.gitflow.schema.GsBuildTarget.*;
 
 public class GsPluginJavaExtension {
 
@@ -32,9 +33,7 @@ public class GsPluginJavaExtension {
     TaskContainer tasks = project.getTasks();
 
     project.getRepositories().mavenCentral();
-    project.getRepositories().maven(m ->
-        GsPluginUtil.configure(m, orgConfig.internalRepo, null)
-    );
+    GsPluginUtil.configure(project.getRepositories(), orgConfig.internalRepo, null);
 
     plugins.apply(JavaPlugin.class);
     plugins.apply(JacocoPlugin.class);
@@ -84,10 +83,10 @@ public class GsPluginJavaExtension {
       project.getConfigurations().all(cfg -> cfg.resolutionStrategy(rs -> rs.eachDependency(details -> {
         ModuleVersionSelector mvs = details.getRequested();
         String version = requireNonNull(mvs.getVersion());
-        if (version.contains(SNAPSHOT) || version.contains(MILESTONE)) {
-          String errMsg = format("Do NOT use %s dependency: [%s] when creating RELEASE artifacts.",
-              version.contains(SNAPSHOT) ? SNAPSHOT : MILESTONE,
-              labelFor(mvs)
+        if (version.contains(SNAPSHOT.name()) || version.contains(MILESTONE.name())) {
+          String errMsg = format("Do NOT use %s dependency: [%s] when creating %s artifacts.",
+              version.contains(SNAPSHOT.name()) ? SNAPSHOT : MILESTONE,
+              labelFor(mvs), RELEASE
           );
           throw new GradleException(errMsg);
         }

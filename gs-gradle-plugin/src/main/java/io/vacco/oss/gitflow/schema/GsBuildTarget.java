@@ -1,6 +1,7 @@
 package io.vacco.oss.gitflow.schema;
 
 public enum GsBuildTarget {
+
   SNAPSHOT, MILESTONE, RELEASE, PRE_RELEASE, LOCAL;
 
   public boolean isSnapshot() { return this == SNAPSHOT || this == LOCAL; }
