@@ -183,10 +183,6 @@
 </ul>
 <p>If at least 4 of the 7 points above apply to you, this framework may be of meaningful use.</p>
 <p>Otherwise you can stop here (and perhaps share some insight on how you tackle the 7 problems above).</p>
-<p>TODO</p>
-<ul>
-<li>Security considerations (i.e. where do artifacts get pulled from and stored to, etc).</li>
-</ul>
 <h1 id="build-system-overview"><a class="header" href="#build-system-overview">Build System Overview</a></h1>
 <p>In a nutshell, this build system brings together a few concepts which are common across many code-bases within an organization, scoped down to the problem of managing Java code as shared Maven artifacts. It's possible to implement functionality to perform more advanced tasks like Docker image builds or build status reporting, but let's keep the scope short and simple for now.</p>
 <p><img src="00-build-system/build-system-00.svg" alt="build-system-00" /></p>
@@ -273,7 +269,6 @@ jobs:
 <h1 id="org-config-specification"><a class="header" href="#org-config-specification">Org Config Specification</a></h1>
 <p>Having defined the underlying concepts needed for this framework, we can now define an Organization's common build configuration.</p>
 <p>It is a JSON document which consists of a few sections backed by a <a href="https://github.com/vaccovecrana/gitflow-oss-java-slim/blob/main/gs-gradle-plugin/src/main/resources/json/gs-org-config.json">JSON schema</a></p>
-<p>TODO change the above to a tag</p>
 <pre><code class="language-json">{
   &quot;orgId&quot;: &quot;my-org-id&quot;,
   &quot;internalRepo&quot;: {...},

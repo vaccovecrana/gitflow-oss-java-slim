@@ -23,8 +23,3 @@ If you:
 If at least 4 of the 7 points above apply to you, this framework may be of meaningful use.
 
 Otherwise you can stop here (and perhaps share some insight on how you tackle the 7 problems above).
-
-TODO
-
-- Security considerations (i.e. where do artifacts get pulled from and stored to, etc).
-
