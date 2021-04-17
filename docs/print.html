@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> gitflow-oss-java-slim (v0.9.3)</a></li><li class="chapter-item expanded "><a href="00-build-system/index.html"><strong aria-hidden="true">2.</strong> Build System Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="00-build-system/branching-strategy.html"><strong aria-hidden="true">2.1.</strong> Branching Strategy/Versioning</a></li></ol></li><li class="chapter-item expanded "><a href="01-action-parameters/index.html"><strong aria-hidden="true">3.</strong> Github Action Parameters</a></li><li class="chapter-item expanded "><a href="02-org-config/index.html"><strong aria-hidden="true">4.</strong> Org Config Specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02-org-config/maven-repositories.html"><strong aria-hidden="true">4.1.</strong> Maven Publication Repositories</a></li><li class="chapter-item expanded "><a href="02-org-config/development-features.html"><strong aria-hidden="true">4.2.</strong> Development Features Configuration</a></li><li class="chapter-item expanded "><a href="02-org-config/config-evolution.html"><strong aria-hidden="true">4.3.</strong> Configuration Evolution</a></li></ol></li><li class="chapter-item expanded "><a href="03-gradle-features/index.html"><strong aria-hidden="true">5.</strong> Gradle Features Overview</a></li><li class="chapter-item expanded "><a href="04-bootstrap/index.html"><strong aria-hidden="true">6.</strong> Org Config / Project bootstrap cheat-sheet</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> gitflow-oss-java-slim (v0.9.7)</a></li><li class="chapter-item expanded "><a href="00-build-system/index.html"><strong aria-hidden="true">2.</strong> Build System Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="00-build-system/branching-strategy.html"><strong aria-hidden="true">2.1.</strong> Branching Strategy/Versioning</a></li></ol></li><li class="chapter-item expanded "><a href="01-action-parameters/index.html"><strong aria-hidden="true">3.</strong> Github Action Parameters</a></li><li class="chapter-item expanded "><a href="02-org-config/index.html"><strong aria-hidden="true">4.</strong> Org Config Specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02-org-config/maven-repositories.html"><strong aria-hidden="true">4.1.</strong> Maven Publication Repositories</a></li><li class="chapter-item expanded "><a href="02-org-config/development-features.html"><strong aria-hidden="true">4.2.</strong> Development Features Configuration</a></li><li class="chapter-item expanded "><a href="02-org-config/config-evolution.html"><strong aria-hidden="true">4.3.</strong> Configuration Evolution</a></li></ol></li><li class="chapter-item expanded "><a href="03-gradle-features/index.html"><strong aria-hidden="true">5.</strong> Gradle Features Overview</a></li><li class="chapter-item expanded "><a href="04-bootstrap/index.html"><strong aria-hidden="true">6.</strong> Org Config / Project bootstrap cheat-sheet</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -247,7 +247,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.3
+      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.7
         with:
           orgConfig: https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config.json
         env:
@@ -375,7 +375,7 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Now include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.3&quot; }
+<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.7&quot; }
 
 group = &quot;com.myorg.mylibrary&quot; // your project's target maven coordinates.
 version = &quot;0.1.0&quot; // or whichever version you have
@@ -424,9 +424,10 @@ configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
     &quot;mavenSigningKeyEnvProperty&quot;: &quot;MAVEN_SIGNING_PRV&quot;
   },
   &quot;devConfig&quot;: {
+    &quot;gradleVersion&quot;: &quot;7.0&quot;,
+    &quot;gradleDistribution&quot;: &quot;https://services.gradle.org/distributions/gradle-7.0-bin.zip&quot;,
     &quot;jdkDistribution&quot;: &quot;https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk&quot;,
     &quot;versions&quot;: {
-      &quot;gradle&quot;: &quot;gradle-6.8.3&quot;,
       &quot;j8Spec&quot;: &quot;io.github.j8spec:j8spec:3.0.0&quot;
     }
   }
@@ -462,7 +463,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.3
+      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.7
         with:
           orgConfig: https://&lt;Location where you uploaded the Org Config file&gt;
         env:
@@ -477,7 +478,7 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Finally, include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.3&quot; }
+<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.7&quot; }
 
 group = &quot;com.myorg.mylibrary&quot; // your project's target maven coordinates.
 version = &quot;0.1.0&quot; // or whichever version you have

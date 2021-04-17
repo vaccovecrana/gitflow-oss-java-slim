@@ -1,6 +1,6 @@
 # Summary
 
-- [gitflow-oss-java-slim (v0.9.3)](index.md)
+- [gitflow-oss-java-slim (v0.9.7)](index.md)
 - [Build System Overview](00-build-system/index.md)
   - [Branching Strategy/Versioning](00-build-system/branching-strategy.md)
 - [Github Action Parameters](01-action-parameters/index.md)

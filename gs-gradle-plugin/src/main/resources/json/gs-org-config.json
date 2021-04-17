@@ -58,7 +58,6 @@
       "type": "object",
       "description": "Default versions for core organization dependencies",
       "properties": {
-        "gradle": {"type": "string", "description": "Gradle version to user inside Github actions"},
         "j8Spec": {"type": "string", "description": "J8Spec version in Maven coordinates"},
         "pmd": {"type": "string", "description": "PMD tool version"}
       }
@@ -67,9 +66,17 @@
       "type": "object",
       "required": ["jdkDistribution","gradleVersion", "ghEventEnvProperty", "dependencyExcludedGroups"],
       "properties": {
+        "gradleDistribution": {
+          "type": "string",
+          "description": "URL to grab a Gradle distribution in zip format. Used only in Github actions."
+        },
+        "gradleVersion": {
+          "type": "string",
+          "description": "Gradle distribution version in X.Y.Z format"
+        },
         "jdkDistribution": {
           "type": "string",
-          "description": "URL to grab a JDK distribution in tar.gz format"
+          "description": "URL to grab a JDK distribution in tar.gz format. Used only in Github actions."
         },
         "dependencyExcludedGroups": {
           "type": "array",

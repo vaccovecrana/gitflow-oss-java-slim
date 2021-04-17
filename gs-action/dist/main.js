@@ -196,6 +196,7 @@ exports.getInput = getInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
+    process.stdout.write(os.EOL);
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
@@ -420,8 +421,9 @@ module.exports = require("path");;
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -438,6 +440,8 @@ module.exports = require("path");;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
@@ -446,9 +450,9 @@ var core = __webpack_require__(225);
 var external_path_ = __webpack_require__(622);
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __webpack_require__(747);
-// CONCATENATED MODULE: external "child_process"
+;// CONCATENATED MODULE: external "child_process"
 const external_child_process_namespaceObject = require("child_process");;
-// CONCATENATED MODULE: ./cvw/common.ts
+;// CONCATENATED MODULE: ./cvw/common.ts
 
 var BuildTarget;
 (function (BuildTarget) {
@@ -486,7 +490,7 @@ const runCmd = (cmd, args, env = undefined) => {
     });
 };
 
-// CONCATENATED MODULE: ./cvw/gradle.ts
+;// CONCATENATED MODULE: ./cvw/gradle.ts
 
 
 
@@ -496,26 +500,34 @@ const loadOrgConfig = (srcUrl) => {
     return runCmd("wget", ["--quiet", srcUrl, "--output-document", configPath])
         .then(() => JSON.parse((0,external_fs_.readFileSync)(configPath, utf8)));
 };
-const loadJdk = (srcUrl, localPath) => {
+const loadJdk = (devConfig) => {
     const cwd = process.cwd();
+    const localPath = (0,external_path_.resolve)(tmp, "jdk");
     const archivePath = (0,external_path_.resolve)(localPath, "jdk.tar.gz");
     return external_fs_.promises.mkdir(localPath, { recursive: true })
         .then(() => process.chdir(localPath))
-        .then(() => runCmd("wget", ["--quiet", srcUrl, "--output-document", archivePath]))
+        .then(() => runCmd("wget", ["--quiet", devConfig.jdkDistribution, "--output-document", archivePath]))
         .then(() => runCmd("tar", ["-xf", archivePath, "--strip-components=1"]))
         .then(() => process.chdir(cwd));
 };
-const loadGradle = (gradleDist, gradleVer) => {
-    return (0,external_fs_.existsSync)(gradleDist) ? Promise.resolve() : runCmd("wget", ["--quiet", `https://services.gradle.org/distributions/${gradleVer}-bin.zip`]).then(() => runCmd("unzip", ["-q", "-d", tmp, `${gradleVer}-bin.zip`]));
+const loadGradle = (devConfig) => {
+    const cwd = process.cwd();
+    const localPath = (0,external_path_.resolve)(tmp, `gradle-${devConfig.gradleVersion}`);
+    return external_fs_.promises.mkdir(localPath, { recursive: true })
+        .then(() => process.chdir(tmp))
+        .then(() => runCmd("wget", ["--quiet", devConfig.gradleDistribution]))
+        .then(() => runCmd("unzip", ["-q", "gradle-*.zip"]))
+        .then(() => process.chdir(cwd))
+        .then(() => localPath);
 };
 const gradleBuild = (jdkRoot, gradleRoot, projectRoot, commit, orgConfigUrL) => {
+    const gradleCmd = (0,external_path_.resolve)(gradleRoot, "bin", gradle);
     const buildArgs = ["build", "-b", (0,external_path_.resolve)(projectRoot, "build.gradle.kts")];
-    const { PATH } = process.env;
-    const gradleEnv = Object.assign(Object.assign({}, process.env), { JAVA_HOME: jdkRoot, PATH: `${PATH}:${(0,external_path_.resolve)(gradleRoot, "bin")}`, [GS_GH_EVENT]: JSON.stringify(commit), [GS_CONFIG_URL]: orgConfigUrL });
-    return runCmd(gradle, buildArgs, gradleEnv);
+    const gradleEnv = Object.assign(Object.assign({}, process.env), { JAVA_HOME: jdkRoot, [GS_GH_EVENT]: JSON.stringify(commit), [GS_CONFIG_URL]: orgConfigUrL });
+    return runCmd(gradleCmd, buildArgs, gradleEnv);
 };
 
-// CONCATENATED MODULE: ./cvw/index.ts
+;// CONCATENATED MODULE: ./cvw/index.ts
 
 
 
@@ -535,13 +547,10 @@ const errorHandler = (e) => {
 const buildInit = (commit, buildTarget) => {
     const orgConfigUrl = process.env[INPUT_ORGCONFIG];
     return loadOrgConfig(orgConfigUrl).then(orgConfig => {
-        const { jdkDistribution } = orgConfig.devConfig;
-        const gradleVer = orgConfig.devConfig.versions.gradle;
-        const gradleDist = (0,external_path_.resolve)(tmp, gradleVer);
         commit.buildTarget = buildTarget;
-        return loadJdk(jdkDistribution, jdkRoot)
-            .then(() => loadGradle(gradleDist, gradleVer))
-            .then(() => gradleBuild(jdkRoot, gradleDist, (0,external_path_.normalize)(process.cwd()), commit, orgConfigUrl));
+        return loadJdk(orgConfig.devConfig)
+            .then(() => loadGradle(orgConfig.devConfig))
+            .then(gradleRoot => gradleBuild(jdkRoot, gradleRoot, (0,external_path_.normalize)(process.cwd()), commit, orgConfigUrl));
     });
 };
 const onCommit = (commit) => {
