@@ -14,7 +14,7 @@ libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license
 Now include and configure the Gradle plugin in your source tree in `build.gradle.kts`:
 
 ```kotlin
-plugins { id("io.vacco.oss.gitflow") version "0.9.7" }
+plugins { id("io.vacco.oss.gitflow") version "0.9.8" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have

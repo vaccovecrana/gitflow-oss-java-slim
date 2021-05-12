@@ -104,7 +104,7 @@ public class GsPluginUtil {
       } else throw new IllegalStateException(String.join("\n",
           "No CI org config found, and no local org config found.",
           "If this is a local code checkout, please define a minimal local org configuration",
-          "as specified in https://github.com/vaccovecrana/gitflow-oss-java-slim/resources/json/gs-local-config.json"
+          "as specified in https://github.com/vaccovecrana/gitflow-oss-java-slim/blob/main/gs-gradle-plugin/src/main/resources/json/gs-local-config.json"
       ));
     } catch (Exception e) { throw new IllegalStateException(e); }
   }

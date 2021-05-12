@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.7
+      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.8
         with:
           orgConfig: https://<Location where you uploaded the Org Config file>
         env:
@@ -101,7 +101,7 @@ libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license
 Finally, include and configure the Gradle plugin in your source tree in `build.gradle.kts`:
 
 ```kotlin
-plugins { id("io.vacco.oss.gitflow") version "0.9.7" }
+plugins { id("io.vacco.oss.gitflow") version "0.9.8" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have

@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> gitflow-oss-java-slim (v0.9.7)</a></li><li class="chapter-item expanded "><a href="00-build-system/index.html"><strong aria-hidden="true">2.</strong> Build System Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="00-build-system/branching-strategy.html"><strong aria-hidden="true">2.1.</strong> Branching Strategy/Versioning</a></li></ol></li><li class="chapter-item expanded "><a href="01-action-parameters/index.html"><strong aria-hidden="true">3.</strong> Github Action Parameters</a></li><li class="chapter-item expanded "><a href="02-org-config/index.html"><strong aria-hidden="true">4.</strong> Org Config Specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02-org-config/maven-repositories.html"><strong aria-hidden="true">4.1.</strong> Maven Publication Repositories</a></li><li class="chapter-item expanded "><a href="02-org-config/development-features.html"><strong aria-hidden="true">4.2.</strong> Development Features Configuration</a></li><li class="chapter-item expanded "><a href="02-org-config/config-evolution.html"><strong aria-hidden="true">4.3.</strong> Configuration Evolution</a></li></ol></li><li class="chapter-item expanded "><a href="03-gradle-features/index.html"><strong aria-hidden="true">5.</strong> Gradle Features Overview</a></li><li class="chapter-item expanded "><a href="04-bootstrap/index.html"><strong aria-hidden="true">6.</strong> Org Config / Project bootstrap cheat-sheet</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> gitflow-oss-java-slim (v0.9.8)</a></li><li class="chapter-item expanded "><a href="00-build-system/index.html"><strong aria-hidden="true">2.</strong> Build System Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="00-build-system/branching-strategy.html"><strong aria-hidden="true">2.1.</strong> Branching Strategy/Versioning</a></li></ol></li><li class="chapter-item expanded "><a href="01-action-parameters/index.html"><strong aria-hidden="true">3.</strong> Github Action Parameters</a></li><li class="chapter-item expanded "><a href="02-org-config/index.html"><strong aria-hidden="true">4.</strong> Org Config Specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02-org-config/maven-repositories.html"><strong aria-hidden="true">4.1.</strong> Maven Publication Repositories</a></li><li class="chapter-item expanded "><a href="02-org-config/development-features.html"><strong aria-hidden="true">4.2.</strong> Development Features Configuration</a></li><li class="chapter-item expanded "><a href="02-org-config/config-evolution.html"><strong aria-hidden="true">4.3.</strong> Configuration Evolution</a></li></ol></li><li class="chapter-item expanded "><a href="03-gradle-features/index.html"><strong aria-hidden="true">5.</strong> Gradle Features Overview</a></li><li class="chapter-item expanded "><a href="04-bootstrap/index.html"><strong aria-hidden="true">6.</strong> Org Config / Project bootstrap cheat-sheet</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -138,13 +138,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -183,7 +185,7 @@
 </ul>
 <p>If at least 4 of the 7 points above apply to you, this framework may be of meaningful use.</p>
 <p>Otherwise you can stop here (and perhaps share some insight on how you tackle the 7 problems above).</p>
-<h1 id="build-system-overview"><a class="header" href="#build-system-overview">Build System Overview</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="build-system-overview"><a class="header" href="#build-system-overview">Build System Overview</a></h1>
 <p>In a nutshell, this build system brings together a few concepts which are common across many code-bases within an organization, scoped down to the problem of managing Java code as shared Maven artifacts. It's possible to implement functionality to perform more advanced tasks like Docker image builds or build status reporting, but let's keep the scope short and simple for now.</p>
 <p><img src="00-build-system/build-system-00.svg" alt="build-system-00" /></p>
 <p>The diagram above illustrates the flow of release management when you work on a code base using this Gradle plugin/Github action combination. Depending on the type of release artifact being built by Github actions, the artifacts themselves will be routed to different target Maven repositories, if any.</p>
@@ -210,7 +212,7 @@ version = &quot;0.1.0&quot;
 <p>Notice that the <code>MILESTONE</code> version convention also appends a timestamp component in the form of <code>YYYYMMDDHHMM</code>, so as to give the intermediate version a unique number. The reason for this is that most Maven repositories only allow re-reploying <code>SNAPSHOT</code> versions, and MAY reject versions which already exist inside the repository.</p>
 <p>Some further improvement and customization options for this naming convention may include code or configuration level overrides to allow for simple number counters or some other form of uniqueness convention. In practice, timestamps seem to be a good solution to track information about a particular artifact <code>MILESTONE</code> version.</p>
 <p>At this point you may be asking yourself: <em>&quot;why is there a distinction between a <code>SNAPSHOT</code> and a <code>MILESTONE</code> version?&quot;</em> This is explained in the following section, where the relationship between a Git development branch name and the artifact version type it produces is established.</p>
-<h1 id="gitflow-branching-strategy"><a class="header" href="#gitflow-branching-strategy">Gitflow Branching Strategy</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="gitflow-branching-strategy"><a class="header" href="#gitflow-branching-strategy">Gitflow Branching Strategy</a></h1>
 <p>To define which branches produce which kinds of artifacts, this framework offers a minimal set of definitions and rules which sit somewhere in the middle of the <a href="https://nvie.com/posts/a-successful-git-branching-model/">Gitflow Branching Model</a> and the <a href="https://guides.github.com/introduction/flow/">GitHub Flow Branching Model</a>.</p>
 <p><img src="00-build-system/branching-strategy-00.svg" alt="build-system-00" /></p>
 <p>In the figure above there are four types of branches, and only three of them produce artifacts:</p>
@@ -233,7 +235,7 @@ version = &quot;0.1.0&quot;
 </blockquote>
 <p>One applicable use case for dropping the use of the <code>DEVELOP</code> branch could be where a single developer is working on multiple code bases, so it's no necessary to impose the level of control that the <code>develop</code> branch offers.</p>
 <p>With these concepts, we can now define how to configure Gradle and Github Actions to implement this framework.</p>
-<h1 id="github-action-parameters"><a class="header" href="#github-action-parameters">Github action parameters</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="github-action-parameters"><a class="header" href="#github-action-parameters">Github action parameters</a></h1>
 <p>In this framework both Github Actions and Gradle work together to provide development methods for different circumstances. Namely:</p>
 <ul>
 <li>Un-managed builds - These are the builds that you perform in your local development machine, i.e. <code>gradle clean build</code>. They produce <code>SNAPSHOT</code> artifacts that you can deploy to your local Maven repository.</li>
@@ -247,7 +249,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.7
+      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.8
         with:
           orgConfig: https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config.json
         env:
@@ -266,7 +268,7 @@ jobs:
 <p>Warning: you SHOULD be mindful with the secret values that you are sharing with this framework. In general, you SHOULD follow security practices which grant the minimal amount of credentials that will grant this action with the privileges to execute and deploy your build. A good set of sane recommendations can be found in the <a href="https://github.com/aws-actions/configure-aws-credentials#credentials">Configure AWS Credentials</a> Github Action.</p>
 </blockquote>
 <p>The syntax and purpose of the Organization's common build configuration is explained in the next section.</p>
-<h1 id="org-config-specification"><a class="header" href="#org-config-specification">Org Config Specification</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="org-config-specification"><a class="header" href="#org-config-specification">Org Config Specification</a></h1>
 <p>Having defined the underlying concepts needed for this framework, we can now define an Organization's common build configuration.</p>
 <p>It is a JSON document which consists of a few sections backed by a <a href="https://github.com/vaccovecrana/gitflow-oss-java-slim/blob/main/gs-gradle-plugin/src/main/resources/json/gs-org-config.json">JSON schema</a></p>
 <pre><code class="language-json">{
@@ -282,7 +284,7 @@ jobs:
 <p>The <code>devConfig</code> attribute specifies default versions of optional tools that you could use in your code bases. In the current version of this framework, the set of recommended tools are <a href="https://docs.gradle.org/current/userguide/pmd_plugin.html">PMD</a> and <a href="https://j8spec.github.io/">j8spec</a>. Note that these are completely optional and you are not obligated to use them along with this framework.</p>
 <p>The remaining three <code>*Repo</code> attributes define the three components we saw in the architecture diagram in previous chapters. They establish where your Maven repositories (if any) are located and what credentials they require.</p>
 <p>These, along with the <code>publishing</code> attribute will be discussed in the next section.</p>
-<h1 id="maven-publication-repositories"><a class="header" href="#maven-publication-repositories">Maven Publication Repositories</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="maven-publication-repositories"><a class="header" href="#maven-publication-repositories">Maven Publication Repositories</a></h1>
 <h2 id="maven-repository-definitions"><a class="header" href="#maven-repository-definitions">Maven repository definitions</a></h2>
 <pre><code class="language-json">&quot;internalRepo&quot;: {
   &quot;id&quot;: &quot;GithubPackages&quot;,
@@ -327,7 +329,7 @@ jobs:
 <p>The key material will be passed on to the <a href="https://docs.gradle.org/current/userguide/signing_plugin.html">Gradle Signing plugin</a>.</p>
 <p>Given enough community interest, it should be possible to extend this part of the framework to ask for a key's passphrase, also stored as a Github secret.</p>
 <p>The next section discusses the rest of the Org config file format.</p>
-<h1 id="development-features-configuration"><a class="header" href="#development-features-configuration">Development Features Configuration</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="development-features-configuration"><a class="header" href="#development-features-configuration">Development Features Configuration</a></h1>
 <p>The last section of the Org config file is defined as:</p>
 <pre><code class="language-json">&quot;devConfig&quot;: {
   &quot;jdkDistribution&quot;: &quot;https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk&quot;,
@@ -354,7 +356,7 @@ jobs:
 <li><code>j8spec</code> - The version of <code>jspec</code> to use. It is defined in Maven dependency notation format.</li>
 <li><code>pmd</code> - The version of the PMD tool that the Gradle plugin will use (when configured) in a build.</li>
 </ul>
-<h1 id="configuration-evolution"><a class="header" href="#configuration-evolution">Configuration Evolution</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="configuration-evolution"><a class="header" href="#configuration-evolution">Configuration Evolution</a></h1>
 <p>It is possible (and likely) that you may maintain different source projects which require slight variations amongst each other. For example:</p>
 <ul>
 <li>Create a <code>java8.json</code> configuration if you maintain old projects which mandate version 8 of the JDK (or different PMD rules for a good portion of them).</li>
@@ -366,7 +368,7 @@ https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java11.json
 https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java15.json
 </code></pre>
 <p>This can help you maintain control on how quickly do you wish to move your projects to new versions of the JDK, Gradle itself, etc.</p>
-<h1 id="gradle-features"><a class="header" href="#gradle-features">Gradle Features</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="gradle-features"><a class="header" href="#gradle-features">Gradle Features</a></h1>
 <p>In this section we'll discuss how to configure a Gradle project to make use of this framework. The key idea is that this framework SHOULD be minimally intrusive to your Gradle project, and SHOULD allow you to detach from it at any moment.</p>
 <p>Start by defining publication information in your <code>gradle.properties</code> file:</p>
 <pre><code class="language-ini">libGitUrl=https://github.com/my-org/my-project.git
@@ -375,7 +377,7 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Now include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.7&quot; }
+<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.8&quot; }
 
 group = &quot;com.myorg.mylibrary&quot; // your project's target maven coordinates.
 version = &quot;0.1.0&quot; // or whichever version you have
@@ -398,7 +400,7 @@ configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
 <blockquote>
 <p>Note: when applying these optional features, all of them can still be customized by their respective declarative configuration blocks. Thus your source project is still free to customize each optional feature as it deems fit.</p>
 </blockquote>
-<h1 id="org-config--project-bootstrap-cheat-sheet"><a class="header" href="#org-config--project-bootstrap-cheat-sheet">Org Config / Project bootstrap cheat-sheet</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="org-config--project-bootstrap-cheat-sheet"><a class="header" href="#org-config--project-bootstrap-cheat-sheet">Org Config / Project bootstrap cheat-sheet</a></h1>
 <p>The previous sections outlined the concepts and structure behind this framework.</p>
 <p>The following is a quick walk-through on how to create an Org config from scratch, and configure a single Gradle project to adhere to it. In this example, PMD is disabled and only external OSS publication support is enabled.</p>
 <p>Start by creating an Org config template, filling in required parameters:</p>
@@ -463,7 +465,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.7
+      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.8
         with:
           orgConfig: https://&lt;Location where you uploaded the Org Config file&gt;
         env:
@@ -478,7 +480,7 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Finally, include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.7&quot; }
+<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.8&quot; }
 
 group = &quot;com.myorg.mylibrary&quot; // your project's target maven coordinates.
 version = &quot;0.1.0&quot; // or whichever version you have
