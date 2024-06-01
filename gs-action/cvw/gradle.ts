@@ -17,7 +17,7 @@ export const loadJdk = (devConfig: any): Promise<any> => {
   return promises.mkdir(localPath, { recursive: true })
     .then(() => process.chdir(localPath))
     .then(() => runCmd("wget", ["--quiet", devConfig.jdkDistribution, "--output-document", archivePath]))
-    .then(() => runCmd("tar",  ["-xf", archivePath, "--strip-components=1"]))
+    .then(() => runCmd("tar",  ["--overwrite", "-xf", archivePath, "--strip-components=1"]))
     .then(() => process.chdir(cwd))
 }
 
@@ -26,8 +26,8 @@ export const loadGradle = (devConfig: any): Promise<string> => {
   const localPath = resolve(tmp, `gradle-${devConfig.gradleVersion}`)
   return promises.mkdir(localPath, {recursive: true})
     .then(() => process.chdir(tmp))
-    .then(() => runCmd("wget", ["--quiet", devConfig.gradleDistribution]))
-    .then(() => runCmd("unzip", ["-q", "gradle-*.zip"]))
+    .then(() => runCmd("wget", ["--quiet", devConfig.gradleDistribution, "--output-document", "gradle.zip"]))
+    .then(() => runCmd("unzip", ["-o", "-q", "gradle.zip"]))
     .then(() => process.chdir(cwd))
     .then(() => localPath)
 }

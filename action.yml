@@ -9,5 +9,5 @@ inputs:
     description: "URL pointing to an Org Config JSON file to drive the build."
     required: true
 runs:
-  using: node12
+  using: node20
   main: gs-action/dist/main.js
