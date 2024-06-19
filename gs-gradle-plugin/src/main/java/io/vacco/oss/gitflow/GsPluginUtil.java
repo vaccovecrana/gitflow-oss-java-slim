@@ -1,7 +1,6 @@
 package io.vacco.oss.gitflow;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import io.vacco.oss.gitflow.schema.*;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ModuleVersionSelector;
@@ -29,12 +28,12 @@ public class GsPluginUtil {
   }
 
   private static String utcNow() {
-    ZonedDateTime utcNow = ZonedDateTime.now(ZoneId.of("UTC"));
+    var utcNow = ZonedDateTime.now(ZoneId.of("UTC"));
     return utcNow.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
   }
 
   public static String labelForVersion(String currentVersion, GsBranchCommit commit) {
-    GsBuildTarget dt = commit.buildTarget;
+    var dt = commit.buildTarget;
     if (dt.isMilestone() && !currentVersion.contains(MILESTONE.name())) {
       return format("%s-%s-%s", currentVersion, MILESTONE, commit.utcNow);
     } else if (dt.isSnapshot() && !currentVersion.contains(SNAPSHOT.name())) {
@@ -62,9 +61,9 @@ public class GsPluginUtil {
     if (lastModifiedDelta > lastModifiedMaxDelta) {
       log.info("Syncing missing or outdated file: [{}]", dst.getAbsolutePath());
       log.info("Fetching [{}]", src.toString());
-      ReadableByteChannel readableByteChannel = Channels.newChannel(src.openStream());
-      FileOutputStream fileOutputStream = new FileOutputStream(dst);
-      fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+      var rbc = Channels.newChannel(src.openStream());
+      var fos = new FileOutputStream(dst);
+      fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
     } else {
       log.info("Skipping synced file: [{}]", dst.getAbsolutePath());
     }
@@ -74,23 +73,25 @@ public class GsPluginUtil {
     return s == null || s.length() == 0;
   }
 
-  public static GsOrgConfig loadOrgConfig(ObjectMapper om, File localConfig, String remoteConfigUrl, long lastModifiedMaxDelta) {
+  public static GsOrgConfig loadOrgConfig(Gson g, File localConfig, String remoteConfigUrl, long lastModifiedMaxDelta) {
     try {
       if (remoteConfigUrl != null) {
-        GsOrgConfig orgConfig = om.readValue(new URL(remoteConfigUrl), GsOrgConfig.class);
-        GsOrgRepo[] repos = { orgConfig.internalRepo, orgConfig.snapshotsRepo, orgConfig.releasesRepo };
-        Arrays.stream(repos).filter(Objects::nonNull).forEach(repo -> {
-          repo.username = System.getenv(repo.usernameEnvProperty);
-          repo.password = System.getenv(repo.passwordEnvProperty);
-          if (isEmpty(repo.username) || isEmpty(repo.password)) {
-            log.warn("Missing credentials for repository [{}]", repo.id);
-          }
-        });
-        return orgConfig;
+        try (var ir = new InputStreamReader(new URL(remoteConfigUrl).openStream())) {
+          var orgConfig = g.fromJson(ir, GsOrgConfig.class);
+          var repos = new GsOrgRepo[] { orgConfig.internalRepo, orgConfig.snapshotsRepo, orgConfig.releasesRepo };
+          Arrays.stream(repos).filter(Objects::nonNull).forEach(repo -> {
+            repo.username = System.getenv(repo.usernameEnvProperty);
+            repo.password = System.getenv(repo.passwordEnvProperty);
+            if (isEmpty(repo.username) || isEmpty(repo.password)) {
+              log.warn("Missing credentials for repository [{}]", repo.id);
+            }
+          });
+          return orgConfig;
+        }
       }
       else if (localConfig.exists()) {
-        GsLocalConfig localConf = om.readValue(localConfig, GsLocalConfig.class);
-        File orgConf = new File(localConfig.getParentFile(), format(GsConstants.GS_LOCAL_ORG_CONFIG_FMT, localConf.orgId));
+        var localConf = g.fromJson(new FileReader(localConfig), GsLocalConfig.class);
+        var orgConf = new File(localConfig.getParentFile(), format(GsConstants.GS_LOCAL_ORG_CONFIG_FMT, localConf.orgId));
 
         sync(new URL(localConf.orgConfigUrl), orgConf, lastModifiedMaxDelta);
         log.warn("Executing unmanaged build.");
@@ -106,7 +107,9 @@ public class GsPluginUtil {
           "If this is a local code checkout, please define a minimal local org configuration",
           "as specified in https://github.com/vaccovecrana/gitflow-oss-java-slim/blob/main/gs-gradle-plugin/src/main/resources/json/gs-local-config.json"
       ));
-    } catch (Exception e) { throw new IllegalStateException(e); }
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   public static GsBranchCommit loadBuildCommit(GsOrgConfig config, ObjectMapper om) {

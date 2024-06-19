@@ -3,7 +3,6 @@ package io.vacco.oss.gitflow.schema;
 public class GsConstants {
 
   // Environment variables
-  public static final String GS_PMD_XML_FMT = "pmd-%s.xml";
   public static final String GS_LOCAL_ORG_CONFIG_FMT = ".gsOrgConfig.%s.json";
   public static final String GS_LOCAL_CONFIG_FILE = ".gsOrgConfig.json";
   public static final String GS_CONFIG_URL = "GS_CONFIG_URL";

@@ -55,41 +55,9 @@ public class GsPluginProfileExtension {
     tasks.getByName(GsConstants.build).dependsOn(tasks.findByName(checkClasspath));
   }
 
-  public void addPmd() {
-    try {
-      if (orgConfig.devConfig.pmdRulesUrl == null) {
-        throw new IllegalArgumentException("Missing PMD XML configuration URL in org config.");
-      } else if (orgConfig.devConfig.versions == null || orgConfig.devConfig.versions.pmd == null) {
-        throw new IllegalArgumentException("Missing PMD tool version in org config.");
-      }
-      plugins.apply(PmdPlugin.class);
-      JavaPluginConvention javaPlugin = project.getConvention().getPlugin(JavaPluginConvention.class);
-      SourceSetContainer sourceSets = javaPlugin.getSourceSets();
-      URL pmd = new URL(orgConfig.devConfig.pmdRulesUrl);
-      File pmdTmp = fileAtTempDir(String.format(GS_PMD_XML_FMT, orgConfig.orgId));
-
-      GsPluginUtil.sync(pmd, pmdTmp, localConfigUpdateDeltaMs);
-      extensions.configure(PmdExtension.class, pmdXt -> {
-        pmdXt.setConsoleOutput(true);
-        pmdXt.setIgnoreFailures(true);
-        pmdXt.getIncrementalAnalysis().set(true);
-        pmdXt.setSourceSets(singletonList(sourceSets.getByName(main)));
-        pmdXt.setToolVersion(orgConfig.devConfig.versions.pmd);
-        pmdXt.setRuleSetConfig(project.getResources().getText().fromFile(pmdTmp));
-        pmdXt.setRuleSets(emptyList());
-      });
-    } catch (Exception e) { throw new IllegalStateException(e); }
-  }
-
   public void addGoogleJavaFormat() {
     plugins.apply(GoogleJavaFormatPlugin.class);
     tasks.getByName(GsConstants.classes).dependsOn(tasks.findByName(googleJavaFormat));
-  }
-
-  public void strict() {
-    addPmd();
-    addGoogleJavaFormat();
-    addClasspathHell();
   }
 
   public void sharedLibrary(boolean publish, boolean internal) {

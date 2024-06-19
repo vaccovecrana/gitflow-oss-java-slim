@@ -1,15 +1,12 @@
 package io.vacco.oss.gitflow.schema;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 
 /**
  * This class captures a minimal subset of field from the Github event JSON model.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class GsBranchCommit {
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Repository {
     public String default_branch;
     public String full_name;
@@ -17,13 +14,11 @@ public class GsBranchCommit {
     public String url;
   }
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Author {
     public String email;
     public String name;
   }
 
-  @JsonIgnoreProperties(ignoreUnknown = true)
   public static class HeadCommit {
     public Author author;
     public Author committer;
