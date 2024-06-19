@@ -7,3 +7,7 @@
 It is primarily targeted towards Open source Java developers and organizations that need to manage the complexity of building, versioning and releasing binary code artifacts.
 
 Documentation is available at https://vaccovecrana.github.io/gitflow-oss-java-slim/ and gets generated using `mdbook`.
+
+## mdbook notes
+
+Add `$HOME/.cargo/bin` to `PATH` to be able to run the installed binaries.

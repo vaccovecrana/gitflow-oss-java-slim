@@ -14,7 +14,7 @@ libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license
 Now include and configure the Gradle plugin in your source tree in `build.gradle.kts`:
 
 ```kotlin
-plugins { id("io.vacco.oss.gitflow") version "0.9.8" }
+plugins { id("io.vacco.oss.gitflow") version "{{gsVersion}}" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have
@@ -23,7 +23,6 @@ configure<io.vacco.oss.gitflow.GsPluginProfileExtension> {
   // add other configuration features here
   sharedLibrary(true, true)
   addJ8Spec()
-  addPmd()
   addClasspathHell()
 }
 ```
@@ -35,8 +34,6 @@ The currently supported set of optional features are:
 The `internal` parameter will only have effect when `publish` is true, and will determine if the compiled artifacts will get published to your organization's internal Maven repository, or any repositories you configured for public `SNAPSHOT` and `RELEASE` access (like Sonatype's OSS servers).
 
 `addJ8Spec()` will add [j8spec](https://j8spec.github.io/) to your `testImplementation` class path.
-
-`addPmd()` will apply PMD code quality checks based on the rule set defined by the Org config used by the Gradle project.
 
 `addClasspathHell()` will apply the [Class path Hell Gradle plugin](https://github.com/vaccovecrana/classpath-hell-gradle-plugin).
 

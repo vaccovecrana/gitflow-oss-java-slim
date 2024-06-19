@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.8
+      - uses: vaccovecrana/gitflow-oss-java-slim{{gsVersion}}
         with:
           orgConfig: https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config.json
         env:
-          SONATYPE_USER: ${{secrets.MY_ORGS_SONATYPE_USER}}
-          SONATYPE_PASSWORD: ${{secrets.MY_ORGS_SONATYPE_PASSWORD}}
-          MAVEN_SIGNING_PRV: ${{secrets.MY_ORGS_MAVEN_SIGNING_KEY}}
+          SONATYPE_USER: <secrets.MY_ORGS_SONATYPE_USER>
+          SONATYPE_PASSWORD: <secrets.MY_ORGS_SONATYPE_PASSWORD>
+          MAVEN_SIGNING_PRV: <secrets.MY_ORGS_MAVEN_SIGNING_KEY>
 ```
 
 There are two key parameters that are needed by this framework:

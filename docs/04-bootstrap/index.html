@@ -1,40 +1,27 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js rust">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Org Config / Project bootstrap cheat-sheet - Gitflow Slim for Java OSS</title>
-        
-        
 
 
         <!-- Custom HTML head -->
         
-
-
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
-        
         <link rel="icon" href="../favicon.svg">
-        
-        
         <link rel="shortcut icon" href="../favicon.png">
-        
         <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        
         <link rel="stylesheet" href="../css/print.css" media="print">
-        
 
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        
         <link rel="stylesheet" href="../fonts/fonts.css">
-        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
@@ -42,19 +29,18 @@
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        
 
-        
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "rust" : "rust";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -70,78 +56,101 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
-            html.classList.remove('rust')
+            html.classList.remove('light')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
 
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
-            var html = document.querySelector('html');
-            var sidebar = 'hidden';
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> gitflow-oss-java-slim (v0.9.8)</a></li><li class="chapter-item expanded "><a href="../00-build-system/index.html"><strong aria-hidden="true">2.</strong> Build System Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../00-build-system/branching-strategy.html"><strong aria-hidden="true">2.1.</strong> Branching Strategy/Versioning</a></li></ol></li><li class="chapter-item expanded "><a href="../01-action-parameters/index.html"><strong aria-hidden="true">3.</strong> Github Action Parameters</a></li><li class="chapter-item expanded "><a href="../02-org-config/index.html"><strong aria-hidden="true">4.</strong> Org Config Specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02-org-config/maven-repositories.html"><strong aria-hidden="true">4.1.</strong> Maven Publication Repositories</a></li><li class="chapter-item expanded "><a href="../02-org-config/development-features.html"><strong aria-hidden="true">4.2.</strong> Development Features Configuration</a></li><li class="chapter-item expanded "><a href="../02-org-config/config-evolution.html"><strong aria-hidden="true">4.3.</strong> Configuration Evolution</a></li></ol></li><li class="chapter-item expanded "><a href="../03-gradle-features/index.html"><strong aria-hidden="true">5.</strong> Gradle Features Overview</a></li><li class="chapter-item expanded "><a href="../04-bootstrap/index.html" class="active"><strong aria-hidden="true">6.</strong> Org Config / Project bootstrap cheat-sheet</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> gitflow-oss-java-slim</a></li><li class="chapter-item expanded "><a href="../00-build-system/index.html"><strong aria-hidden="true">2.</strong> Build System Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../00-build-system/branching-strategy.html"><strong aria-hidden="true">2.1.</strong> Branching Strategy/Versioning</a></li></ol></li><li class="chapter-item expanded "><a href="../01-action-parameters/index.html"><strong aria-hidden="true">3.</strong> Github Action Parameters</a></li><li class="chapter-item expanded "><a href="../02-org-config/index.html"><strong aria-hidden="true">4.</strong> Org Config Specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../02-org-config/maven-repositories.html"><strong aria-hidden="true">4.1.</strong> Maven Publication Repositories</a></li><li class="chapter-item expanded "><a href="../02-org-config/development-features.html"><strong aria-hidden="true">4.2.</strong> Development Features Configuration</a></li><li class="chapter-item expanded "><a href="../02-org-config/config-evolution.html"><strong aria-hidden="true">4.3.</strong> Configuration Evolution</a></li></ol></li><li class="chapter-item expanded "><a href="../03-gradle-features/index.html"><strong aria-hidden="true">5.</strong> Gradle Features Overview</a></li><li class="chapter-item expanded "><a href="../04-bootstrap/index.html" class="active"><strong aria-hidden="true">6.</strong> Org Config / Project bootstrap cheat-sheet</a></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                        
                     </div>
 
                     <h1 class="menu-title">Gitflow Slim for Java OSS</h1>
 
                     <div class="right-buttons">
-                        
                         <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
-                        
-                        
 
                     </div>
                 </div>
 
-                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
@@ -152,10 +161,9 @@
                         </ul>
                     </div>
                 </div>
-                
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -167,35 +175,35 @@
                     <main>
                         <h1 id="org-config--project-bootstrap-cheat-sheet"><a class="header" href="#org-config--project-bootstrap-cheat-sheet">Org Config / Project bootstrap cheat-sheet</a></h1>
 <p>The previous sections outlined the concepts and structure behind this framework.</p>
-<p>The following is a quick walk-through on how to create an Org config from scratch, and configure a single Gradle project to adhere to it. In this example, PMD is disabled and only external OSS publication support is enabled.</p>
+<p>The following is a quick walk-through on how to create an Org config from scratch, and configure a single Gradle project to adhere to it. In this example, only external OSS publication support is enabled.</p>
 <p>Start by creating an Org config template, filling in required parameters:</p>
 <pre><code class="language-json">{
-  &quot;orgId&quot;: &quot;my-org-id&quot;,
-  &quot;snapshotsRepo&quot;: {
-    &quot;id&quot;: &quot;SonatypeOSSSnapshots&quot;,
-    &quot;url&quot;: &quot;https://oss.sonatype.org/content/repositories/snapshots/&quot;,
-    &quot;usernameEnvProperty&quot;: &quot;SONATYPE_USER&quot;,
-    &quot;passwordEnvProperty&quot;: &quot;SONATYPE_PASSWORD&quot;
+  "orgId": "my-org-id",
+  "snapshotsRepo": {
+    "id": "SonatypeOSSSnapshots",
+    "url": "https://oss.sonatype.org/content/repositories/snapshots/",
+    "usernameEnvProperty": "SONATYPE_USER",
+    "passwordEnvProperty": "SONATYPE_PASSWORD"
   },
-  &quot;releasesRepo&quot;: {
-    &quot;id&quot;: &quot;SonatypeOSSStaging&quot;,
-    &quot;url&quot;: &quot;https://oss.sonatype.org/service/local/staging/deploy/maven2/&quot;,
-    &quot;usernameEnvProperty&quot;: &quot;SONATYPE_USER&quot;,
-    &quot;passwordEnvProperty&quot;: &quot;SONATYPE_PASSWORD&quot;
+  "releasesRepo": {
+    "id": "SonatypeOSSStaging",
+    "url": "https://oss.sonatype.org/service/local/staging/deploy/maven2/",
+    "usernameEnvProperty": "SONATYPE_USER",
+    "passwordEnvProperty": "SONATYPE_PASSWORD"
   },
-  &quot;publishing&quot;: {
-    &quot;id&quot;: &quot;an Org id (for example yoyodyne)&quot;,
-    &quot;devId&quot;: &quot;a dev id (for example jhacker)&quot;,
-    &quot;devContact&quot;: &quot;an Org name (for example Yoyodyne, Inc. or James Hacker)&quot;,
-    &quot;devEmail&quot;: &quot;jhacker@yoyodyne.com&quot;,
-    &quot;mavenSigningKeyEnvProperty&quot;: &quot;MAVEN_SIGNING_PRV&quot;
+  "publishing": {
+    "id": "an Org id (for example yoyodyne)",
+    "devId": "a dev id (for example jhacker)",
+    "devContact": "an Org name (for example Yoyodyne, Inc. or James Hacker)",
+    "devEmail": "jhacker@yoyodyne.com",
+    "mavenSigningKeyEnvProperty": "MAVEN_SIGNING_PRV"
   },
-  &quot;devConfig&quot;: {
-    &quot;gradleVersion&quot;: &quot;7.0&quot;,
-    &quot;gradleDistribution&quot;: &quot;https://services.gradle.org/distributions/gradle-7.0-bin.zip&quot;,
-    &quot;jdkDistribution&quot;: &quot;https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk&quot;,
-    &quot;versions&quot;: {
-      &quot;j8Spec&quot;: &quot;io.github.j8spec:j8spec:3.0.0&quot;
+  "devConfig": {
+    "gradleVersion": "7.0",
+    "gradleDistribution": "https://services.gradle.org/distributions/gradle-7.0-bin.zip",
+    "jdkDistribution": "https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk",
+    "versions": {
+      "j8Spec": "io.github.j8spec:j8spec:3.0.0"
     }
   }
 }
@@ -216,8 +224,8 @@
 <h2 id="local-development-configuration"><a class="header" href="#local-development-configuration">Local development configuration</a></h2>
 <p>On your local development machine, create a file called <code>.gsOrgConfig.json</code> inside your home folder. Include the following contents:</p>
 <pre><code class="language-json">{
-  &quot;orgId&quot;: &quot;my-org-id&quot;,
-  &quot;orgConfigUrl&quot;: &quot;https://&lt;Location where you uploaded the Org Config file&gt;&quot;
+  "orgId": "my-org-id",
+  "orgConfigUrl": "https://&lt;Location where you uploaded the Org Config file&gt;"
 }
 </code></pre>
 <h2 id="gradle-project-setup"><a class="header" href="#gradle-project-setup">Gradle Project setup</a></h2>
@@ -230,13 +238,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.8
+      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.9
         with:
           orgConfig: https://&lt;Location where you uploaded the Org Config file&gt;
         env:
-          SONATYPE_USER: ${{secrets.MY_ORGS_SONATYPE_USER}}
-          SONATYPE_PASSWORD: ${{secrets.MY_ORGS_SONATYPE_PASSWORD}}
-          MAVEN_SIGNING_PRV: ${{secrets.MY_ORGS_MAVEN_SIGNING_KEY}}
+          SONATYPE_USER: &lt;secrets.MY_ORGS_SONATYPE_USER&gt;
+          SONATYPE_PASSWORD: &lt;secrets.MY_ORGS_SONATYPE_PASSWORD&gt;
+          MAVEN_SIGNING_PRV: &lt;secrets.MY_ORGS_MAVEN_SIGNING_KEY&gt;
 </code></pre>
 <p><code>gradle.properties</code>:</p>
 <pre><code class="language-ini">libGitUrl=https://github.com/my-org/my-project.git
@@ -245,15 +253,14 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Finally, include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.8&quot; }
+<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "0.9.9" }
 
-group = &quot;com.myorg.mylibrary&quot; // your project's target maven coordinates.
-version = &quot;0.1.0&quot; // or whichever version you have
+group = "com.myorg.mylibrary" // your project's target maven coordinates.
+version = "0.1.0" // or whichever version you have
 
 configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
   sharedLibrary(false, true) // external library with publication support
   addJ8Spec()
-  addPmd()
   addClasspathHell()
 }
 </code></pre>
@@ -268,13 +275,10 @@ configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
                             <a rel="prev" href="../03-gradle-features/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                        
 
-                        
 
                         <div style="clear: both"></div>
                     </nav>
@@ -282,45 +286,33 @@ configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
                     <a rel="prev" href="../03-gradle-features/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                
 
-                
             </nav>
 
         </div>
 
-        
 
-        
 
-        
 
-        
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
-        
 
-        
 
-        
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
-        
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        
 
-        
 
+    </div>
     </body>
 </html>

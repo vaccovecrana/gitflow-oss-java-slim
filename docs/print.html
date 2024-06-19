@@ -1,42 +1,28 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js rust">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Gitflow Slim for Java OSS</title>
-        
-        <meta name="robots" content="noindex" />
-        
-        
+        <meta name="robots" content="noindex">
 
 
         <!-- Custom HTML head -->
         
-
-
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
-        
         <link rel="icon" href="favicon.svg">
-        
-        
         <link rel="shortcut icon" href="favicon.png">
-        
         <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
-        
         <link rel="stylesheet" href="css/print.css" media="print">
-        
 
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        
         <link rel="stylesheet" href="fonts/fonts.css">
-        
 
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
@@ -44,19 +30,18 @@
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        
 
-        
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "rust" : "rust";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -72,78 +57,101 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
-            html.classList.remove('rust')
+            html.classList.remove('light')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
 
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
-            var html = document.querySelector('html');
-            var sidebar = 'hidden';
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> gitflow-oss-java-slim (v0.9.8)</a></li><li class="chapter-item expanded "><a href="00-build-system/index.html"><strong aria-hidden="true">2.</strong> Build System Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="00-build-system/branching-strategy.html"><strong aria-hidden="true">2.1.</strong> Branching Strategy/Versioning</a></li></ol></li><li class="chapter-item expanded "><a href="01-action-parameters/index.html"><strong aria-hidden="true">3.</strong> Github Action Parameters</a></li><li class="chapter-item expanded "><a href="02-org-config/index.html"><strong aria-hidden="true">4.</strong> Org Config Specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02-org-config/maven-repositories.html"><strong aria-hidden="true">4.1.</strong> Maven Publication Repositories</a></li><li class="chapter-item expanded "><a href="02-org-config/development-features.html"><strong aria-hidden="true">4.2.</strong> Development Features Configuration</a></li><li class="chapter-item expanded "><a href="02-org-config/config-evolution.html"><strong aria-hidden="true">4.3.</strong> Configuration Evolution</a></li></ol></li><li class="chapter-item expanded "><a href="03-gradle-features/index.html"><strong aria-hidden="true">5.</strong> Gradle Features Overview</a></li><li class="chapter-item expanded "><a href="04-bootstrap/index.html"><strong aria-hidden="true">6.</strong> Org Config / Project bootstrap cheat-sheet</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> gitflow-oss-java-slim</a></li><li class="chapter-item expanded "><a href="00-build-system/index.html"><strong aria-hidden="true">2.</strong> Build System Overview</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="00-build-system/branching-strategy.html"><strong aria-hidden="true">2.1.</strong> Branching Strategy/Versioning</a></li></ol></li><li class="chapter-item expanded "><a href="01-action-parameters/index.html"><strong aria-hidden="true">3.</strong> Github Action Parameters</a></li><li class="chapter-item expanded "><a href="02-org-config/index.html"><strong aria-hidden="true">4.</strong> Org Config Specification</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="02-org-config/maven-repositories.html"><strong aria-hidden="true">4.1.</strong> Maven Publication Repositories</a></li><li class="chapter-item expanded "><a href="02-org-config/development-features.html"><strong aria-hidden="true">4.2.</strong> Development Features Configuration</a></li><li class="chapter-item expanded "><a href="02-org-config/config-evolution.html"><strong aria-hidden="true">4.3.</strong> Configuration Evolution</a></li></ol></li><li class="chapter-item expanded "><a href="03-gradle-features/index.html"><strong aria-hidden="true">5.</strong> Gradle Features Overview</a></li><li class="chapter-item expanded "><a href="04-bootstrap/index.html"><strong aria-hidden="true">6.</strong> Org Config / Project bootstrap cheat-sheet</a></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                        
                     </div>
 
                     <h1 class="menu-title">Gitflow Slim for Java OSS</h1>
 
                     <div class="right-buttons">
-                        
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        
-                        
-                        
 
                     </div>
                 </div>
 
-                
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
@@ -154,10 +162,9 @@
                         </ul>
                     </div>
                 </div>
-                
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -185,7 +192,7 @@
 </ul>
 <p>If at least 4 of the 7 points above apply to you, this framework may be of meaningful use.</p>
 <p>Otherwise you can stop here (and perhaps share some insight on how you tackle the 7 problems above).</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="build-system-overview"><a class="header" href="#build-system-overview">Build System Overview</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="build-system-overview"><a class="header" href="#build-system-overview">Build System Overview</a></h1>
 <p>In a nutshell, this build system brings together a few concepts which are common across many code-bases within an organization, scoped down to the problem of managing Java code as shared Maven artifacts. It's possible to implement functionality to perform more advanced tasks like Docker image builds or build status reporting, but let's keep the scope short and simple for now.</p>
 <p><img src="00-build-system/build-system-00.svg" alt="build-system-00" /></p>
 <p>The diagram above illustrates the flow of release management when you work on a code base using this Gradle plugin/Github action combination. Depending on the type of release artifact being built by Github actions, the artifacts themselves will be routed to different target Maven repositories, if any.</p>
@@ -200,19 +207,20 @@
 <p>Note: These intermediate version types are meant to serve as a complement to <a href="https://semver.org/">Semantic Versioning</a> conventions, which are highly recommended by this project, and help your project manage the way in which software versions break downstream consumer builds of your shared artifacts.</p>
 </blockquote>
 <p>Consider a Gradle project with Kotlin syntax defining an artifact called, <code>my-library</code>:</p>
-<pre><code class="language-kotlin">group = &quot;io.vacco.mylibrary&quot;
-version = &quot;0.1.0&quot;
+<pre><code class="language-kotlin">group = "io.vacco.mylibrary"
+version = "0.1.0"
 </code></pre>
 <p>During development, the following are examples of intermediate artifact type versions added by this framework:</p>
-<table><thead><tr><th align="left">Artifact Type</th><th align="right">Version label</th></tr></thead><tbody>
-<tr><td align="left"><code>SNAPSHOT</code></td><td align="right"><code>my-library-0.1.0-SNAPSHOT</code></td></tr>
-<tr><td align="left"><code>MILESTONE</code></td><td align="right"><code>my-library-0.1.0-MILESTONE-202104081246</code></td></tr>
-<tr><td align="left"><code>RELEASE</code></td><td align="right"><code>my-library-0.1.0</code></td></tr>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Artifact Type</th><th style="text-align: right">Version label</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>SNAPSHOT</code></td><td style="text-align: right"><code>my-library-0.1.0-SNAPSHOT</code></td></tr>
+<tr><td style="text-align: left"><code>MILESTONE</code></td><td style="text-align: right"><code>my-library-0.1.0-MILESTONE-202104081246</code></td></tr>
+<tr><td style="text-align: left"><code>RELEASE</code></td><td style="text-align: right"><code>my-library-0.1.0</code></td></tr>
 </tbody></table>
+</div>
 <p>Notice that the <code>MILESTONE</code> version convention also appends a timestamp component in the form of <code>YYYYMMDDHHMM</code>, so as to give the intermediate version a unique number. The reason for this is that most Maven repositories only allow re-reploying <code>SNAPSHOT</code> versions, and MAY reject versions which already exist inside the repository.</p>
 <p>Some further improvement and customization options for this naming convention may include code or configuration level overrides to allow for simple number counters or some other form of uniqueness convention. In practice, timestamps seem to be a good solution to track information about a particular artifact <code>MILESTONE</code> version.</p>
-<p>At this point you may be asking yourself: <em>&quot;why is there a distinction between a <code>SNAPSHOT</code> and a <code>MILESTONE</code> version?&quot;</em> This is explained in the following section, where the relationship between a Git development branch name and the artifact version type it produces is established.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="gitflow-branching-strategy"><a class="header" href="#gitflow-branching-strategy">Gitflow Branching Strategy</a></h1>
+<p>At this point you may be asking yourself: <em>"why is there a distinction between a <code>SNAPSHOT</code> and a <code>MILESTONE</code> version?"</em> This is explained in the following section, where the relationship between a Git development branch name and the artifact version type it produces is established.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="gitflow-branching-strategy"><a class="header" href="#gitflow-branching-strategy">Gitflow Branching Strategy</a></h1>
 <p>To define which branches produce which kinds of artifacts, this framework offers a minimal set of definitions and rules which sit somewhere in the middle of the <a href="https://nvie.com/posts/a-successful-git-branching-model/">Gitflow Branching Model</a> and the <a href="https://guides.github.com/introduction/flow/">GitHub Flow Branching Model</a>.</p>
 <p><img src="00-build-system/branching-strategy-00.svg" alt="build-system-00" /></p>
 <p>In the figure above there are four types of branches, and only three of them produce artifacts:</p>
@@ -235,7 +243,7 @@ version = &quot;0.1.0&quot;
 </blockquote>
 <p>One applicable use case for dropping the use of the <code>DEVELOP</code> branch could be where a single developer is working on multiple code bases, so it's no necessary to impose the level of control that the <code>develop</code> branch offers.</p>
 <p>With these concepts, we can now define how to configure Gradle and Github Actions to implement this framework.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="github-action-parameters"><a class="header" href="#github-action-parameters">Github action parameters</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="github-action-parameters"><a class="header" href="#github-action-parameters">Github action parameters</a></h1>
 <p>In this framework both Github Actions and Gradle work together to provide development methods for different circumstances. Namely:</p>
 <ul>
 <li>Un-managed builds - These are the builds that you perform in your local development machine, i.e. <code>gradle clean build</code>. They produce <code>SNAPSHOT</code> artifacts that you can deploy to your local Maven repository.</li>
@@ -249,13 +257,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.8
+      - uses: vaccovecrana/gitflow-oss-java-slim0.9.9
         with:
           orgConfig: https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config.json
         env:
-          SONATYPE_USER: ${{secrets.MY_ORGS_SONATYPE_USER}}
-          SONATYPE_PASSWORD: ${{secrets.MY_ORGS_SONATYPE_PASSWORD}}
-          MAVEN_SIGNING_PRV: ${{secrets.MY_ORGS_MAVEN_SIGNING_KEY}}
+          SONATYPE_USER: &lt;secrets.MY_ORGS_SONATYPE_USER&gt;
+          SONATYPE_PASSWORD: &lt;secrets.MY_ORGS_SONATYPE_PASSWORD&gt;
+          MAVEN_SIGNING_PRV: &lt;secrets.MY_ORGS_MAVEN_SIGNING_KEY&gt;
 </code></pre>
 <p>There are two key parameters that are needed by this framework:</p>
 <p><code>orgConfig</code> is the core piece of this framework which defines common build conventions which will drive the build process for a wide set of projects in your organization. It is defined as a JSON document and it MAY be validated with a JSON schema provided by this framework. It gets sourced from a URL that users in your organization can securely access.</p>
@@ -268,29 +276,33 @@ jobs:
 <p>Warning: you SHOULD be mindful with the secret values that you are sharing with this framework. In general, you SHOULD follow security practices which grant the minimal amount of credentials that will grant this action with the privileges to execute and deploy your build. A good set of sane recommendations can be found in the <a href="https://github.com/aws-actions/configure-aws-credentials#credentials">Configure AWS Credentials</a> Github Action.</p>
 </blockquote>
 <p>The syntax and purpose of the Organization's common build configuration is explained in the next section.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="org-config-specification"><a class="header" href="#org-config-specification">Org Config Specification</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="org-config-specification"><a class="header" href="#org-config-specification">Org Config Specification</a></h1>
 <p>Having defined the underlying concepts needed for this framework, we can now define an Organization's common build configuration.</p>
 <p>It is a JSON document which consists of a few sections backed by a <a href="https://github.com/vaccovecrana/gitflow-oss-java-slim/blob/main/gs-gradle-plugin/src/main/resources/json/gs-org-config.json">JSON schema</a></p>
 <pre><code class="language-json">{
-  &quot;orgId&quot;: &quot;my-org-id&quot;,
-  &quot;internalRepo&quot;: {...},
-  &quot;snapshotsRepo&quot;: {...},
-  &quot;releasesRepo&quot;: {...},
-  &quot;publishing&quot;: {...},
-  &quot;devConfig&quot;: {...}
+  "orgId": "my-org-id",
+  "internalRepo": {...},
+  "snapshotsRepo": {...},
+  "releasesRepo": {...},
+  "publishing": {...},
+  "devConfig": {...}
 }
 </code></pre>
 <p><code>orgId</code> is a simple <code>String</code> identifier for your organization (usually a Github username), and is necessary to store temporary files while working with local code bases.</p>
-<p>The <code>devConfig</code> attribute specifies default versions of optional tools that you could use in your code bases. In the current version of this framework, the set of recommended tools are <a href="https://docs.gradle.org/current/userguide/pmd_plugin.html">PMD</a> and <a href="https://j8spec.github.io/">j8spec</a>. Note that these are completely optional and you are not obligated to use them along with this framework.</p>
+<p>The <code>devConfig</code> attribute specifies default versions of optional tools that you could use in your code bases. In the current version of this framework, the set of recommended tools has:</p>
+<ul>
+<li><a href="https://j8spec.github.io/">j8spec</a></li>
+</ul>
+<p>Note that these are completely optional and you are not obligated to use them along with this framework.</p>
 <p>The remaining three <code>*Repo</code> attributes define the three components we saw in the architecture diagram in previous chapters. They establish where your Maven repositories (if any) are located and what credentials they require.</p>
 <p>These, along with the <code>publishing</code> attribute will be discussed in the next section.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="maven-publication-repositories"><a class="header" href="#maven-publication-repositories">Maven Publication Repositories</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="maven-publication-repositories"><a class="header" href="#maven-publication-repositories">Maven Publication Repositories</a></h1>
 <h2 id="maven-repository-definitions"><a class="header" href="#maven-repository-definitions">Maven repository definitions</a></h2>
-<pre><code class="language-json">&quot;internalRepo&quot;: {
-  &quot;id&quot;: &quot;GithubPackages&quot;,
-  &quot;url&quot;: &quot;https://maven.pkg.github.com/my-github-org/common-packages/&quot;,
-  &quot;usernameEnvProperty&quot;: &quot;MY_ORGS_CI_USER&quot;,
-  &quot;passwordEnvProperty&quot;: &quot;MY_ORGS_CI_TOKEN&quot;
+<pre><code class="language-json">"internalRepo": {
+  "id": "GithubPackages",
+  "url": "https://maven.pkg.github.com/my-github-org/common-packages/",
+  "usernameEnvProperty": "MY_ORGS_CI_USER",
+  "passwordEnvProperty": "MY_ORGS_CI_TOKEN"
 }
 </code></pre>
 <p>These configuration blocks should be pretty self-explanatory:</p>
@@ -311,12 +323,12 @@ jobs:
 <p>On the other hand, if you also develop software for commercial purposes, then it may make sense to align your internal development code bases to source artifacts from a private Maven repository (such as Nexus, Artifactory, Strongbox, Github Packages, etc.).</p>
 <h2 id="publication-metadata"><a class="header" href="#publication-metadata">Publication Metadata</a></h2>
 <p>The <code>publishing</code> attribute configures OSS publication metadata that is required when you publish artifacts to Sonatype's OSS repositories (i.e. developer ids, contact and license information that you would include in a classic Maven project's <code>pom.xml</code> file).</p>
-<pre><code class="language-json">&quot;publishing&quot;: {
-  &quot;id&quot;: &quot;an Org id (for example yoyodyne)&quot;,
-  &quot;devId&quot;: &quot;a dev id (for example jhacker)&quot;,
-  &quot;devContact&quot;: &quot;an Org name (for example Yoyodyne, Inc. or James Hacker)&quot;,
-  &quot;devEmail&quot;: &quot;jhacker@yoyodyne.com&quot;,
-  &quot;mavenSigningKeyEnvProperty&quot;: &quot;MAVEN_SIGNING_PRV&quot;
+<pre><code class="language-json">"publishing": {
+  "id": "an Org id (for example yoyodyne)",
+  "devId": "a dev id (for example jhacker)",
+  "devContact": "an Org name (for example Yoyodyne, Inc. or James Hacker)",
+  "devEmail": "jhacker@yoyodyne.com",
+  "mavenSigningKeyEnvProperty": "MAVEN_SIGNING_PRV"
 }
 </code></pre>
 <h2 id="maven-pgp-signing-key"><a class="header" href="#maven-pgp-signing-key">Maven PGP Signing key</a></h2>
@@ -329,16 +341,14 @@ jobs:
 <p>The key material will be passed on to the <a href="https://docs.gradle.org/current/userguide/signing_plugin.html">Gradle Signing plugin</a>.</p>
 <p>Given enough community interest, it should be possible to extend this part of the framework to ask for a key's passphrase, also stored as a Github secret.</p>
 <p>The next section discusses the rest of the Org config file format.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="development-features-configuration"><a class="header" href="#development-features-configuration">Development Features Configuration</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="development-features-configuration"><a class="header" href="#development-features-configuration">Development Features Configuration</a></h1>
 <p>The last section of the Org config file is defined as:</p>
-<pre><code class="language-json">&quot;devConfig&quot;: {
-  &quot;jdkDistribution&quot;: &quot;https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk&quot;,
-  &quot;pmdRulesUrl&quot;: &quot;https://vacco-oss.s3.us-east-2.amazonaws.com/vacco-pmd.xml&quot;,
-  &quot;dependencyExcludedGroups&quot;: [&quot;net.sourceforge.pmd&quot;],
-  &quot;versions&quot;: {
-    &quot;gradle&quot;: &quot;gradle-6.8.3&quot;,
-    &quot;j8Spec&quot;: &quot;io.github.j8spec:j8spec:3.0.0&quot;,
-    &quot;pmd&quot;: &quot;6.27.0&quot;
+<pre><code class="language-json">"devConfig": {
+  "jdkDistribution": "https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk",
+  "dependencyExcludedGroups": [],
+  "versions": {
+    "gradle": "gradle-6.8.3",
+    "j8Spec": "io.github.j8spec:j8spec:3.0.0"
   }
 }
 </code></pre>
@@ -347,19 +357,17 @@ jobs:
 <p>Note: in practice, most JDK distribution bundles follow this format, but you SHOULD verify with any custom JDKs you decide to use. For example, you could copy the JDK distribution file from the web site above into your own private S3 bucket (or some other cloud or internal organization storage location) so that your Github Actions builds do not depend on the availability of other websites.</p>
 </blockquote>
 <p>The remaining configuration options are configured here, but get actually activated by the <code>build.gradle.kts</code> file in your source tree, depending on which features you decide to use, and are further explained in later sections.</p>
-<p><code>pmdRulesUrl</code> is optional. It is only required if you decide to make use of the <a href="https://docs.gradle.org/current/userguide/pmd_plugin.html">Gradle PMD plugin</a>. It points to a location where a PMD xml rule-set can be downloaded and applied to the current build.</p>
 <p><code>dependencyExcludedGroups</code> defines a set of Maven groups which will be excluded when the <a href="https://plugins.gradle.org/plugin/com.github.ben-manes.versions">Gradle Versions plugin</a> gets applied to the build.</p>
-<p>In other words, all builds will apply the Gradle versions plugin by default, and will report on which outdated dependencies your project has. In the example above, I am deciding to ignore any outdated versions under the <code>net.sourceforge.pmd</code> Maven group since I am certain that they are not relevant to any of my Github projects.</p>
+<p>In other words, all builds will apply the Gradle versions plugin by default, and will report on which outdated dependencies your project has.</p>
 <p>Lastly, the <code>versions</code> block allows you to configure:</p>
 <ul>
 <li><code>gradle</code> - The Gradle distribution version to execute this build. It is specified in <code>X.Y.Z</code> format and is downloaded from <code>services.gradle.org</code> to execute a build under Github actions. It does not affect which Gradle distribution you use for local development.</li>
 <li><code>j8spec</code> - The version of <code>jspec</code> to use. It is defined in Maven dependency notation format.</li>
-<li><code>pmd</code> - The version of the PMD tool that the Gradle plugin will use (when configured) in a build.</li>
 </ul>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="configuration-evolution"><a class="header" href="#configuration-evolution">Configuration Evolution</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configuration-evolution"><a class="header" href="#configuration-evolution">Configuration Evolution</a></h1>
 <p>It is possible (and likely) that you may maintain different source projects which require slight variations amongst each other. For example:</p>
 <ul>
-<li>Create a <code>java8.json</code> configuration if you maintain old projects which mandate version 8 of the JDK (or different PMD rules for a good portion of them).</li>
+<li>Create a <code>java8.json</code> configuration if you maintain old projects which mandate version 8 of the JDK.</li>
 <li>Create a <code>java11.json</code> configuration for your stable projects.</li>
 <li>Create a <code>java15.json</code> configuration for research and prototyping projects.</li>
 </ul>
@@ -368,7 +376,7 @@ https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java11.json
 https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java15.json
 </code></pre>
 <p>This can help you maintain control on how quickly do you wish to move your projects to new versions of the JDK, Gradle itself, etc.</p>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="gradle-features"><a class="header" href="#gradle-features">Gradle Features</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="gradle-features"><a class="header" href="#gradle-features">Gradle Features</a></h1>
 <p>In this section we'll discuss how to configure a Gradle project to make use of this framework. The key idea is that this framework SHOULD be minimally intrusive to your Gradle project, and SHOULD allow you to detach from it at any moment.</p>
 <p>Start by defining publication information in your <code>gradle.properties</code> file:</p>
 <pre><code class="language-ini">libGitUrl=https://github.com/my-org/my-project.git
@@ -377,16 +385,15 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Now include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.8&quot; }
+<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "0.9.9" }
 
-group = &quot;com.myorg.mylibrary&quot; // your project's target maven coordinates.
-version = &quot;0.1.0&quot; // or whichever version you have
+group = "com.myorg.mylibrary" // your project's target maven coordinates.
+version = "0.1.0" // or whichever version you have
 
 configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
   // add other configuration features here
   sharedLibrary(true, true)
   addJ8Spec()
-  addPmd()
   addClasspathHell()
 }
 </code></pre>
@@ -394,43 +401,42 @@ configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
 <p><code>sharedLibrary(boolean publish, boolean internal)</code> configures the Gradle project (or sub-project) to produce a shared Java library. When <code>publish</code> is false, the java libraries produced will NOT be published to target Maven repositories. For example if you have test support libraries (like <code>my-library-test-assets</code>) that are not intended to be used as part of a library's main binaries.</p>
 <p>The <code>internal</code> parameter will only have effect when <code>publish</code> is true, and will determine if the compiled artifacts will get published to your organization's internal Maven repository, or any repositories you configured for public <code>SNAPSHOT</code> and <code>RELEASE</code> access (like Sonatype's OSS servers).</p>
 <p><code>addJ8Spec()</code> will add <a href="https://j8spec.github.io/">j8spec</a> to your <code>testImplementation</code> class path.</p>
-<p><code>addPmd()</code> will apply PMD code quality checks based on the rule set defined by the Org config used by the Gradle project.</p>
 <p><code>addClasspathHell()</code> will apply the <a href="https://github.com/vaccovecrana/classpath-hell-gradle-plugin">Class path Hell Gradle plugin</a>.</p>
 <p><code>addGoogleJavaFormat()</code> will apply the <a href="https://github.com/sherter/google-java-format-gradle-plugin">Google Java format Gradle plugin</a> to the build, automatically formatting sources during a build.</p>
 <blockquote>
 <p>Note: when applying these optional features, all of them can still be customized by their respective declarative configuration blocks. Thus your source project is still free to customize each optional feature as it deems fit.</p>
 </blockquote>
-<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="org-config--project-bootstrap-cheat-sheet"><a class="header" href="#org-config--project-bootstrap-cheat-sheet">Org Config / Project bootstrap cheat-sheet</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="org-config--project-bootstrap-cheat-sheet"><a class="header" href="#org-config--project-bootstrap-cheat-sheet">Org Config / Project bootstrap cheat-sheet</a></h1>
 <p>The previous sections outlined the concepts and structure behind this framework.</p>
-<p>The following is a quick walk-through on how to create an Org config from scratch, and configure a single Gradle project to adhere to it. In this example, PMD is disabled and only external OSS publication support is enabled.</p>
+<p>The following is a quick walk-through on how to create an Org config from scratch, and configure a single Gradle project to adhere to it. In this example, only external OSS publication support is enabled.</p>
 <p>Start by creating an Org config template, filling in required parameters:</p>
 <pre><code class="language-json">{
-  &quot;orgId&quot;: &quot;my-org-id&quot;,
-  &quot;snapshotsRepo&quot;: {
-    &quot;id&quot;: &quot;SonatypeOSSSnapshots&quot;,
-    &quot;url&quot;: &quot;https://oss.sonatype.org/content/repositories/snapshots/&quot;,
-    &quot;usernameEnvProperty&quot;: &quot;SONATYPE_USER&quot;,
-    &quot;passwordEnvProperty&quot;: &quot;SONATYPE_PASSWORD&quot;
+  "orgId": "my-org-id",
+  "snapshotsRepo": {
+    "id": "SonatypeOSSSnapshots",
+    "url": "https://oss.sonatype.org/content/repositories/snapshots/",
+    "usernameEnvProperty": "SONATYPE_USER",
+    "passwordEnvProperty": "SONATYPE_PASSWORD"
   },
-  &quot;releasesRepo&quot;: {
-    &quot;id&quot;: &quot;SonatypeOSSStaging&quot;,
-    &quot;url&quot;: &quot;https://oss.sonatype.org/service/local/staging/deploy/maven2/&quot;,
-    &quot;usernameEnvProperty&quot;: &quot;SONATYPE_USER&quot;,
-    &quot;passwordEnvProperty&quot;: &quot;SONATYPE_PASSWORD&quot;
+  "releasesRepo": {
+    "id": "SonatypeOSSStaging",
+    "url": "https://oss.sonatype.org/service/local/staging/deploy/maven2/",
+    "usernameEnvProperty": "SONATYPE_USER",
+    "passwordEnvProperty": "SONATYPE_PASSWORD"
   },
-  &quot;publishing&quot;: {
-    &quot;id&quot;: &quot;an Org id (for example yoyodyne)&quot;,
-    &quot;devId&quot;: &quot;a dev id (for example jhacker)&quot;,
-    &quot;devContact&quot;: &quot;an Org name (for example Yoyodyne, Inc. or James Hacker)&quot;,
-    &quot;devEmail&quot;: &quot;jhacker@yoyodyne.com&quot;,
-    &quot;mavenSigningKeyEnvProperty&quot;: &quot;MAVEN_SIGNING_PRV&quot;
+  "publishing": {
+    "id": "an Org id (for example yoyodyne)",
+    "devId": "a dev id (for example jhacker)",
+    "devContact": "an Org name (for example Yoyodyne, Inc. or James Hacker)",
+    "devEmail": "jhacker@yoyodyne.com",
+    "mavenSigningKeyEnvProperty": "MAVEN_SIGNING_PRV"
   },
-  &quot;devConfig&quot;: {
-    &quot;gradleVersion&quot;: &quot;7.0&quot;,
-    &quot;gradleDistribution&quot;: &quot;https://services.gradle.org/distributions/gradle-7.0-bin.zip&quot;,
-    &quot;jdkDistribution&quot;: &quot;https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk&quot;,
-    &quot;versions&quot;: {
-      &quot;j8Spec&quot;: &quot;io.github.j8spec:j8spec:3.0.0&quot;
+  "devConfig": {
+    "gradleVersion": "7.0",
+    "gradleDistribution": "https://services.gradle.org/distributions/gradle-7.0-bin.zip",
+    "jdkDistribution": "https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk",
+    "versions": {
+      "j8Spec": "io.github.j8spec:j8spec:3.0.0"
     }
   }
 }
@@ -451,8 +457,8 @@ configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
 <h2 id="local-development-configuration"><a class="header" href="#local-development-configuration">Local development configuration</a></h2>
 <p>On your local development machine, create a file called <code>.gsOrgConfig.json</code> inside your home folder. Include the following contents:</p>
 <pre><code class="language-json">{
-  &quot;orgId&quot;: &quot;my-org-id&quot;,
-  &quot;orgConfigUrl&quot;: &quot;https://&lt;Location where you uploaded the Org Config file&gt;&quot;
+  "orgId": "my-org-id",
+  "orgConfigUrl": "https://&lt;Location where you uploaded the Org Config file&gt;"
 }
 </code></pre>
 <h2 id="gradle-project-setup"><a class="header" href="#gradle-project-setup">Gradle Project setup</a></h2>
@@ -465,13 +471,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.8
+      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.9
         with:
           orgConfig: https://&lt;Location where you uploaded the Org Config file&gt;
         env:
-          SONATYPE_USER: ${{secrets.MY_ORGS_SONATYPE_USER}}
-          SONATYPE_PASSWORD: ${{secrets.MY_ORGS_SONATYPE_PASSWORD}}
-          MAVEN_SIGNING_PRV: ${{secrets.MY_ORGS_MAVEN_SIGNING_KEY}}
+          SONATYPE_USER: &lt;secrets.MY_ORGS_SONATYPE_USER&gt;
+          SONATYPE_PASSWORD: &lt;secrets.MY_ORGS_SONATYPE_PASSWORD&gt;
+          MAVEN_SIGNING_PRV: &lt;secrets.MY_ORGS_MAVEN_SIGNING_KEY&gt;
 </code></pre>
 <p><code>gradle.properties</code>:</p>
 <pre><code class="language-ini">libGitUrl=https://github.com/my-org/my-project.git
@@ -480,15 +486,14 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Finally, include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id(&quot;io.vacco.oss.gitflow&quot;) version &quot;0.9.8&quot; }
+<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "0.9.9" }
 
-group = &quot;com.myorg.mylibrary&quot; // your project's target maven coordinates.
-version = &quot;0.1.0&quot; // or whichever version you have
+group = "com.myorg.mylibrary" // your project's target maven coordinates.
+version = "0.1.0" // or whichever version you have
 
 configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
   sharedLibrary(false, true) // external library with publication support
   addJ8Spec()
-  addPmd()
   addClasspathHell()
 }
 </code></pre>
@@ -503,9 +508,7 @@ configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                        
 
-                        
 
                         <div style="clear: both"></div>
                     </nav>
@@ -513,49 +516,35 @@ configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                
 
-                
             </nav>
 
         </div>
 
-        
 
-        
 
-        
 
-        
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
-        
 
-        
 
-        
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
-        
 
-        
-        
-        <script type="text/javascript">
+        <script>
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
         });
         </script>
-        
-        
 
+    </div>
     </body>
 </html>

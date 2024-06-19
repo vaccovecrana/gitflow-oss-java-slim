@@ -2,7 +2,7 @@
 
 The previous sections outlined the concepts and structure behind this framework.
 
-The following is a quick walk-through on how to create an Org config from scratch, and configure a single Gradle project to adhere to it. In this example, PMD is disabled and only external OSS publication support is enabled.
+The following is a quick walk-through on how to create an Org config from scratch, and configure a single Gradle project to adhere to it. In this example, only external OSS publication support is enabled.
 
 Start by creating an Org config template, filling in required parameters:
 
@@ -80,13 +80,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@0.9.8
+      - uses: vaccovecrana/gitflow-oss-java-slim@{{gsVersion}}
         with:
           orgConfig: https://<Location where you uploaded the Org Config file>
         env:
-          SONATYPE_USER: ${{secrets.MY_ORGS_SONATYPE_USER}}
-          SONATYPE_PASSWORD: ${{secrets.MY_ORGS_SONATYPE_PASSWORD}}
-          MAVEN_SIGNING_PRV: ${{secrets.MY_ORGS_MAVEN_SIGNING_KEY}}
+          SONATYPE_USER: <secrets.MY_ORGS_SONATYPE_USER>
+          SONATYPE_PASSWORD: <secrets.MY_ORGS_SONATYPE_PASSWORD>
+          MAVEN_SIGNING_PRV: <secrets.MY_ORGS_MAVEN_SIGNING_KEY>
 ```
 
 `gradle.properties`:
@@ -101,7 +101,7 @@ libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license
 Finally, include and configure the Gradle plugin in your source tree in `build.gradle.kts`:
 
 ```kotlin
-plugins { id("io.vacco.oss.gitflow") version "0.9.8" }
+plugins { id("io.vacco.oss.gitflow") version "{{gsVersion}}" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have
@@ -109,7 +109,6 @@ version = "0.1.0" // or whichever version you have
 configure<io.vacco.oss.gitflow.GsPluginProfileExtension> {
   sharedLibrary(false, true) // external library with publication support
   addJ8Spec()
-  addPmd()
   addClasspathHell()
 }
 ```

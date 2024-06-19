@@ -2,7 +2,7 @@
 
 It is possible (and likely) that you may maintain different source projects which require slight variations amongst each other. For example:
 
-- Create a `java8.json` configuration if you maintain old projects which mandate version 8 of the JDK (or different PMD rules for a good portion of them).
+- Create a `java8.json` configuration if you maintain old projects which mandate version 8 of the JDK.
 - Create a `java11.json` configuration for your stable projects.
 - Create a `java15.json` configuration for research and prototyping projects.
 

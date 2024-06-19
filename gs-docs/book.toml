@@ -5,10 +5,8 @@ multilingual = false
 src = "."
 title = "Gitflow Slim for Java OSS"
 
+[preprocessor.variables.variables]
+gsVersion = "0.9.9"
+
 [build]
 build-dir = "../docs"
-
-[output.html]
-theme = "rust"
-default-theme = "rust"
-preferred-dark-theme = "rust"
