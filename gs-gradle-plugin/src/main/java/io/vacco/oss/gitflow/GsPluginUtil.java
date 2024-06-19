@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
 
-import static java.lang.String.format;
+import static java.lang.String.*;
 import static io.vacco.oss.gitflow.schema.GsBuildTarget.*;
 
 public class GsPluginUtil {
@@ -32,20 +32,20 @@ public class GsPluginUtil {
     return utcNow.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
   }
 
-  public static String labelForVersion(String currentVersion, GsBranchCommit commit) {
-    var dt = commit.buildTarget;
+  public static String labelForVersion(String currentVersion, GsBuildMeta meta) {
+    var dt = meta.target;
     if (dt.isMilestone() && !currentVersion.contains(MILESTONE.name())) {
-      return format("%s-%s-%s", currentVersion, MILESTONE, commit.utcNow);
+      return format("%s-%s-%s", currentVersion, MILESTONE, meta.utc);
     } else if (dt.isSnapshot() && !currentVersion.contains(SNAPSHOT.name())) {
       return format("%s-%s", currentVersion, SNAPSHOT);
     }
     return currentVersion;
   }
 
-  public static void setVersionFor(Project project, String rawVersion, GsBranchCommit commit) {
+  public static void setVersionFor(Project project, String rawVersion, GsBuildMeta meta) {
     // ugh... https://github.com/gradle/gradle/issues/11299
     project.allprojects(p -> p.afterEvaluate(p0 -> {
-      p0.setVersion(labelForVersion(rawVersion != null ? rawVersion : p0.getVersion().toString(), commit));
+      p0.setVersion(labelForVersion(rawVersion != null ? rawVersion : p0.getVersion().toString(), meta));
       log.warn("Project build version: [{}, {}]", p0.getName(), p0.getVersion());
     }));
   }
@@ -54,13 +54,11 @@ public class GsPluginUtil {
     return new File(System.getProperty("user.home"), name);
   }
 
-  public static File fileAtTempDir(String name) { return new File(System.getProperty("java.io.tmpdir"), name); }
-
   public static void sync(URL src, File dst, long lastModifiedMaxDelta) throws IOException {
     long lastModifiedDelta = dst.exists() ? System.currentTimeMillis() - dst.lastModified() : Long.MAX_VALUE;
     if (lastModifiedDelta > lastModifiedMaxDelta) {
-      log.info("Syncing missing or outdated file: [{}]", dst.getAbsolutePath());
-      log.info("Fetching [{}]", src.toString());
+      log.warn("Updating file: [{}]", dst.getAbsolutePath());
+      log.warn("Fetching [{}]", src.toString());
       var rbc = Channels.newChannel(src.openStream());
       var fos = new FileOutputStream(dst);
       fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -70,7 +68,7 @@ public class GsPluginUtil {
   }
 
   private static boolean isEmpty(String s) {
-    return s == null || s.length() == 0;
+    return s == null || s.isEmpty();
   }
 
   public static GsOrgConfig loadOrgConfig(Gson g, File localConfig, String remoteConfigUrl, long lastModifiedMaxDelta) {
@@ -96,39 +94,44 @@ public class GsPluginUtil {
         sync(new URL(localConf.orgConfigUrl), orgConf, lastModifiedMaxDelta);
         log.warn("Executing unmanaged build.");
 
-        GsOrgConfig orgConfig = om.readValue(orgConf, GsOrgConfig.class);
+        var orgConfig = g.fromJson(new FileReader(orgConf), GsOrgConfig.class);
         if (orgConfig.internalRepo != null) {
           orgConfig.internalRepo.username = localConf.internalRepoUser;
           orgConfig.internalRepo.password = localConf.internalRepoPassword;
         }
         return orgConfig;
-      } else throw new IllegalStateException(String.join("\n",
+      } else throw new IllegalStateException(join("\n",
           "No CI org config found, and no local org config found.",
-          "If this is a local code checkout, please define a minimal local org configuration",
-          "as specified in https://github.com/vaccovecrana/gitflow-oss-java-slim/blob/main/gs-gradle-plugin/src/main/resources/json/gs-local-config.json"
+          "If this is a local code checkout, please define a minimal local org configuration"
       ));
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }
   }
 
-  public static GsBranchCommit loadBuildCommit(GsOrgConfig config, ObjectMapper om) {
-    try {
-      GsBranchCommit commit = new GsBranchCommit();
-      String githubActionsJson = System.getenv(GsConstants.GS_GH_EVENT);
-      if (githubActionsJson != null) {
-        commit = om.readValue(githubActionsJson, GsBranchCommit.class);
-      } else {
-        log.warn("No CI dev config parameters present. Skipping build publication(s).");
-        commit.buildTarget = GsBuildTarget.LOCAL;
-        commit.after = "C0C0C0C0";
-      }
-      commit.utcNow = utcNow();
-      commit.shaTagTxt = format("%s-%s", commit.utcNow, commit.after.substring(0, 7));
-      return commit;
-    } catch (JsonProcessingException e) {
-      throw new IllegalStateException(e);
+  public static GsBuildMeta loadBuildMeta() {
+    var meta = new GsBuildMeta();
+    meta.branch = System.getenv(GsConstants.GS_GIT_BRANCH);
+    meta.hash = System.getenv(GsConstants.GS_GIT_HASH);
+    if (meta.hash == null) {
+      meta.hash = "0000000";
     }
+    if (meta.branch == null) {
+      meta.target = LOCAL;
+    } else if (meta.branch.contains("feature/")) {
+      meta.target = SNAPSHOT;
+    } else if (meta.branch.contains("develop")) {
+      meta.target = MILESTONE;
+    } else if (meta.branch.contains("refs/tags")) {
+      meta.target = RELEASE;
+    } else if (meta.branch.contains("master") || meta.branch.contains("main")) {
+      meta.target = PRE_RELEASE;
+    } else {
+      throw new IllegalArgumentException("Unknown build target for branch: " + meta.branch);
+    }
+    meta.utc = utcNow();
+    meta.tag = format("%s-%s", meta.utc, meta.hash.substring(0, 7));
+    return meta;
   }
 
   public static void configure(RepositoryHandler rh, GsOrgRepo orgRepo,
@@ -136,21 +139,27 @@ public class GsPluginUtil {
     if (orgRepo == null) {
       return;
     }
-    String targetUrl = urlTransform == null ? orgRepo.url : urlTransform.apply(orgRepo);
+    var targetUrl = urlTransform == null ? orgRepo.url : urlTransform.apply(orgRepo);
     log.warn("Adding repository URL: [{}]", targetUrl);
     try {
       rh.maven(mvnRepo -> {
         mvnRepo.setName(orgRepo.id);
         mvnRepo.setUrl(targetUrl);
         mvnRepo.credentials(crd -> {
-          crd.setUsername(orgRepo.username);
-          crd.setPassword(orgRepo.password);
+          if (orgRepo.username != null && orgRepo.password != null) {
+            crd.setUsername(orgRepo.username);
+            crd.setPassword(orgRepo.password);
+          }
         });
       });
     } catch (Exception e) {
-      String msg = format(
-          "No credentials for repository [%s]. Verify environment variables: [%s, %s] or provide org config values for username/password",
-          orgRepo.url, orgRepo.usernameEnvProperty, orgRepo.passwordEnvProperty
+      var msg = format(
+        join(" ",
+          "No credentials for repository [%s].",
+          "Verify environment variables: [%s, %s]",
+          "or provide org config values for username/password"
+        ),
+        orgRepo.url, orgRepo.usernameEnvProperty, orgRepo.passwordEnvProperty
       );
       throw new IllegalStateException(msg, e);
     }

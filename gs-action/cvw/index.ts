@@ -27,19 +27,12 @@ const buildInit = (commit: any, buildTarget: BuildTarget): Promise<void> => {
 const onCommit = (commit: any): Promise<any> => {
   const {ref} = commit
 
+  // TODO pass this down to Gradle as env var
   info("*******************************************************************")
   info(`* Target ref: ${ref}`)
   info("*******************************************************************")
 
-  if (ref && ref.includes("feature/")) {
-    return buildInit(commit, BuildTarget.SNAPSHOT)
-  } else if (ref && ref.includes("develop")) {
-    return buildInit(commit, BuildTarget.MILESTONE)
-  } else if (ref.includes("refs/tags")) {
-    return buildInit(commit, BuildTarget.RELEASE)
-  } else if (ref && (ref.includes("master") || ref.includes("main"))) {
-    return buildInit(commit, BuildTarget.PRE_RELEASE)
-  }
+
   warning(`Building non-managed ref combination: ${ref}`)
   return buildInit(commit, BuildTarget.LOCAL)
 }

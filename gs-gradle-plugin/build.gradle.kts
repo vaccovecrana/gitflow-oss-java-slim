@@ -18,7 +18,6 @@ dependencies {
   implementation("io.vacco:io.vacco.cphell.gradle.plugin:1.8.0")
   implementation("io.vacco.leraikha:leraikha:0.1.1")
   implementation("gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.9")
-  implementation("com.github.ben-manes:gradle-versions-plugin:0.31.0")
   testImplementation("io.github.j8spec:j8spec:3.0.1")
 }
 

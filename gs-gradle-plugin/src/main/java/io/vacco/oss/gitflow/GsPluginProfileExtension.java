@@ -1,23 +1,19 @@
 package io.vacco.oss.gitflow;
 
 import com.github.sherter.googlejavaformatgradleplugin.GoogleJavaFormatPlugin;
-import io.vacco.oss.gitflow.schema.GsBranchCommit;
-import io.vacco.oss.gitflow.schema.GsOrgConfig;
+import io.vacco.oss.gitflow.schema.*;
 import io.vacco.oss.gitflow.sharedlib.GsSharedLibExtension;
 import io.vacco.cphell.*;
 import io.vacco.oss.gitflow.schema.GsConstants;
 import org.gradle.api.*;
 import org.gradle.api.logging.*;
 import org.gradle.api.plugins.*;
-import org.gradle.api.plugins.quality.*;
 import org.gradle.api.tasks.*;
 
-import java.io.File;
-import java.net.URL;
+import java.util.Objects;
 
 import static java.util.Collections.*;
 import static io.vacco.oss.gitflow.schema.GsConstants.*;
-import static io.vacco.oss.gitflow.GsPluginUtil.*;
 
 public class GsPluginProfileExtension {
 
@@ -30,15 +26,15 @@ public class GsPluginProfileExtension {
   private final PluginContainer plugins;
 
   private final GsOrgConfig orgConfig;
-  private final GsBranchCommit commit;
+  private final GsBuildMeta meta;
 
-  public GsPluginProfileExtension(Project project, GsOrgConfig orgConfig, GsBranchCommit commit) {
+  public GsPluginProfileExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta) {
     this.project = project;
     this.extensions = project.getExtensions();
     this.tasks = project.getTasks();
     this.plugins = project.getPlugins();
-    this.orgConfig = orgConfig;
-    this.commit = commit;
+    this.orgConfig = Objects.requireNonNull(orgConfig);
+    this.meta = Objects.requireNonNull(meta);
   }
 
   public void addJ8Spec() {
@@ -62,8 +58,10 @@ public class GsPluginProfileExtension {
 
   public void sharedLibrary(boolean publish, boolean internal) {
     log.info("Applying shared library conventions");
-    extensions.getByType(GsPluginProfileExtension.class)
-        .extensions.create(GsSharedLibExtension.name, GsSharedLibExtension.class, project, orgConfig, commit, publish, internal);
+    extensions.getByType(GsPluginProfileExtension.class).extensions.create(
+      GsSharedLibExtension.name, GsSharedLibExtension.class,
+      project, orgConfig, meta, publish, internal
+    );
   }
 
 }
