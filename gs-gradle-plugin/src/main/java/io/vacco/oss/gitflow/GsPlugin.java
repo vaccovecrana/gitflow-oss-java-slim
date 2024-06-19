@@ -17,7 +17,7 @@ public class GsPlugin implements Plugin<Project> {
   @Override public void apply(Project project) {
     var orgConfig = loadOrgConfig(
       g, fileAtHomeDir(GS_LOCAL_CONFIG_FILE),
-      System.getenv(GsConstants.GS_CONFIG_URL),
+      System.getenv(GsConstants.GS_ORG_CONFIG_URL),
       GsConstants.localConfigUpdateDeltaMs
     );
     var meta = loadBuildMeta();
