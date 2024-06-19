@@ -31,11 +31,10 @@ public class GsPlugin implements Plugin<Project> {
     if (meta.target.isPublication()) {
       log.info("Applying publication conventions for environment [{}]", meta.target);
       project.afterEvaluate(p0 -> {
-        var testTask = p0.getTasks().getByName(test);
+        var checkTask = p0.getTasks().getByName(check);
         var publishTask = project.getTasks().findByName(publish);
         if (publishTask != null) {
-          publishTask.dependsOn(testTask);
-          publishTask.mustRunAfter(testTask);
+          checkTask.dependsOn(publishTask);
         }
       });
     }

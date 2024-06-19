@@ -19,7 +19,7 @@ public class GsConstants {
   public static final String kLibGitUrl = "libGitUrl";
 
   // Tasks
-  public static final String build = "build", classes = "classes", test = "test", publish = "publish";
+  public static final String build = "build", classes = "classes", check = "check", publish = "publish";
   public static final String checkClasspath = "checkClasspath", googleJavaFormat = "googleJavaFormat";
 
   // Dependency configurations
