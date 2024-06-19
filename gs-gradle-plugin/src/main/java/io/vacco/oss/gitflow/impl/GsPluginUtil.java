@@ -1,6 +1,5 @@
 package io.vacco.oss.gitflow.impl;
 
-import com.google.gson.Gson;
 import io.vacco.oss.gitflow.schema.*;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ModuleVersionSelector;
@@ -8,10 +7,6 @@ import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.logging.*;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.channels.*;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.function.Function;
 
 import static java.lang.String.*;
@@ -45,62 +40,6 @@ public class GsPluginUtil {
 
   public static File fileAtHomeDir(String name) {
     return new File(System.getProperty("user.home"), name);
-  }
-
-  public static void sync(URL src, File dst, long lastModifiedMaxDelta) throws IOException {
-    long lastModifiedDelta = dst.exists() ? System.currentTimeMillis() - dst.lastModified() : Long.MAX_VALUE;
-    if (lastModifiedDelta > lastModifiedMaxDelta) {
-      log.warn("Updating file: [{}]", dst.getAbsolutePath());
-      log.warn("Fetching [{}]", src.toString());
-      var rbc = Channels.newChannel(src.openStream());
-      try (var fos = new FileOutputStream(dst)) {
-        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-      }
-    } else {
-      log.info("Skipping synced file: [{}]", dst.getAbsolutePath());
-    }
-  }
-
-  private static boolean isEmpty(String s) {
-    return s == null || s.isEmpty();
-  }
-
-  public static GsOrgConfig loadOrgConfig(Gson g, File localConfig, String remoteConfigUrl, long lastModifiedMaxDelta) {
-    try {
-      if (remoteConfigUrl != null) {
-        try (var ir = new InputStreamReader(new URL(remoteConfigUrl).openStream())) {
-          var orgConfig = g.fromJson(ir, GsOrgConfig.class);
-          var repos = new GsOrgRepo[] { orgConfig.internalRepo, orgConfig.snapshotsRepo, orgConfig.releasesRepo };
-          Arrays.stream(repos).filter(Objects::nonNull).forEach(repo -> {
-            repo.username = System.getenv(repo.usernameEnvProperty);
-            repo.password = System.getenv(repo.passwordEnvProperty);
-            if (isEmpty(repo.username) || isEmpty(repo.password)) {
-              log.warn("Missing credentials for repository [{}]", repo.id);
-            }
-          });
-          return orgConfig;
-        }
-      }
-      else if (localConfig.exists()) {
-        var localConf = g.fromJson(new FileReader(localConfig), GsLocalConfig.class);
-        var orgConf = new File(localConfig.getParentFile(), format(GsConstants.GS_LOCAL_ORG_CONFIG_FMT, localConf.orgId));
-
-        sync(new URL(localConf.orgConfigUrl), orgConf, lastModifiedMaxDelta);
-        log.warn("Executing unmanaged build.");
-
-        var orgConfig = g.fromJson(new FileReader(orgConf), GsOrgConfig.class);
-        if (orgConfig.internalRepo != null) {
-          orgConfig.internalRepo.username = localConf.internalRepoUser;
-          orgConfig.internalRepo.password = localConf.internalRepoPassword;
-        }
-        return orgConfig;
-      } else throw new IllegalStateException(join("\n",
-          "No CI org config found, and no local org config found.",
-          "If this is a local code checkout, please define a minimal local org configuration"
-      ));
-    } catch (Exception e) {
-      throw new IllegalStateException(e);
-    }
   }
 
   public static void configure(RepositoryHandler rh, GsOrgRepo orgRepo,

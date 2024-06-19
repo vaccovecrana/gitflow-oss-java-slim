@@ -2,11 +2,11 @@ package io.vacco.oss.gitflow;
 
 import com.google.gson.*;
 import io.vacco.oss.gitflow.java.GsPluginJavaExtension;
-import io.vacco.oss.gitflow.schema.*;
 import org.gradle.api.*;
 import org.gradle.api.logging.*;
 
-import static io.vacco.oss.gitflow.impl.GsBuildMetas.*;
+import static io.vacco.oss.gitflow.impl.GsOrgConfigs.*;
+import static io.vacco.oss.gitflow.impl.GsBuildMetas.loadBuildMeta;
 import static io.vacco.oss.gitflow.impl.GsPluginUtil.*;
 import static io.vacco.oss.gitflow.schema.GsConstants.*;
 
@@ -16,11 +16,7 @@ public class GsPlugin implements Plugin<Project> {
   private static final Gson g = new GsonBuilder().setPrettyPrinting().create();
 
   @Override public void apply(Project project) {
-    var orgConfig = loadOrgConfig(
-      g, fileAtHomeDir(GS_LOCAL_CONFIG_FILE),
-      System.getenv(GsConstants.GS_ORG_CONFIG_URL),
-      GsConstants.localConfigUpdateDeltaMs
-    );
+    var orgConfig = loadOrgConfig(g, fileAtHomeDir(GS_LOCAL_CONFIG_FILE), loadRemoteConfigUrl(), localConfigUpdateDeltaMs);
     var meta = loadBuildMeta();
     var ext = project.getExtensions();
 

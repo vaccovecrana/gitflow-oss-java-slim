@@ -8,6 +8,7 @@ public class GsConstants {
   // GitHub environment variables
   public static final String GITHUB_SHA = "GITHUB_SHA";
   public static final String GITHUB_REF = "GITHUB_REF";
+  public static final String GITHUB_INPUT_ORGCONFIG = "INPUT_ORGCONFIG";
 
   public static final String GS_LOCAL_ORG_CONFIG_FMT = ".gsOrgConfig.%s.json";
   public static final String GS_LOCAL_CONFIG_FILE = ".gsOrgConfig.json";
