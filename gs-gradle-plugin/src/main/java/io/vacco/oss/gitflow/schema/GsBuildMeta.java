@@ -10,7 +10,10 @@ public class GsBuildMeta {
   public GsBuildTarget target;
 
   @Override public String toString() {
-    return String.format("%s %s %s %s", branch, hash, utc, tag);
+    return String.format(
+      "branch: %s, hash: %s, utc: %s, tag: %s",
+      branch, hash, utc, tag
+    );
   }
 
 }
