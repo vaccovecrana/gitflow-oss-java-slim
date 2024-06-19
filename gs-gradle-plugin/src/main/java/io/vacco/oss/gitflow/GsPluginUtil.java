@@ -142,10 +142,10 @@ public class GsPluginUtil {
     var targetUrl = urlTransform == null ? orgRepo.url : urlTransform.apply(orgRepo);
     log.warn("Adding repository URL: [{}]", targetUrl);
     try {
-      rh.maven(mvnRepo -> {
-        mvnRepo.setName(orgRepo.id);
-        mvnRepo.setUrl(targetUrl);
-        mvnRepo.credentials(crd -> {
+      rh.maven(repo -> {
+        repo.setName(orgRepo.id);
+        repo.setUrl(targetUrl);
+        repo.credentials(crd -> {
           if (orgRepo.username != null && orgRepo.password != null) {
             crd.setUsername(orgRepo.username);
             crd.setPassword(orgRepo.password);
