@@ -6,7 +6,7 @@ branding:
   color: white
 runs:
   using: docker
-  image: dcr-oss.vacco.li/dump-env:1
+  image: docker://dcr-oss.vacco.li/dump-env:1
 inputs:
   orgConfig:
     description: "URL pointing to an Org Config JSON file to drive the build."
