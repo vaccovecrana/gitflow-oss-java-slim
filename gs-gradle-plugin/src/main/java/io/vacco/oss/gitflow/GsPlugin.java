@@ -6,7 +6,8 @@ import io.vacco.oss.gitflow.schema.*;
 import org.gradle.api.*;
 import org.gradle.api.logging.*;
 
-import static io.vacco.oss.gitflow.GsPluginUtil.*;
+import static io.vacco.oss.gitflow.impl.GsBuildMetas.*;
+import static io.vacco.oss.gitflow.impl.GsPluginUtil.*;
 import static io.vacco.oss.gitflow.schema.GsConstants.*;
 
 public class GsPlugin implements Plugin<Project> {

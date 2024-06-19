@@ -1,7 +1,7 @@
 package io.vacco.oss.gitflow.java;
 
 import io.vacco.oss.gitflow.schema.*;
-import io.vacco.oss.gitflow.GsPluginUtil;
+import io.vacco.oss.gitflow.impl.GsPluginUtil;
 import org.gradle.api.*;
 import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.plugins.*;
@@ -12,7 +12,7 @@ import org.gradle.testing.jacoco.plugins.JacocoPlugin;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.vacco.oss.gitflow.GsPluginUtil.*;
+import static io.vacco.oss.gitflow.impl.GsPluginUtil.*;
 import static io.vacco.oss.gitflow.schema.GsBuildTarget.*;
 
 public class GsPluginJavaExtension {

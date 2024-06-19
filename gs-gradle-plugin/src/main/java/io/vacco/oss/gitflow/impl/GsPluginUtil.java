@@ -1,4 +1,4 @@
-package io.vacco.oss.gitflow;
+package io.vacco.oss.gitflow.impl;
 
 import com.google.gson.Gson;
 import io.vacco.oss.gitflow.schema.*;
@@ -10,8 +10,6 @@ import org.gradle.api.logging.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.channels.*;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
@@ -25,11 +23,6 @@ public class GsPluginUtil {
 
   public static String labelFor(ModuleVersionSelector mvs) {
     return format("%s:%s:%s", mvs.getGroup(), mvs.getName(), mvs.getVersion());
-  }
-
-  private static String utcNow() {
-    var utcNow = ZonedDateTime.now(ZoneId.of("UTC"));
-    return utcNow.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
   }
 
   public static String labelForVersion(String currentVersion, GsBuildMeta meta) {
@@ -108,29 +101,6 @@ public class GsPluginUtil {
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }
-  }
-
-  public static GsBuildMeta loadBuildMeta() {
-    var meta = new GsBuildMeta();
-    meta.branch = System.getenv(GsConstants.GS_GIT_BRANCH);
-    meta.hash = System.getenv(GsConstants.GS_GIT_HASH);
-    if (meta.hash == null) {
-      meta.hash = "0000000";
-    }
-    if (meta.branch == null || meta.branch.contains("feature/")) {
-      meta.target = SNAPSHOT;
-    } else if (meta.branch.contains("develop")) {
-      meta.target = MILESTONE;
-    } else if (meta.branch.contains("refs/tags")) {
-      meta.target = RELEASE;
-    } else if (meta.branch.contains("master") || meta.branch.contains("main")) {
-      meta.target = PRE_RELEASE;
-    } else {
-      throw new IllegalArgumentException("Unknown build target for branch: " + meta.branch);
-    }
-    meta.utc = utcNow();
-    meta.tag = format("%s-%s", meta.utc, meta.hash.substring(0, 7));
-    return meta;
   }
 
   public static void configure(RepositoryHandler rh, GsOrgRepo orgRepo,

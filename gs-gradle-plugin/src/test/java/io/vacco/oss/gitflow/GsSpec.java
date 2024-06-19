@@ -1,6 +1,7 @@
 package io.vacco.oss.gitflow;
 
 import com.google.gson.*;
+import io.vacco.oss.gitflow.impl.*;
 import io.vacco.oss.gitflow.schema.*;
 import j8spec.annotation.DefinedOrder;
 import j8spec.junit.J8SpecRunner;
@@ -20,7 +21,7 @@ public class GsSpec {
     it("Loads the org configuration", () -> {
       var testConfig = new File("./src/test/resources/test-config.json");
       var config = GsPluginUtil.loadOrgConfig(g, testConfig.getParentFile(), testConfig.toURI().toURL().toString(), 5000);
-      var meta = GsPluginUtil.loadBuildMeta();
+      var meta = GsBuildMetas.loadBuildMeta();
       System.out.println(g.toJson(config));
       System.out.println(meta);
     });

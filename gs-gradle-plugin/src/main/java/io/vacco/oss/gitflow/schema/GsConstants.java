@@ -3,9 +3,11 @@ package io.vacco.oss.gitflow.schema;
 public class GsConstants {
 
   // Environment variables
-  public static final String GS_GIT_BRANCH = "GS_GIT_BRANCH"; // source Git branch
-  public static final String GS_GIT_HASH = "GS_GIT_HASH"; // replaces GA "after" attribute
   public static final String GS_ORG_CONFIG_URL = "GS_ORG_CONFIG_URL";
+
+  // GitHub environment variables
+  public static final String GITHUB_SHA = "GITHUB_SHA";
+  public static final String GITHUB_REF = "GITHUB_REF";
 
   public static final String GS_LOCAL_ORG_CONFIG_FMT = ".gsOrgConfig.%s.json";
   public static final String GS_LOCAL_CONFIG_FILE = ".gsOrgConfig.json";

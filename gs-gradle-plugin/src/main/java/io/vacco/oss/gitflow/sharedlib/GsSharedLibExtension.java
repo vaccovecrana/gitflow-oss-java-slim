@@ -1,7 +1,7 @@
 package io.vacco.oss.gitflow.sharedlib;
 
 import io.vacco.oss.gitflow.schema.*;
-import io.vacco.oss.gitflow.GsPluginUtil;
+import io.vacco.oss.gitflow.impl.GsPluginUtil;
 import org.gradle.api.*;
 import org.gradle.api.logging.*;
 import org.gradle.api.plugins.*;
