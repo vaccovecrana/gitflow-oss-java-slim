@@ -23,7 +23,7 @@ public class GsPlugin implements Plugin<Project> {
     var meta = loadBuildMeta();
     var ext = project.getExtensions();
 
-    log.warn("Build metadata: {}", meta);
+    log.warn("Build metadata: [{}]", meta);
     log.info("Organization configuration: {}", g.toJson(orgConfig));
     log.info("Applying base Java conventions");
     ext.create(GsPluginJavaExtension.name, GsPluginJavaExtension.class, project, orgConfig, meta);

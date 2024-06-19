@@ -11,6 +11,8 @@ import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.plugins.signing.*;
 import java.util.function.Function;
 
+import static java.lang.String.format;
+import static io.vacco.oss.gitflow.schema.GsConstants.*;
 import static java.util.Objects.requireNonNull;
 
 public class GsSharedLibExtension {
@@ -45,12 +47,12 @@ public class GsSharedLibExtension {
       plugins.apply(MavenPublishPlugin.class);
 
       var pe = extensions.getByType(PublishingExtension.class);
+      var libDesc = requireNonNull(project.findProperty(kLibDesc), format("please add a description property (%s) in gradle.properties", kLibDesc));
+      var libGitUrl = requireNonNull(project.findProperty(kLibGitUrl), format("please add a project Git URL property (%s) in gradle.properties", kLibGitUrl));
 
       var mvn = pe.getPublications().create(orgConfig.publishing.id, MavenPublication.class, mp -> {
         mp.from(project.getComponents().getByName("java"));
         mp.pom(pom -> {
-          var libDesc = requireNonNull(project.property("libDesc"));
-          var libGitUrl = requireNonNull(project.property("libGitUrl"));
           var license = getLicense(project, internal);
 
           pom.getName().set(project.getName());

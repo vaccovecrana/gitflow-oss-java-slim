@@ -144,12 +144,12 @@ public class GsPluginUtil {
       rh.maven(repo -> {
         repo.setName(orgRepo.id);
         repo.setUrl(targetUrl);
-        repo.credentials(crd -> {
-          if (orgRepo.username != null && orgRepo.password != null) {
+        if (orgRepo.username != null && orgRepo.password != null) {
+          repo.credentials(crd -> {
             crd.setUsername(orgRepo.username);
             crd.setPassword(orgRepo.password);
-          }
-        });
+          });
+        }
       });
     } catch (Exception e) {
       var msg = format(

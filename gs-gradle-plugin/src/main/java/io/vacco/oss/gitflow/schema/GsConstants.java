@@ -12,12 +12,12 @@ public class GsConstants {
 
   public static final long localConfigUpdateDeltaMs = 172_800_000; // local org config gets refreshed every 48hrs.
 
+  public static final String kLibDesc = "libDesc";
+  public static final String kLibGitUrl = "libGitUrl";
+
   // Tasks
   public static final String build = "build", classes = "classes", test = "test", publish = "publish";
   public static final String checkClasspath = "checkClasspath", googleJavaFormat = "googleJavaFormat";
-
-  // Source sets
-  public static final String main = "main";
 
   // Dependency configurations
   public static final String runtimeClasspath = "runtimeClasspath";
