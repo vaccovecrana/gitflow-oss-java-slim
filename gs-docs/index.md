@@ -6,6 +6,12 @@
 
 It is primarily targeted towards Open source Java developers and organizations that need to manage the complexity of building, versioning and releasing binary code artifacts.
 
+> The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+> NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
+> "OPTIONAL" in this document are to be interpreted as described in
+> [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
+
+
 ## Is this framework for me?
 
 In order to make the best use of your time (and mine), reflect for a moment.
