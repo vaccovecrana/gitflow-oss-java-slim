@@ -48,7 +48,7 @@ public class GsPluginUtil {
       return;
     }
     var targetUrl = urlTransform == null ? orgRepo.url : urlTransform.apply(orgRepo);
-    log.warn("Adding repository URL: [{}]", targetUrl);
+    log.info("Adding repository URL: [{}]", targetUrl);
     try {
       rh.maven(repo -> {
         repo.setName(orgRepo.id);

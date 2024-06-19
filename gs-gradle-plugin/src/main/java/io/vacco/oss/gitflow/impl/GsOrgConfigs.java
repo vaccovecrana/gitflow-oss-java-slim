@@ -63,7 +63,7 @@ public class GsOrgConfigs {
         var orgConf = new File(localConfig.getParentFile(), format(GsConstants.GS_LOCAL_ORG_CONFIG_FMT, localConf.orgId));
 
         sync(new URL(localConf.orgConfigUrl), orgConf, updateDeltaMs);
-        log.warn("Executing unmanaged build.");
+        log.info("Executing local build.");
 
         var orgConfig = g.fromJson(new FileReader(orgConf), GsOrgConfig.class);
         if (orgConfig.internalRepo != null) {
