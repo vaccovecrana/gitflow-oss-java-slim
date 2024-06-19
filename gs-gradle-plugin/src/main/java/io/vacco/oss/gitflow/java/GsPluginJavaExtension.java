@@ -20,9 +20,8 @@ public class GsPluginJavaExtension {
   public static final String name = "commonBuildCore";
 
   public GsPluginJavaExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta) {
-
-    PluginContainer plugins = project.getPlugins();
-    TaskContainer tasks = project.getTasks();
+    var plugins = project.getPlugins();
+    var tasks = project.getTasks();
 
     project.getRepositories().mavenCentral();
     GsPluginUtil.configure(project.getRepositories(), orgConfig.internalRepo, null);
