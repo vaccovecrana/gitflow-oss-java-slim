@@ -60,8 +60,9 @@ public class GsPluginUtil {
       log.warn("Updating file: [{}]", dst.getAbsolutePath());
       log.warn("Fetching [{}]", src.toString());
       var rbc = Channels.newChannel(src.openStream());
-      var fos = new FileOutputStream(dst);
-      fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+      try (var fos = new FileOutputStream(dst)) {
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+      }
     } else {
       log.info("Skipping synced file: [{}]", dst.getAbsolutePath());
     }
@@ -116,9 +117,7 @@ public class GsPluginUtil {
     if (meta.hash == null) {
       meta.hash = "0000000";
     }
-    if (meta.branch == null) {
-      meta.target = LOCAL;
-    } else if (meta.branch.contains("feature/")) {
+    if (meta.branch == null || meta.branch.contains("feature/")) {
       meta.target = SNAPSHOT;
     } else if (meta.branch.contains("develop")) {
       meta.target = MILESTONE;
