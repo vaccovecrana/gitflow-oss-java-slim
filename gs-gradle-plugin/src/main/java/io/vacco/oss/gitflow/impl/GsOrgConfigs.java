@@ -19,17 +19,21 @@ public class GsOrgConfigs {
     return s == null || s.isEmpty();
   }
 
-  public static void sync(URL src, File dst, long lastModifiedMaxDelta) throws IOException {
-    long lastModifiedDelta = dst.exists() ? System.currentTimeMillis() - dst.lastModified() : Long.MAX_VALUE;
-    if (lastModifiedDelta > lastModifiedMaxDelta) {
-      log.warn("Updating file: [{}]", dst.getAbsolutePath());
-      log.warn("Fetching [{}]", src.toString());
-      var rbc = Channels.newChannel(src.openStream());
-      try (var fos = new FileOutputStream(dst)) {
-        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+  public static void sync(URL src, File dst, long lastModifiedMaxDelta) {
+    try {
+      long lastModifiedDelta = dst.exists() ? System.currentTimeMillis() - dst.lastModified() : Long.MAX_VALUE;
+      if (lastModifiedDelta > lastModifiedMaxDelta) {
+        log.warn("Updating file: [{}]", dst.getAbsolutePath());
+        log.warn("Fetching [{}]", src.toString());
+        var rbc = Channels.newChannel(src.openStream());
+        try (var fos = new FileOutputStream(dst)) {
+          fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        }
+      } else {
+        log.info("Skipping synced file: [{}]", dst.getAbsolutePath());
       }
-    } else {
-      log.info("Skipping synced file: [{}]", dst.getAbsolutePath());
+    } catch (Exception e) {
+      throw new IllegalStateException(format("Unable to load Org configuration from %s", src), e);
     }
   }
 
