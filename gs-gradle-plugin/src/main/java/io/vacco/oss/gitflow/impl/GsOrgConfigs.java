@@ -50,8 +50,10 @@ public class GsOrgConfigs {
           var orgConfig = g.fromJson(ir, GsOrgConfig.class);
           var repos = new GsOrgRepo[] { orgConfig.internalRepo, orgConfig.snapshotsRepo, orgConfig.releasesRepo };
           Arrays.stream(repos).filter(Objects::nonNull).forEach(repo -> {
-            repo.username = System.getenv(repo.usernameEnvProperty);
-            repo.password = System.getenv(repo.passwordEnvProperty);
+            if (repo.usernameEnvProperty != null && repo.passwordEnvProperty != null) {
+              repo.username = System.getenv(repo.usernameEnvProperty);
+              repo.password = System.getenv(repo.passwordEnvProperty);
+            }
             if (isEmpty(repo.username) || isEmpty(repo.password)) {
               log.warn("Missing credentials for repository [{}]", repo.id);
             }
