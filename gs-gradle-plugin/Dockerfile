@@ -1,3 +1,3 @@
-FROM docker.io/gradle:8-jdk21-alpine
+FROM docker.io/gradle:8-jdk21
 
 CMD ["gradle", "build"]
