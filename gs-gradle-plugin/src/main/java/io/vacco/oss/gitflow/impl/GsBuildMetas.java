@@ -21,8 +21,9 @@ public class GsBuildMetas {
     if (System.getenv(GITHUB_SHA) != null) {
       meta.branch = System.getenv(GITHUB_REF);
       meta.hash = System.getenv(GITHUB_SHA);
-    } else {
-      // TODO add Drone support
+    } else if (System.getenv(CI_COMMIT_SHA) != null) {
+      meta.branch = System.getenv(CI_COMMIT_BRANCH);
+      meta.hash = System.getenv(CI_COMMIT_SHA);
     }
 
     if (meta.hash == null) {

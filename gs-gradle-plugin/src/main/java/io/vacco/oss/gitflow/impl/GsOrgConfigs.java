@@ -8,7 +8,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.util.*;
 
-import static io.vacco.oss.gitflow.schema.GsConstants.GITHUB_INPUT_ORGCONFIG;
+import static io.vacco.oss.gitflow.schema.GsConstants.*;
 import static java.lang.String.*;
 
 public class GsOrgConfigs {
@@ -38,12 +38,9 @@ public class GsOrgConfigs {
   }
 
   public static String loadRemoteConfigUrl() {
-    var githubInput = System.getenv(GITHUB_INPUT_ORGCONFIG);
-    if (githubInput != null) {
-      return githubInput;
-    }
-    // TODO implement Drone config loading
-    return null;
+    return System.getenv(GITHUB_INPUT_ORGCONFIG) != null
+      ? System.getenv(GITHUB_INPUT_ORGCONFIG)
+      : System.getenv(PLUGIN_ORGCONFIG);
   }
 
   public static GsOrgConfig loadOrgConfig(Gson g, File localConfig, String remoteConfigUrl, long updateDeltaMs) {
