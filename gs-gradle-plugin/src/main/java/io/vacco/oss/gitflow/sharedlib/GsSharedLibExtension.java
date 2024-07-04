@@ -22,15 +22,21 @@ public class GsSharedLibExtension {
 
   private Function<GsOrgRepo, String> publishingUrlTransform;
 
-  private boolean isPresent(Object s) { return s != null && s.toString().length() > 0; }
+  private boolean isPresent(Object s) {
+    return s != null && !s.toString().isEmpty();
+  }
 
   private String[] getLicense(Project p, boolean internalPublication) {
     if (internalPublication) return new String[] {"Proprietary", "Proprietary"};
     var libLicense = p.findProperty("libLicense");
     var libLicenseUrl = p.findProperty("libLicenseUrl");
     var ok = isPresent(libLicense) && isPresent(libLicenseUrl);
-    if (!ok) { throw new GradleException("Missing license information for POM metadata."); }
-    return new String[] {libLicense.toString(), libLicenseUrl.toString()};
+    if (!ok) {
+      throw new GradleException("Missing license information for POM metadata.");
+    }
+    return new String[] {
+      libLicense.toString(), libLicenseUrl.toString()
+    };
   }
 
   public GsSharedLibExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta,
@@ -82,15 +88,20 @@ public class GsSharedLibExtension {
         if (internal) {
           GsPluginUtil.configure(rh, orgConfig.internalRepo, publishingUrlTransform);
         } else {
-          project.getPlugins().apply(SigningPlugin.class);
-          var se = project.getExtensions().getByType(SigningExtension.class);
-          se.useInMemoryPgpKeys(System.getenv(orgConfig.publishing.mavenSigningKeyEnvProperty), "");
-          se.sign(mvn);
-          extensions.configure(JavaPluginExtension.class, JavaPluginExtension::withJavadocJar);
-          if (meta.target.isSnapshot()) {
-            GsPluginUtil.configure(rh, orgConfig.snapshotsRepo, publishingUrlTransform);
+          var signingKey = System.getenv(orgConfig.publishing.mavenSigningKeyEnvProperty);
+          if (signingKey != null) {
+            project.getPlugins().apply(SigningPlugin.class);
+            var se = project.getExtensions().getByType(SigningExtension.class);
+            se.useInMemoryPgpKeys(signingKey, "");
+            se.sign(mvn);
+            extensions.configure(JavaPluginExtension.class, JavaPluginExtension::withJavadocJar);
+            if (meta.target.isSnapshot()) {
+              GsPluginUtil.configure(rh, orgConfig.snapshotsRepo, publishingUrlTransform);
+            } else {
+              GsPluginUtil.configure(rh, orgConfig.releasesRepo, publishingUrlTransform);
+            }
           } else {
-            GsPluginUtil.configure(rh, orgConfig.releasesRepo, publishingUrlTransform);
+            log.warn("Missing signing key property [{}]", orgConfig.publishing.mavenSigningKeyEnvProperty);
           }
         }
       } else if (meta.target == GsBuildTarget.PRE_RELEASE) {
