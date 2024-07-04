@@ -1,15 +1,8 @@
 package io.vacco.oss.gitflow.java;
 
-import com.github.benmanes.gradle.versions.VersionsPlugin;
-import com.github.benmanes.gradle.versions.reporter.result.DependencyOutdated;
-import com.github.benmanes.gradle.versions.reporter.result.Result;
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask;
 import io.vacco.oss.gitflow.schema.*;
-import io.vacco.oss.gitflow.GsPluginUtil;
-import groovy.lang.Closure;
+import io.vacco.oss.gitflow.impl.GsPluginUtil;
 import org.gradle.api.*;
-import org.gradle.api.artifacts.ModuleVersionSelector;
-import org.gradle.api.logging.*;
 import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.plugins.*;
 import org.gradle.api.tasks.*;
@@ -19,18 +12,16 @@ import org.gradle.testing.jacoco.plugins.JacocoPlugin;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
-import static io.vacco.oss.gitflow.GsPluginUtil.*;
+import static io.vacco.oss.gitflow.impl.GsPluginUtil.*;
 import static io.vacco.oss.gitflow.schema.GsBuildTarget.*;
 
 public class GsPluginJavaExtension {
 
   public static final String name = "commonBuildCore";
-  private static final Logger log = Logging.getLogger(GsPluginJavaExtension.class);
 
-  public GsPluginJavaExtension(Project project, GsOrgConfig orgConfig, GsBranchCommit commit) {
-
-    PluginContainer plugins = project.getPlugins();
-    TaskContainer tasks = project.getTasks();
+  public GsPluginJavaExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta) {
+    var plugins = project.getPlugins();
+    var tasks = project.getTasks();
 
     project.getRepositories().mavenCentral();
     GsPluginUtil.configure(project.getRepositories(), orgConfig.internalRepo, null);
@@ -39,9 +30,8 @@ public class GsPluginJavaExtension {
     plugins.apply(JacocoPlugin.class);
 
     addBaseConventions(project.getExtensions(), tasks);
-    addDependencyUpdates(tasks, plugins, orgConfig.devConfig);
-    setVersionFor(project, null, commit);
-    addReleaseGating(project, commit);
+    setVersionFor(project, null, meta);
+    addReleaseGating(project, meta);
   }
 
   private void addBaseConventions(ExtensionContainer ext, TaskContainer tasks) {
@@ -55,36 +45,13 @@ public class GsPluginJavaExtension {
         .configureEach(t -> t.testLogging(tl -> tl.setShowStandardStreams(true)));
   }
 
-  private void addDependencyUpdates(TaskContainer tasks, PluginContainer plugins, GsDevConfig devConfig) {
-    plugins.apply(VersionsPlugin.class);
-    Closure<Result> rfn = new Closure<Result>(this) {
-      @Override public Result call(Object ... args) {
-        Result result = (Result) args[0];
-        if (!result.getOutdated().getDependencies().isEmpty()) {
-          for (DependencyOutdated dep : result.getOutdated().getDependencies()) {
-            for (String group : devConfig.dependencyExcludedGroups) {
-              if (!dep.getGroup().contains(group)) {
-                log.warn("Outdated upstream dependency: {}:{} [{} -> {}]",
-                    dep.getGroup(), dep.getName(), dep.getVersion(), dep.getAvailable().getMilestone());
-              }
-            }
-          }
-        }
-        return result;
-      }
-    };
-
-    tasks.withType(DependencyUpdatesTask.class, t -> t.setOutputFormatter(rfn));
-    tasks.getByName(GsConstants.build).dependsOn(tasks.findByName("dependencyUpdates"));
-  }
-
-  private void addReleaseGating(Project project, GsBranchCommit commit) {
-    if (commit.buildTarget.isReleaseGated()) {
+  private void addReleaseGating(Project project, GsBuildMeta meta) {
+    if (meta.target.isReleaseGated()) {
       project.getConfigurations().all(cfg -> cfg.resolutionStrategy(rs -> rs.eachDependency(details -> {
-        ModuleVersionSelector mvs = details.getRequested();
-        String version = requireNonNull(mvs.getVersion());
+        var mvs = details.getRequested();
+        var version = requireNonNull(mvs.getVersion());
         if (version.contains(SNAPSHOT.name()) || version.contains(MILESTONE.name())) {
-          String errMsg = format("Do NOT use %s dependency: [%s] when creating %s artifacts.",
+          var errMsg = format("Do NOT use %s dependency: [%s] when creating %s artifacts.",
               version.contains(SNAPSHOT.name()) ? SNAPSHOT : MILESTONE,
               labelFor(mvs), RELEASE
           );

@@ -1,7 +1,9 @@
-buildscript { dependencies { classpath("org.jsonschema2pojo:jsonschema2pojo-gradle-plugin:1.1.0") } }
-
-plugins { `java-library`; jacoco; `maven-publish`; signing }
-apply { plugin(org.jsonschema2pojo.gradle.JsonSchemaPlugin::class.java) }
+plugins {
+  `java-library`
+  jacoco
+  `maven-publish`
+  signing
+}
 
 repositories {
   mavenCentral()
@@ -9,39 +11,25 @@ repositories {
 }
 
 group = "io.vacco.oss.gitflow"
-version = "0.9.8"
+version = "1.0.0"
 
 dependencies {
   api(gradleApi())
-  implementation("com.fasterxml.jackson.core:jackson-databind:2.11.2")
-  implementation("gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.9")
-  implementation("com.github.ben-manes:gradle-versions-plugin:0.31.0")
   implementation("io.vacco:io.vacco.cphell.gradle.plugin:1.8.0")
-
-  testImplementation("io.github.j8spec:j8spec:3.0.0")
+  implementation("io.vacco.leraikha:leraikha:0.1.1")
+  implementation("gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.9")
+  testImplementation("io.github.j8spec:j8spec:3.0.1")
 }
 
 configure<JavaPluginExtension> {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
+  sourceCompatibility = JavaVersion.VERSION_11
+  targetCompatibility = JavaVersion.VERSION_11
   withSourcesJar()
   withJavadocJar()
 }
 
 tasks.withType<JavaCompile> { options.compilerArgs.add("-Xlint:all") }
 tasks.withType<Test> { this.testLogging { this.showStandardStreams = true } }
-
-configure<org.jsonschema2pojo.gradle.JsonSchemaExtension> {
-  setAnnotationStyle("none")
-  targetPackage = "io.vacco.oss.gitflow.schema"
-  includeAdditionalProperties = false
-  usePrimitives = true
-  includeConstructors = false
-  includeGetters = false
-  includeSetters = false
-  includeToString = false
-  includeHashcodeAndEquals = false
-}
 
 publishing {
   publications {
@@ -85,6 +73,9 @@ publishing {
 }
 
 signing {
-  sign(publishing.publications["Java"])
-  useInMemoryPgpKeys(System.getenv("MAVEN_SIGNING_KEY"), "")
+  val key = System.getenv("MAVEN_SIGNING_KEY")
+  if (key != null) {
+    sign(publishing.publications["Java"])
+    useInMemoryPgpKeys(key, "")
+  }
 }

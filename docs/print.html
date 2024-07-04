@@ -350,20 +350,12 @@ jobs:
 <div style="break-before: page; page-break-before: always;"></div><h1 id="development-features-configuration"><a class="header" href="#development-features-configuration">Development Features Configuration</a></h1>
 <p>The last section of the Org config file is defined as:</p>
 <pre><code class="language-json">"devConfig": {
-  "jdkDistribution": "https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk",
-  "dependencyExcludedGroups": [],
   "versions": {
-    "gradle": "gradle-6.8.3",
     "j8Spec": "io.github.j8spec:j8spec:3.0.0"
   }
 }
 </code></pre>
-<p><code>jdkDistribution</code> requires a URL to download a specific version of the JDK that will only be used by Github actions to execute a build. This will not affect your local development environment, so you're free to choose what JDK you use to build locally. In the example above, the JDK gets downloaded from <code>api.adoptopenjdk.net</code>, and it MUST point to a plain tar <code>.tar</code> or compressed <code>.tar.gz</code> file which, upon de-compression, will extract the JDK's contents into a single output directory.</p>
-<blockquote>
-<p>Note: in practice, most JDK distribution bundles follow this format, but you SHOULD verify with any custom JDKs you decide to use. For example, you could copy the JDK distribution file from the web site above into your own private S3 bucket (or some other cloud or internal organization storage location) so that your Github Actions builds do not depend on the availability of other websites.</p>
-</blockquote>
 <p>The remaining configuration options are configured here, but get actually activated by the <code>build.gradle.kts</code> file in your source tree, depending on which features you decide to use, and are further explained in later sections.</p>
-<p><code>dependencyExcludedGroups</code> defines a set of Maven groups which will be excluded when the <a href="https://plugins.gradle.org/plugin/com.github.ben-manes.versions">Gradle Versions plugin</a> gets applied to the build.</p>
 <p>In other words, all builds will apply the Gradle versions plugin by default, and will report on which outdated dependencies your project has.</p>
 <p>Lastly, the <code>versions</code> block allows you to configure:</p>
 <ul>
@@ -438,9 +430,6 @@ configure&lt;io.vacco.oss.gitflow.GsPluginProfileExtension&gt; {
     "mavenSigningKeyEnvProperty": "MAVEN_SIGNING_PRV"
   },
   "devConfig": {
-    "gradleVersion": "7.0",
-    "gradleDistribution": "https://services.gradle.org/distributions/gradle-7.0-bin.zip",
-    "jdkDistribution": "https://api.adoptopenjdk.net/v3/binary/latest/11/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk",
     "versions": {
       "j8Spec": "io.github.j8spec:j8spec:3.0.0"
     }

@@ -4,10 +4,11 @@ author: vacco
 branding:
   icon: aperture
   color: white
+runs:
+  using: docker
+  image: docker://docker.io/library/gradle:8-jdk21
+  args: [gradle, build]
 inputs:
   orgConfig:
     description: "URL pointing to an Org Config JSON file to drive the build."
     required: true
-runs:
-  using: node20
-  main: gs-action/dist/main.js

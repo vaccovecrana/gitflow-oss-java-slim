@@ -1,18 +1,18 @@
 package io.vacco.oss.gitflow.sharedlib;
 
 import io.vacco.oss.gitflow.schema.*;
-import io.vacco.oss.gitflow.GsPluginUtil;
+import io.vacco.oss.gitflow.impl.GsPluginUtil;
 import org.gradle.api.*;
-import org.gradle.api.artifacts.dsl.RepositoryHandler;
 import org.gradle.api.logging.*;
 import org.gradle.api.plugins.*;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.plugins.signing.*;
-
 import java.util.function.Function;
 
+import static java.lang.String.format;
+import static io.vacco.oss.gitflow.schema.GsConstants.*;
 import static java.util.Objects.requireNonNull;
 
 public class GsSharedLibExtension {
@@ -26,18 +26,18 @@ public class GsSharedLibExtension {
 
   private String[] getLicense(Project p, boolean internalPublication) {
     if (internalPublication) return new String[] {"Proprietary", "Proprietary"};
-    Object libLicense = p.findProperty("libLicense");
-    Object libLicenseUrl = p.findProperty("libLicenseUrl");
-    boolean ok = isPresent(libLicense) && isPresent(libLicenseUrl);
+    var libLicense = p.findProperty("libLicense");
+    var libLicenseUrl = p.findProperty("libLicenseUrl");
+    var ok = isPresent(libLicense) && isPresent(libLicenseUrl);
     if (!ok) { throw new GradleException("Missing license information for POM metadata."); }
     return new String[] {libLicense.toString(), libLicenseUrl.toString()};
   }
 
-  public GsSharedLibExtension(Project project, GsOrgConfig orgConfig, GsBranchCommit commit,
+  public GsSharedLibExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta,
                               boolean publish, boolean internal) {
 
-    PluginContainer plugins = project.getPlugins();
-    ExtensionContainer extensions = project.getExtensions();
+    var plugins = project.getPlugins();
+    var extensions = project.getExtensions();
 
     plugins.apply(JavaLibraryPlugin.class);
 
@@ -46,14 +46,14 @@ public class GsSharedLibExtension {
       extensions.configure(JavaPluginExtension.class, JavaPluginExtension::withSourcesJar);
       plugins.apply(MavenPublishPlugin.class);
 
-      PublishingExtension pe = extensions.getByType(PublishingExtension.class);
+      var pe = extensions.getByType(PublishingExtension.class);
+      var libDesc = requireNonNull(project.findProperty(kLibDesc), format("please add a description property (%s) in gradle.properties", kLibDesc));
+      var libGitUrl = requireNonNull(project.findProperty(kLibGitUrl), format("please add a project Git URL property (%s) in gradle.properties", kLibGitUrl));
 
-      MavenPublication mvn = pe.getPublications().create(orgConfig.publishing.id, MavenPublication.class, mp -> {
+      var mvn = pe.getPublications().create(orgConfig.publishing.id, MavenPublication.class, mp -> {
         mp.from(project.getComponents().getByName("java"));
         mp.pom(pom -> {
-          Object libDesc = requireNonNull(project.property("libDesc"));
-          Object libGitUrl = requireNonNull(project.property("libGitUrl"));
-          String[] license = getLicense(project, internal);
+          var license = getLicense(project, internal);
 
           pom.getName().set(project.getName());
           pom.getDescription().set(libDesc.toString());
@@ -77,23 +77,23 @@ public class GsSharedLibExtension {
         });
       });
 
-      if (commit.buildTarget.isPublication()) {
-        RepositoryHandler rh = pe.getRepositories();
+      if (meta.target.isPublication()) {
+        var rh = pe.getRepositories();
         if (internal) {
           GsPluginUtil.configure(rh, orgConfig.internalRepo, publishingUrlTransform);
         } else {
           project.getPlugins().apply(SigningPlugin.class);
-          SigningExtension se = project.getExtensions().getByType(SigningExtension.class);
+          var se = project.getExtensions().getByType(SigningExtension.class);
           se.useInMemoryPgpKeys(System.getenv(orgConfig.publishing.mavenSigningKeyEnvProperty), "");
           se.sign(mvn);
           extensions.configure(JavaPluginExtension.class, JavaPluginExtension::withJavadocJar);
-          if (commit.buildTarget.isSnapshot()) {
+          if (meta.target.isSnapshot()) {
             GsPluginUtil.configure(rh, orgConfig.snapshotsRepo, publishingUrlTransform);
           } else {
             GsPluginUtil.configure(rh, orgConfig.releasesRepo, publishingUrlTransform);
           }
         }
-      } else if (commit.buildTarget == GsBuildTarget.PRE_RELEASE) {
+      } else if (meta.target == GsBuildTarget.PRE_RELEASE) {
         extensions.configure(JavaPluginExtension.class, JavaPluginExtension::withJavadocJar);
       }
     }
