@@ -4,16 +4,26 @@ import com.google.gson.*;
 import io.vacco.oss.gitflow.java.GsPluginJavaExtension;
 import org.gradle.api.*;
 import org.gradle.api.logging.*;
+import java.io.File;
 
 import static io.vacco.oss.gitflow.impl.GsOrgConfigs.*;
 import static io.vacco.oss.gitflow.impl.GsBuildMetas.loadBuildMeta;
-import static io.vacco.oss.gitflow.impl.GsPluginUtil.*;
 import static io.vacco.oss.gitflow.schema.GsConstants.*;
 
 public class GsPlugin implements Plugin<Project> {
 
   private static final Logger log = Logging.getLogger(GsPlugin.class);
   private static final Gson g = new GsonBuilder().setPrettyPrinting().create();
+
+  public File fileAtHomeDir(String name) {
+    return new File(System.getProperty("user.home"), name);
+  }
+
+  public String loadRemoteConfigUrl() {
+    return System.getenv(GITHUB_INPUT_ORGCONFIG) != null
+      ? System.getenv(GITHUB_INPUT_ORGCONFIG)
+      : System.getenv(PLUGIN_ORGCONFIG);
+  }
 
   @Override public void apply(Project project) {
     var orgConfig = loadOrgConfig(g, fileAtHomeDir(GS_LOCAL_CONFIG_FILE), loadRemoteConfigUrl(), localConfigUpdateDeltaMs);

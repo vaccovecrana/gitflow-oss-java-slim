@@ -32,4 +32,10 @@ public class GsOrgRepo {
    */
   public String passwordEnvProperty;
 
+  /**
+   * Publishing method.
+   * @see GsOrgRepoMethod
+   */
+  public GsOrgRepoMethod method;
+
 }

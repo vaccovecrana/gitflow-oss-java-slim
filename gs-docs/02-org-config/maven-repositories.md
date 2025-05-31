@@ -7,7 +7,8 @@
   "id": "GithubPackages",
   "url": "https://maven.pkg.github.com/my-github-org/common-packages/",
   "usernameEnvProperty": "MY_ORGS_CI_USER",
-  "passwordEnvProperty": "MY_ORGS_CI_TOKEN"
+  "passwordEnvProperty": "MY_ORGS_CI_TOKEN",
+  "method": "MavenClassic"
 }
 ```
 
@@ -16,6 +17,11 @@ These configuration blocks should be pretty self-explanatory:
 - `internalRepo` refers to a Maven repository where you intend to store artifacts for private use inside your organization. Note that this repository MUST allow for both `SNAPSHOT` and `RELEASE` artifacts in the same location for practical purposes. With enough community interest, this could change in the future.
 
 - `snapshotsRepo` and `releasesRepo` refer to remote Maven repositories which intend to store publicly accessible `SNAPSHOT` and `RELEASE` artifacts respectively.
+
+- `method` refers to the artifact upload strategy. I'm hoping this is a transitional attribute, the reason being that Gradle's Maven publishing plugin currently does not support the new Sonatype Central [artifact upload API](https://central.sonatype.com/api-doc) semantics. So for each repository defined, artifacts will be uploaded as:
+  - `MavenClassic` - standard `PUT` request with username and password.
+  - `PortalPublisherApiManual` - new Sonatype publishing API. You release manually.
+  - `PortalPublisherApiAutomatic` - new Sonatype publishing API. The deployment bundle gets released automatically.
 
 Each configuration block can source an access username password by reading values from Environment variable names which you designate, or by reading direct username and password values at runtime inside the Org config file itself. These variable names and values SHOULD be stored as Github secrets.
 

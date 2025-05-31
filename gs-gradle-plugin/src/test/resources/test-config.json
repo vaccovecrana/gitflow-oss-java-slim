@@ -4,7 +4,8 @@
     "id": "GithubPackages",
     "url": "https://maven.pkg.github.com/vaccovecrana/common-build/",
     "usernameEnvProperty": "GH_USER",
-    "passwordEnvProperty": "GH_TOKEN"
+    "passwordEnvProperty": "GH_TOKEN",
+    "method": "MavenClassic"
   },
   "snapshotsRepo": {
     "id": "SonatypeOSSSnapshots",

@@ -5,7 +5,7 @@ The last section of the Org config file is defined as:
 ```json
 "devConfig": {
   "versions": {
-    "j8Spec": "io.github.j8spec:j8spec:3.0.0"
+    "j8Spec": "io.github.j8spec:j8spec:3.0.1"
   }
 }
 ```

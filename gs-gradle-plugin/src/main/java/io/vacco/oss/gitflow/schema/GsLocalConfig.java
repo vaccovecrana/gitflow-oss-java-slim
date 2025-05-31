@@ -6,11 +6,6 @@ package io.vacco.oss.gitflow.schema;
 public class GsLocalConfig {
 
   /**
-   * An organization id for this local configuration
-   */
-  public String orgId;
-
-  /**
    * A securely accessible URL to load the organization's build configuration.
    * This URL will be refreshed every 48 hours. (required)
    */

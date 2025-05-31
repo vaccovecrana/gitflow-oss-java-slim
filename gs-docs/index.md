@@ -18,7 +18,7 @@ In order to make the best use of your time (and mine), reflect for a moment.
 
 If you:
 
-- Develop and manage multiple Java libraires on a daily basis.
+- Develop and manage multiple Java libraries on a daily basis.
 - Do not have dedicated CI infrastructure servers or cloud services.
 - Find yourself copy/pasting boilerplate publication configuration code for each code base that you manage.
 - Struggle to assign and manage development/release versions for your artifacts.

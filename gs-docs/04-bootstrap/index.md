@@ -12,14 +12,16 @@ Start by creating an Org config template, filling in required parameters:
   "snapshotsRepo": {
     "id": "SonatypeOSSSnapshots",
     "url": "https://oss.sonatype.org/content/repositories/snapshots/",
-    "usernameEnvProperty": "SONATYPE_USER",
-    "passwordEnvProperty": "SONATYPE_PASSWORD"
+    "usernameEnvProperty": "CENTRAL_PORTAL_USERNAME",
+    "passwordEnvProperty": "CENTRAL_PORTAL_PASSWORD",
+    "method": "MavenClassic"
   },
   "releasesRepo": {
     "id": "SonatypeOSSStaging",
     "url": "https://oss.sonatype.org/service/local/staging/deploy/maven2/",
-    "usernameEnvProperty": "SONATYPE_USER",
-    "passwordEnvProperty": "SONATYPE_PASSWORD"
+    "usernameEnvProperty": "CENTRAL_PORTAL_USERNAME",
+    "passwordEnvProperty": "CENTRAL_PORTAL_PASSWORD",
+    "method": "PortalPublisherApiManual"
   },
   "publishing": {
     "id": "an Org id (for example yoyodyne)",

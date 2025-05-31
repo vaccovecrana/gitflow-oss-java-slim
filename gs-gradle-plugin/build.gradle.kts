@@ -1,8 +1,11 @@
+import nmcp.NmcpExtension
+
 plugins {
   `java-library`
   jacoco
   `maven-publish`
   signing
+  id("com.gradleup.nmcp").version("0.1.5")
 }
 
 repositories {
@@ -11,12 +14,12 @@ repositories {
 }
 
 group = "io.vacco.oss.gitflow"
-version = "1.0.1"
+version = "1.5.1"
 
 dependencies {
   api(gradleApi())
   implementation("io.vacco:io.vacco.cphell.gradle.plugin:1.8.0")
-  implementation("io.vacco.leraikha:leraikha:0.1.1")
+  implementation("com.google.code.gson:gson:2.10")
   implementation("gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.9")
   testImplementation("io.github.j8spec:j8spec:3.0.1")
 }
@@ -60,16 +63,6 @@ publishing {
       }
     }
   }
-  repositories {
-    maven {
-      name = "SonatypeOSS"
-      setUrl("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-      credentials {
-        username = System.getenv("SONATYPE_USER")
-        password = System.getenv("SONATYPE_PASSWORD")
-      }
-    }
-  }
 }
 
 signing {
@@ -77,5 +70,13 @@ signing {
   if (key != null) {
     sign(publishing.publications["Java"])
     useInMemoryPgpKeys(key, "")
+  }
+}
+
+configure<NmcpExtension> {
+  centralPortal {
+    username = System.getenv("CENTRAL_PORTAL_USERNAME")
+    password = System.getenv("CENTRAL_PORTAL_PASSWORD")
+    publishingType = "USER_MANAGED"
   }
 }

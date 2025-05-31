@@ -34,14 +34,11 @@ public class GsSharedLibExtension {
     if (!ok) {
       throw new GradleException("Missing license information for POM metadata.");
     }
-    return new String[] {
-      libLicense.toString(), libLicenseUrl.toString()
-    };
+    return new String[] { libLicense.toString(), libLicenseUrl.toString() };
   }
 
   public GsSharedLibExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta,
                               boolean publish, boolean internal) {
-
     var plugins = project.getPlugins();
     var extensions = project.getExtensions();
 
@@ -57,10 +54,9 @@ public class GsSharedLibExtension {
       var libGitUrl = requireNonNull(project.findProperty(kLibGitUrl), format("please add a project Git URL property (%s) in gradle.properties", kLibGitUrl));
 
       var mvn = pe.getPublications().create(orgConfig.publishing.id, MavenPublication.class, mp -> {
-        mp.from(project.getComponents().getByName("java"));
+        mp.from(project.getComponents().getByName(java));
         mp.pom(pom -> {
           var license = getLicense(project, internal);
-
           pom.getName().set(project.getName());
           pom.getDescription().set(libDesc.toString());
           pom.getUrl().set(libGitUrl.toString());
@@ -68,13 +64,11 @@ public class GsSharedLibExtension {
             lic.getName().set(license[0]);
             lic.getUrl().set(license[1]);
           }));
-
           pom.developers(dSpec -> dSpec.developer(d -> {
             d.getId().set(orgConfig.publishing.devId);
             d.getName().set(orgConfig.publishing.devContact);
             d.getEmail().set(orgConfig.publishing.devEmail);
           }));
-
           pom.scm(s -> {
             s.getConnection().set(libGitUrl.toString());
             s.getDeveloperConnection().set(libGitUrl.toString());
@@ -84,9 +78,8 @@ public class GsSharedLibExtension {
       });
 
       if (meta.target.isPublication()) {
-        var rh = pe.getRepositories();
         if (internal) {
-          GsPluginUtil.configure(rh, orgConfig.internalRepo, publishingUrlTransform);
+          GsPluginUtil.configureRepository(project, orgConfig, orgConfig.internalRepo, publishingUrlTransform);
         } else {
           var signingKey = System.getenv(orgConfig.publishing.mavenSigningKeyEnvProperty);
           if (signingKey != null) {
@@ -95,11 +88,8 @@ public class GsSharedLibExtension {
             se.useInMemoryPgpKeys(signingKey, "");
             se.sign(mvn);
             extensions.configure(JavaPluginExtension.class, JavaPluginExtension::withJavadocJar);
-            if (meta.target.isSnapshot()) {
-              GsPluginUtil.configure(rh, orgConfig.snapshotsRepo, publishingUrlTransform);
-            } else {
-              GsPluginUtil.configure(rh, orgConfig.releasesRepo, publishingUrlTransform);
-            }
+            var repo = meta.target.isSnapshot() ? orgConfig.snapshotsRepo : orgConfig.releasesRepo;
+            GsPluginUtil.configureRepository(project, orgConfig, repo, publishingUrlTransform);
           } else {
             log.warn("Missing signing key property [{}]", orgConfig.publishing.mavenSigningKeyEnvProperty);
           }

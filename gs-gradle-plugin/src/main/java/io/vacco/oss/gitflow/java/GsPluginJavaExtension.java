@@ -3,9 +3,7 @@ package io.vacco.oss.gitflow.java;
 import io.vacco.oss.gitflow.schema.*;
 import io.vacco.oss.gitflow.impl.GsPluginUtil;
 import org.gradle.api.*;
-import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.plugins.*;
-import org.gradle.api.tasks.*;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.testing.jacoco.plugins.JacocoPlugin;
@@ -21,20 +19,21 @@ public class GsPluginJavaExtension {
 
   public GsPluginJavaExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta) {
     var plugins = project.getPlugins();
-    var tasks = project.getTasks();
 
     project.getRepositories().mavenCentral();
-    GsPluginUtil.configure(project.getRepositories(), orgConfig.internalRepo, null);
+    GsPluginUtil.configureRepository(project, orgConfig, orgConfig.internalRepo, null);
 
     plugins.apply(JavaPlugin.class);
     plugins.apply(JacocoPlugin.class);
 
-    addBaseConventions(project.getExtensions(), tasks);
+    addBaseConventions(project);
     setVersionFor(project, null, meta);
     addReleaseGating(project, meta);
   }
 
-  private void addBaseConventions(ExtensionContainer ext, TaskContainer tasks) {
+  private void addBaseConventions(Project p) {
+    var ext = p.getExtensions();
+    var tasks = p.getTasks();
     ext.configure(JavaPluginExtension.class, jXt -> {
       jXt.setSourceCompatibility(JavaVersion.VERSION_11);
       jXt.setTargetCompatibility(JavaVersion.VERSION_11);

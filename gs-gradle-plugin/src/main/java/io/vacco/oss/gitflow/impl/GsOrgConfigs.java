@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 import io.vacco.oss.gitflow.schema.*;
 import org.gradle.api.logging.*;
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.nio.channels.Channels;
-import java.util.*;
 
-import static io.vacco.oss.gitflow.schema.GsConstants.*;
 import static java.lang.String.*;
 
 public class GsOrgConfigs {
@@ -37,43 +36,55 @@ public class GsOrgConfigs {
     }
   }
 
-  public static String loadRemoteConfigUrl() {
-    return System.getenv(GITHUB_INPUT_ORGCONFIG) != null
-      ? System.getenv(GITHUB_INPUT_ORGCONFIG)
-      : System.getenv(PLUGIN_ORGCONFIG);
+  public static GsOrgConfig loadRemote(Gson g, String remoteConfigUrl) throws Exception {
+    var rcUrl = new URI(remoteConfigUrl).toURL();
+    try (var ir = new InputStreamReader(rcUrl.openStream())) {
+      return g.fromJson(ir, GsOrgConfig.class);
+    }
   }
 
-  public static GsOrgConfig loadOrgConfig(Gson g, File localConfig, String remoteConfigUrl, long updateDeltaMs) {
-    try {
-      if (remoteConfigUrl != null) {
-        try (var ir = new InputStreamReader(new URL(remoteConfigUrl).openStream())) {
-          var orgConfig = g.fromJson(ir, GsOrgConfig.class);
-          var repos = new GsOrgRepo[] { orgConfig.internalRepo, orgConfig.snapshotsRepo, orgConfig.releasesRepo };
-          Arrays.stream(repos).filter(Objects::nonNull).forEach(repo -> {
-            if (repo.usernameEnvProperty != null && repo.passwordEnvProperty != null) {
-              repo.username = System.getenv(repo.usernameEnvProperty);
-              repo.password = System.getenv(repo.passwordEnvProperty);
-            }
-            if (isEmpty(repo.username) || isEmpty(repo.password)) {
-              log.warn("Missing credentials for repository [{}]", repo.id);
-            }
-          });
-          return orgConfig;
+  public static GsOrgConfig loadLocal(Gson g, File localConfigFile, GsLocalConfig localConfig, long updateDeltaMs) throws Exception {
+    var confHash = Integer.toHexString(localConfig.orgConfigUrl.hashCode());
+    var confName = format(GsConstants.GS_LOCAL_ORG_CONFIG_FMT, confHash);
+    var orgConf = new File(localConfigFile.getParentFile(), confName);
+    var ocUrl = URI.create(localConfig.orgConfigUrl).toURL();
+    sync(ocUrl, orgConf, updateDeltaMs);
+    log.info("Executing local build.");
+    return g.fromJson(new FileReader(orgConf), GsOrgConfig.class);
+  }
+
+  public static GsOrgConfig process(GsOrgConfig orgConfig, GsLocalConfig localConfig) {
+    var repos = new GsOrgRepo[] { orgConfig.internalRepo, orgConfig.snapshotsRepo, orgConfig.releasesRepo };
+    for (var repo : repos) {
+      if (repo != null) {
+        if (repo.usernameEnvProperty != null && repo.passwordEnvProperty != null) {
+          repo.username = System.getenv(repo.usernameEnvProperty);
+          repo.password = System.getenv(repo.passwordEnvProperty);
         }
       }
-      else if (localConfig.exists()) {
-        var localConf = g.fromJson(new FileReader(localConfig), GsLocalConfig.class);
-        var orgConf = new File(localConfig.getParentFile(), format(GsConstants.GS_LOCAL_ORG_CONFIG_FMT, localConf.orgId));
+    }
+    if (orgConfig.internalRepo != null && localConfig != null) {
+      orgConfig.internalRepo.username = localConfig.internalRepoUser;
+      orgConfig.internalRepo.password = localConfig.internalRepoPassword;
+    }
+    for (var repo : repos) {
+      if (repo != null && (isEmpty(repo.username) || isEmpty(repo.password))) {
+        log.warn(
+          "Missing credentials for repository [{}] [{}/{}]",
+          repo.id, repo.usernameEnvProperty, repo.passwordEnvProperty
+        );
+      }
+    }
+    return orgConfig;
+  }
 
-        sync(new URL(localConf.orgConfigUrl), orgConf, updateDeltaMs);
-        log.info("Executing local build.");
-
-        var orgConfig = g.fromJson(new FileReader(orgConf), GsOrgConfig.class);
-        if (orgConfig.internalRepo != null) {
-          orgConfig.internalRepo.username = localConf.internalRepoUser;
-          orgConfig.internalRepo.password = localConf.internalRepoPassword;
-        }
-        return orgConfig;
+  public static GsOrgConfig loadOrgConfig(Gson g, File localConfigFile, String remoteConfigUrl, long updateDeltaMs) {
+    try {
+      if (remoteConfigUrl != null) {
+        return process(loadRemote(g, remoteConfigUrl), null);
+      } else if (localConfigFile.exists()) {
+        var localConf = g.fromJson(new FileReader(localConfigFile), GsLocalConfig.class);
+        return process(loadLocal(g, localConfigFile, localConf, updateDeltaMs), localConf);
       } else throw new IllegalStateException(join("\n",
         "No CI org config found, and no local org config found.",
         "If this is a local code checkout, please define a minimal local org configuration"

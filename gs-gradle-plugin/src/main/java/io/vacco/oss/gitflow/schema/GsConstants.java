@@ -21,8 +21,12 @@ public class GsConstants {
   public static final String kLibDesc = "libDesc";
   public static final String kLibGitUrl = "libGitUrl";
 
-  // Tasks
-  public static final String build = "build", classes = "classes", check = "check", test = "test", publish = "publish";
+  public static final String libs = "libs";
+
+  // Tasks/groups
+  public static final String java = "java";
+  public static final String build = "build", classes = "classes", check = "check", test = "test";
+  public static final String publish = "publish", publishing = "publishing", publications = "publications", portalPublish = "portalPublish";
   public static final String checkClasspath = "checkClasspath", googleJavaFormat = "googleJavaFormat";
 
   // Dependency configurations
