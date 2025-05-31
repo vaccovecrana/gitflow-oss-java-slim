@@ -83,13 +83,14 @@ public class GsPluginUtil {
           tasks.register(portalPublish, GsCentralPortalTask.class, t -> {
             t.setGroup(publishing);
             t.setDescription(GsCentralPortalTask.Description);
-            t.dependsOn(format("sign%sPublication", orgConfig.publishing.id));
             t.setRepo(orgRepo);
             t.setConfig(orgConfig);
             t.setPublication(getPublication(p, orgConfig));
             t.setBuildDir(p.getLayout().getBuildDirectory().get().getAsFile().toPath());
           });
           // I hate Gradle's lazy evaluation magic.
+          var signTask = format("sign%sPublication", orgConfig.publishing.id);
+          tasks.named(portalPublish).configure(pt -> pt.dependsOn(tasks.named(signTask)));
           tasks.named(build).configure(bt -> bt.dependsOn(tasks.named(portalPublish)));
           break;
         case MavenClassic:
