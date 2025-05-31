@@ -6,7 +6,7 @@ src = "."
 title = "Gitflow Slim for Java OSS"
 
 [preprocessor.variables.variables]
-gsVersion = "1.0.1"
+gsVersion = "1.5.3"
 
 [build]
 build-dir = "../docs"

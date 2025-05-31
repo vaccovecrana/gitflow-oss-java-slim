@@ -256,7 +256,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim1.0.1
+      - uses: vaccovecrana/gitflow-oss-java-slim1.5.3
         with:
           orgConfig: https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config.json
         env:
@@ -385,7 +385,7 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Now include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "1.0.1" }
+<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "1.5.3" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have
@@ -470,7 +470,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@1.0.1
+      - uses: vaccovecrana/gitflow-oss-java-slim@1.5.3
         with:
           orgConfig: https://&lt;Location where you uploaded the Org Config file&gt;
         env:
@@ -485,7 +485,7 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Finally, include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "1.0.1" }
+<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "1.5.3" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have
