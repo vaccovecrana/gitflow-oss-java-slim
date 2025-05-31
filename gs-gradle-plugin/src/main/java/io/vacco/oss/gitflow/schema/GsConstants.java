@@ -13,7 +13,7 @@ public class GsConstants {
   public static final String PLUGIN_ORGCONFIG = "PLUGIN_ORGCONFIG";
 
   // Common variables
-  public static final String GS_LOCAL_ORG_CONFIG_FMT = ".gsOrgConfig.%s.json";
+  public static final String GS_LOCAL_ORG_CONFIG_FMT = ".gsOrgConfig.org-%s.json";
   public static final String GS_LOCAL_CONFIG_FILE = ".gsOrgConfig.json";
 
   public static final long localConfigUpdateDeltaMs = 172_800_000; // local org config gets refreshed every 48hrs.
