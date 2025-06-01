@@ -91,7 +91,7 @@ public class GsSharedLibExtension {
             var repo = meta.target.isSnapshot() ? orgConfig.snapshotsRepo : orgConfig.releasesRepo;
             GsPluginUtil.configureRepository(project, orgConfig, repo, publishingUrlTransform);
           } else {
-            log.warn("Missing signing key property [{}]", orgConfig.publishing.mavenSigningKeyEnvProperty);
+            log.info("Missing signing key property [{}]", orgConfig.publishing.mavenSigningKeyEnvProperty);
           }
         }
       } else if (meta.target == GsBuildTarget.PRE_RELEASE) {

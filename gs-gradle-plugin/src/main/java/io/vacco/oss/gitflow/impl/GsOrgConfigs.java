@@ -69,7 +69,7 @@ public class GsOrgConfigs {
     }
     for (var repo : repos) {
       if (repo != null && (isEmpty(repo.username) || isEmpty(repo.password))) {
-        log.warn(
+        log.info(
           "Missing credentials for repository [{}] [{}/{}]",
           repo.id, repo.usernameEnvProperty, repo.passwordEnvProperty
         );
