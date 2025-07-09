@@ -1,13 +1,12 @@
 package io.vacco.oss.gitflow.schema;
 
-/**
- * Default versions for core organization dependencies
- */
+import org.gradle.api.JavaVersion;
+
+/** Default versions for core organization dependencies */
 public class GsVersionsConfig {
 
-  /**
-   * J8Spec version in Maven coordinates
-   */
+  /** J8Spec version in Maven coordinates */
   public String j8Spec;
+  public JavaVersion javaVersion;
 
 }

@@ -7,6 +7,7 @@ import org.gradle.api.plugins.*;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.testing.jacoco.plugins.JacocoPlugin;
+import java.util.Objects;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
@@ -17,7 +18,10 @@ public class GsPluginJavaExtension {
 
   public static final String name = "commonBuildCore";
 
+  private final GsOrgConfig orgConfig;
+
   public GsPluginJavaExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta) {
+    this.orgConfig = Objects.requireNonNull(orgConfig);
     var plugins = project.getPlugins();
 
     project.getRepositories().mavenCentral();
@@ -35,8 +39,8 @@ public class GsPluginJavaExtension {
     var ext = p.getExtensions();
     var tasks = p.getTasks();
     ext.configure(JavaPluginExtension.class, jXt -> {
-      jXt.setSourceCompatibility(JavaVersion.VERSION_11);
-      jXt.setTargetCompatibility(JavaVersion.VERSION_11);
+      jXt.setSourceCompatibility(orgConfig.devConfig.versions.javaVersion);
+      jXt.setTargetCompatibility(orgConfig.devConfig.versions.javaVersion);
     });
     tasks.withType(JavaCompile.class)
         .configureEach(t -> t.getOptions().getCompilerArgs().add("-Xlint:all"));
