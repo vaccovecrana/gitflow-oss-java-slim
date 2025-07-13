@@ -23,4 +23,8 @@ public class GsOrgConfig {
    */
   public GsDevConfig devConfig;
 
+  @Override public String toString() {
+    return orgId;
+  }
+
 }

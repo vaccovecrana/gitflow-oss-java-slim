@@ -1,6 +1,5 @@
 package io.vacco.oss.gitflow;
 
-import com.github.sherter.googlejavaformatgradleplugin.GoogleJavaFormatPlugin;
 import io.vacco.oss.gitflow.schema.*;
 import io.vacco.oss.gitflow.sharedlib.GsSharedLibExtension;
 import io.vacco.cphell.*;
@@ -49,11 +48,6 @@ public class GsPluginProfileExtension {
       chXt.setResourceExclusions(chXt.commonResourceExclusions());
     });
     tasks.getByName(GsConstants.build).dependsOn(tasks.findByName(checkClasspath));
-  }
-
-  public void addGoogleJavaFormat() {
-    plugins.apply(GoogleJavaFormatPlugin.class);
-    tasks.getByName(GsConstants.classes).dependsOn(tasks.findByName(googleJavaFormat));
   }
 
   public void sharedLibrary(boolean publish, boolean internal) {

@@ -17,7 +17,6 @@ dependencies {
   api(gradleApi())
   implementation("io.vacco:io.vacco.cphell.gradle.plugin:1.8.0")
   implementation("com.google.code.gson:gson:2.10")
-  implementation("gradle.plugin.com.github.sherter.google-java-format:google-java-format-gradle-plugin:0.9")
   testImplementation("io.github.j8spec:j8spec:3.0.1")
 }
 
@@ -25,7 +24,6 @@ configure<JavaPluginExtension> {
   sourceCompatibility = JavaVersion.VERSION_11
   targetCompatibility = JavaVersion.VERSION_11
   withSourcesJar()
-  withJavadocJar()
 }
 
 tasks.withType<JavaCompile> { options.compilerArgs.add("-Xlint:all") }
