@@ -1,11 +1,8 @@
-import nmcp.NmcpExtension
-
 plugins {
   `java-library`
   jacoco
   `maven-publish`
   signing
-  id("com.gradleup.nmcp").version("0.1.5")
 }
 
 repositories {
@@ -14,7 +11,7 @@ repositories {
 }
 
 group = "io.vacco.oss.gitflow"
-version = "1.8.0"
+version = "1.8.0" // -SNAPSHOT
 
 dependencies {
   api(gradleApi())
@@ -63,6 +60,16 @@ publishing {
       }
     }
   }
+  repositories {
+    maven {
+      name = "Snapshots"
+      url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+      credentials {
+        username = System.getenv("SONATYPE_USERNAME")
+        password = System.getenv("SONATYPE_PASSWORD")
+      }
+    }
+  }
 }
 
 signing {
@@ -70,13 +77,5 @@ signing {
   if (key != null) {
     sign(publishing.publications["Java"])
     useInMemoryPgpKeys(key, "")
-  }
-}
-
-configure<NmcpExtension> {
-  centralPortal {
-    username = System.getenv("CENTRAL_PORTAL_USERNAME")
-    password = System.getenv("CENTRAL_PORTAL_PASSWORD")
-    publishingType = "USER_MANAGED"
   }
 }
