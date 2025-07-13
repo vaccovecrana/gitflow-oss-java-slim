@@ -70,10 +70,12 @@ publishing {
   }
 }
 
+/*
+ * gradle clean publishToMavenLocal
+ * make a zip from ~/.m2/repository
+ * then upload to Maven Central portal... sigh...
+ */
 signing {
-  val key = System.getenv("MAVEN_SIGNING_KEY")
-  if (key != null) {
-    sign(publishing.publications["Java"])
-    useInMemoryPgpKeys(key, "")
-  }
+  sign(publishing.publications["Java"])
+  useInMemoryPgpKeys(System.getenv("MAVEN_SIGNING_KEY"), "")
 }
