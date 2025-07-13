@@ -5,7 +5,8 @@ The last section of the Org config file is defined as:
 ```json
 "devConfig": {
   "versions": {
-    "j8Spec": "io.github.j8spec:j8spec:3.0.1"
+    "j8Spec": "io.github.j8spec:j8spec:3.0.1",
+    "javaVersion": "VERSION_11"
   }
 }
 ```
@@ -16,5 +17,5 @@ In other words, all builds will apply the Gradle versions plugin by default, and
 
 Lastly, the `versions` block allows you to configure:
 
-- `gradle` - The Gradle distribution version to execute this build. It is specified in `X.Y.Z` format and is downloaded from `services.gradle.org` to execute a build under Github actions. It does not affect which Gradle distribution you use for local development.
 - `j8spec` - The version of `jspec` to use. It is defined in Maven dependency notation format.
+- `javaVersion` - The language [version](https://docs.gradle.org/current/javadoc/org/gradle/api/JavaVersion.html) to use.

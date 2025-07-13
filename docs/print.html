@@ -256,7 +256,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@1.5.4
+      - uses: vaccovecrana/gitflow-oss-java-slim@1.8.0
         with:
           orgConfig: https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config.json
         env:
@@ -353,7 +353,8 @@ jobs:
 <p>The last section of the Org config file is defined as:</p>
 <pre><code class="language-json">"devConfig": {
   "versions": {
-    "j8Spec": "io.github.j8spec:j8spec:3.0.1"
+    "j8Spec": "io.github.j8spec:j8spec:3.0.1",
+    "javaVersion": "VERSION_11"
   }
 }
 </code></pre>
@@ -361,19 +362,19 @@ jobs:
 <p>In other words, all builds will apply the Gradle versions plugin by default, and will report on which outdated dependencies your project has.</p>
 <p>Lastly, the <code>versions</code> block allows you to configure:</p>
 <ul>
-<li><code>gradle</code> - The Gradle distribution version to execute this build. It is specified in <code>X.Y.Z</code> format and is downloaded from <code>services.gradle.org</code> to execute a build under Github actions. It does not affect which Gradle distribution you use for local development.</li>
 <li><code>j8spec</code> - The version of <code>jspec</code> to use. It is defined in Maven dependency notation format.</li>
+<li><code>javaVersion</code> - The language <a href="https://docs.gradle.org/current/javadoc/org/gradle/api/JavaVersion.html">version</a> to use.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configuration-evolution"><a class="header" href="#configuration-evolution">Configuration Evolution</a></h1>
 <p>It is possible (and likely) that you may maintain different source projects which require slight variations amongst each other. For example:</p>
 <ul>
-<li>Create a <code>java8.json</code> configuration if you maintain old projects which mandate version 8 of the JDK.</li>
-<li>Create a <code>java11.json</code> configuration for your stable projects.</li>
-<li>Create a <code>java15.json</code> configuration for research and prototyping projects.</li>
+<li>Create a <code>java11.json</code> configuration if you maintain old projects which mandate version 11 of the JDK.</li>
+<li>Create a <code>java21.json</code> configuration for your stable projects.</li>
+<li>Create a <code>java25.json</code> configuration for research and prototyping projects.</li>
 </ul>
-<pre><code>https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java8.json
-https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java11.json
-https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java15.json
+<pre><code>https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java11.json
+https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java21.json
+https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java25.json
 </code></pre>
 <p>This can help you maintain control on how quickly do you wish to move your projects to new versions of the JDK, Gradle itself, etc.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gradle-features"><a class="header" href="#gradle-features">Gradle Features</a></h1>
@@ -385,7 +386,7 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Now include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "1.5.4" }
+<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "1.8.0" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have
@@ -470,7 +471,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - uses: vaccovecrana/gitflow-oss-java-slim@1.5.4
+      - uses: vaccovecrana/gitflow-oss-java-slim@1.8.0
         with:
           orgConfig: https://&lt;Location where you uploaded the Org Config file&gt;
         env:
@@ -485,7 +486,7 @@ libLicense=Apache License, Version 2.0 (choose a license)
 libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license text)
 </code></pre>
 <p>Finally, include and configure the Gradle plugin in your source tree in <code>build.gradle.kts</code>:</p>
-<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "1.5.4" }
+<pre><code class="language-kotlin">plugins { id("io.vacco.oss.gitflow") version "1.8.0" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have

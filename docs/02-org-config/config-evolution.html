@@ -169,13 +169,13 @@
                         <h1 id="configuration-evolution"><a class="header" href="#configuration-evolution">Configuration Evolution</a></h1>
 <p>It is possible (and likely) that you may maintain different source projects which require slight variations amongst each other. For example:</p>
 <ul>
-<li>Create a <code>java8.json</code> configuration if you maintain old projects which mandate version 8 of the JDK.</li>
-<li>Create a <code>java11.json</code> configuration for your stable projects.</li>
-<li>Create a <code>java15.json</code> configuration for research and prototyping projects.</li>
+<li>Create a <code>java11.json</code> configuration if you maintain old projects which mandate version 11 of the JDK.</li>
+<li>Create a <code>java21.json</code> configuration for your stable projects.</li>
+<li>Create a <code>java25.json</code> configuration for research and prototyping projects.</li>
 </ul>
-<pre><code>https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java8.json
-https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java11.json
-https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java15.json
+<pre><code>https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java11.json
+https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java21.json
+https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config-java25.json
 </code></pre>
 <p>This can help you maintain control on how quickly do you wish to move your projects to new versions of the JDK, Gradle itself, etc.</p>
 
