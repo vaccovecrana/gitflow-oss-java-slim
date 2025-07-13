@@ -24,6 +24,7 @@ configure<JavaPluginExtension> {
   sourceCompatibility = JavaVersion.VERSION_11
   targetCompatibility = JavaVersion.VERSION_11
   withSourcesJar()
+  withJavadocJar()
 }
 
 tasks.withType<JavaCompile> { options.compilerArgs.add("-Xlint:all") }
@@ -70,11 +71,6 @@ publishing {
   }
 }
 
-/*
- * gradle clean publishToMavenLocal
- * make a zip from ~/.m2/repository
- * then upload to Maven Central portal... sigh...
- */
 signing {
   sign(publishing.publications["Java"])
   useInMemoryPgpKeys(System.getenv("MAVEN_SIGNING_KEY"), "")
