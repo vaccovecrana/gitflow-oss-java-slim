@@ -39,14 +39,16 @@ public class GsPlugin implements Plugin<Project> {
     ext.create(GsPluginProfileExtension.name, GsPluginProfileExtension.class, project, orgConfig, meta);
 
     if (meta.target.isPublication()) {
-      log.info("Applying publication conventions for environment [{}]", meta.target);
+      log.info("Applying publication conventions for build type [{}]", meta.target);
       project.afterEvaluate(p0 -> {
+        var buildTask = p0.getTasks().getByName(build);
         var testTask = p0.getTasks().getByName(test);
         var checkTask = p0.getTasks().getByName(check);
-        var publishTask = project.getTasks().findByName(publish);
+        var publishTask = p0.getTasks().findByName(publish);
         if (publishTask != null) {
           checkTask.dependsOn(publishTask);
           publishTask.mustRunAfter(testTask);
+          buildTask.dependsOn(publishTask);
         }
       });
     }

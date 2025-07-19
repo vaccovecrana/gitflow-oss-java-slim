@@ -11,7 +11,7 @@ repositories {
 }
 
 group = "io.vacco.oss.gitflow"
-version = "1.8.0" // -SNAPSHOT
+version = "1.8.1" // -SNAPSHOT
 
 dependencies {
   api(gradleApi())
@@ -64,8 +64,8 @@ publishing {
       name = "Snapshots"
       url = uri("https://central.sonatype.com/repository/maven-snapshots/")
       credentials {
-        username = System.getenv("SONATYPE_USERNAME")
-        password = System.getenv("SONATYPE_PASSWORD")
+        username = System.getenv("CENTRAL_PORTAL_USERNAME")
+        password = System.getenv("CENTRAL_PORTAL_PASSWORD")
       }
     }
   }

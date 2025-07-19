@@ -1,7 +1,6 @@
 package io.vacco.oss.gitflow.java;
 
 import io.vacco.oss.gitflow.schema.*;
-import io.vacco.oss.gitflow.impl.GsPluginUtil;
 import org.gradle.api.*;
 import org.gradle.api.plugins.*;
 import org.gradle.api.tasks.compile.JavaCompile;
@@ -25,7 +24,7 @@ public class GsPluginJavaExtension {
     var plugins = project.getPlugins();
 
     project.getRepositories().mavenCentral();
-    GsPluginUtil.configureRepository(project, orgConfig, orgConfig.internalRepo, null);
+    defineMavenClassicRepository(project.getRepositories(), orgConfig.internalRepo, null);
 
     plugins.apply(JavaPlugin.class);
     plugins.apply(JacocoPlugin.class);

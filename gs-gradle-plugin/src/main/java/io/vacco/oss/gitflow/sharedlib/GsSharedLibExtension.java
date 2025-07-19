@@ -1,7 +1,6 @@
 package io.vacco.oss.gitflow.sharedlib;
 
 import io.vacco.oss.gitflow.schema.*;
-import io.vacco.oss.gitflow.impl.GsPluginUtil;
 import org.gradle.api.*;
 import org.gradle.api.logging.*;
 import org.gradle.api.plugins.*;
@@ -9,10 +8,14 @@ import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.plugins.signing.*;
+import java.util.Arrays;
 import java.util.function.Function;
 
-import static java.lang.String.format;
+import static io.vacco.oss.gitflow.impl.GsPluginUtil.*;
 import static io.vacco.oss.gitflow.schema.GsConstants.*;
+
+import static java.lang.String.format;
+import static java.lang.String.join;
 import static java.util.Objects.requireNonNull;
 
 public class GsSharedLibExtension {
@@ -38,13 +41,13 @@ public class GsSharedLibExtension {
   }
 
   public GsSharedLibExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta,
-                              boolean publish, boolean internal) {
+                              boolean doPublish, boolean internal) {
     var plugins = project.getPlugins();
     var extensions = project.getExtensions();
 
     plugins.apply(JavaLibraryPlugin.class);
 
-    if (publish) {
+    if (doPublish) {
       log.info("Applying shared library publication support");
       extensions.configure(JavaPluginExtension.class, JavaPluginExtension::withSourcesJar);
       plugins.apply(MavenPublishPlugin.class);
@@ -79,7 +82,7 @@ public class GsSharedLibExtension {
 
       if (meta.target.isPublication()) {
         if (internal) {
-          GsPluginUtil.configureRepository(project, orgConfig, orgConfig.internalRepo, publishingUrlTransform);
+          defineMavenClassicRepository(pe.getRepositories(), orgConfig.internalRepo, publishingUrlTransform);
         } else {
           var signingKey = System.getenv(orgConfig.publishing.mavenSigningKeyEnvProperty);
           if (signingKey != null) {
@@ -89,7 +92,47 @@ public class GsSharedLibExtension {
             se.sign(mvn);
             extensions.configure(JavaPluginExtension.class, JavaPluginExtension::withJavadocJar);
             var repo = meta.target.isSnapshot() ? orgConfig.snapshotsRepo : orgConfig.releasesRepo;
-            GsPluginUtil.configureRepository(project, orgConfig, repo, publishingUrlTransform);
+            try {
+              var tasks = project.getTasks();
+              if (repo.method == null) {
+                throw new IllegalArgumentException(
+                  format(join(" ",
+                    "No publication method defined for repository [%s]. ",
+                    "Specify one of %s"
+                  ), repo.url, Arrays.toString(GsOrgRepoMethod.values()))
+                );
+              }
+              switch (repo.method) {
+                case PortalPublisherApiManual:
+                case PortalPublisherApiAutomatic:
+                  tasks.register(portalPublish, GsCentralPortalTask.class, t -> {
+                    t.setGroup(publishing);
+                    t.setDescription(GsCentralPortalTask.Description);
+                    t.setRepo(repo);
+                    t.setConfig(orgConfig);
+                    t.setPublication(getPublication(project, orgConfig));
+                    t.setBuildDir(project.getLayout().getBuildDirectory().get().getAsFile().toPath());
+                  });
+                  // I hate Gradle's lazy evaluation magic.
+                  var signTask = format("sign%sPublication", orgConfig.publishing.id);
+                  tasks.named(portalPublish).configure(pt -> pt.dependsOn(tasks.named(signTask)));
+                  tasks.named(publish).configure(pt -> pt.dependsOn(tasks.named(portalPublish)));
+                  break;
+                case MavenClassic:
+                  defineMavenClassicRepository(pe.getRepositories(), orgConfig.snapshotsRepo, publishingUrlTransform);
+              }
+            } catch (Exception e) {
+              var msg = format(
+                join(" ",
+                  "Unable to configure repository [%s].",
+                  "Verify environment variables: [%s, %s]",
+                  "or provide org config values for username/password",
+                  " - ", e.getMessage()
+                ),
+                repo.url, repo.usernameEnvProperty, repo.passwordEnvProperty
+              );
+              throw new IllegalStateException(msg, e);
+            }
           } else {
             log.info("Missing signing key property [{}]", orgConfig.publishing.mavenSigningKeyEnvProperty);
           }
