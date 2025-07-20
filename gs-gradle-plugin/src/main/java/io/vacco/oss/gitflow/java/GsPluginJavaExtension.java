@@ -2,6 +2,7 @@ package io.vacco.oss.gitflow.java;
 
 import io.vacco.oss.gitflow.schema.*;
 import org.gradle.api.*;
+import org.gradle.api.logging.*;
 import org.gradle.api.plugins.*;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.api.tasks.testing.Test;
@@ -14,6 +15,8 @@ import static io.vacco.oss.gitflow.impl.GsPluginUtil.*;
 import static io.vacco.oss.gitflow.schema.GsBuildTarget.*;
 
 public class GsPluginJavaExtension {
+
+  private static final Logger log = Logging.getLogger(GsPluginJavaExtension.class);
 
   public static final String name = "commonBuildCore";
 
@@ -38,6 +41,7 @@ public class GsPluginJavaExtension {
     var ext = p.getExtensions();
     var tasks = p.getTasks();
     ext.configure(JavaPluginExtension.class, jXt -> {
+      log.warn("Java language level: {}", orgConfig.devConfig.versions.javaVersion);
       jXt.setSourceCompatibility(orgConfig.devConfig.versions.javaVersion);
       jXt.setTargetCompatibility(orgConfig.devConfig.versions.javaVersion);
     });
