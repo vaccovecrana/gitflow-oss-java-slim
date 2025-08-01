@@ -1,6 +1,7 @@
 package io.vacco.oss.gitflow.impl;
 
 import io.vacco.oss.gitflow.schema.*;
+import org.gradle.api.logging.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
@@ -9,6 +10,8 @@ import static io.vacco.oss.gitflow.schema.GsBuildTarget.*;
 import static java.lang.String.format;
 
 public class GsBuildMetas {
+
+  private static final Logger log = Logging.getLogger(GsPluginUtil.class);
 
   private static String utcNow() {
     var utcNow = ZonedDateTime.now(ZoneId.of("UTC"));
@@ -38,7 +41,8 @@ public class GsBuildMetas {
     } else if (meta.branch.contains("master") || meta.branch.contains("main")) {
       meta.target = PRE_RELEASE;
     } else {
-      throw new IllegalArgumentException("Unknown build target for branch: " + meta.branch);
+      log.warn("Unknown branch [{}], defaulting to {}", meta.branch, PRE_RELEASE);
+      meta.target = PRE_RELEASE;
     }
     meta.utc = utcNow();
     meta.tag = format("%s-%s", meta.utc, meta.hash.substring(0, 7));

@@ -5,6 +5,7 @@ build/*
 .idea/*
 *.iml
 .gradle/
+.vscode/
 
 gradle/wrapper/
 gradlew*
