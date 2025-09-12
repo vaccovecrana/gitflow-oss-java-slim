@@ -22,16 +22,13 @@
     const REPO_OWNER = 'vaccovecrana';
     const REPO_NAME = 'gitflow-oss-java-slim';
     const MD_DIR = 'docs';
-    const CONFIG_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/config.json`;
+    const CONFIG_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main/docs/config.json`;
 
     const sidebar = document.getElementById('sidebar');
     const navList = document.getElementById('nav-list');
     const content = document.getElementById('content');
     let config = {
-      version: 'Unknown',
-      author: 'Unknown',
-      projectName: 'Unknown',
-      releaseDate: 'Unknown'
+      gsVersion: 'Unknown'
     };
 
     async function loadConfig() {
