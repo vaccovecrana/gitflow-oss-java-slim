@@ -69,7 +69,9 @@
         navList.appendChild(li);
       });
 
-      if (mdFiles.length > 0) {
+      // Only load the first Markdown file if there is no hash in the URL
+      const hash = window.location.hash.slice(1);
+      if (!hash && mdFiles.length > 0) {
         loadMarkdown(mdFiles[0].download_url);
       }
     }
