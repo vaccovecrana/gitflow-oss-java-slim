@@ -4,7 +4,7 @@ Having defined the underlying concepts needed for this framework, we can now def
 
 It is a JSON document which consists of a few sections backed by a [JSON schema](https://github.com/vaccovecrana/gitflow-oss-java-slim/blob/main/gs-gradle-plugin/src/main/resources/json/gs-org-config.json)
 
-```json
+```
 {
   "orgId": "my-org-id",
   "internalRepo": {...},

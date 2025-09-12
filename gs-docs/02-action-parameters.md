@@ -7,7 +7,7 @@ In this framework both Github Actions and Gradle work together to provide develo
 
 Here is the minimal amount of configuration required under `.github/workflows/main.yml`:
 
-```yaml
+```
 name: Gradle Build
 on: {push: {tags: null}}
 jobs:

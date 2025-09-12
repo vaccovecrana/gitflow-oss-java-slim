@@ -6,7 +6,7 @@ The following is a quick walk-through on how to create an Org config from scratc
 
 Start by creating an Org config template, filling in required parameters:
 
-```json
+```
 {
   "orgId": "my-org-id",
   "snapshotsRepo": {
@@ -58,7 +58,7 @@ Set the values required, and upload this to an S3 bucket, Dropbox or a [Github G
 
 On your local development machine, create a file called `.gsOrgConfig.json` inside your home folder. Include the following contents:
 
-```json
+```
 {
   "orgId": "my-org-id",
   "orgConfigUrl": "https://<Location where you uploaded the Org Config file>"
@@ -71,7 +71,7 @@ Next, switch over to the project you'd like to manage with this framework, and s
 
 `.github/workflows/main.yml`
 
-```yaml
+```
 name: Gradle Build
 on: {push: {tags: null}}
 jobs:
@@ -90,7 +90,7 @@ jobs:
 
 `gradle.properties`:
 
-```ini
+```
 libGitUrl=https://github.com/my-org/my-project.git
 libDesc=This is a brief description of what my library does
 libLicense=Apache License, Version 2.0 (choose a license)
@@ -99,7 +99,7 @@ libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license
 
 Finally, include and configure the Gradle plugin in your source tree in `build.gradle.kts`:
 
-```kotlin
+```
 plugins { id("io.vacco.oss.gitflow") version "{{gsVersion}}" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.

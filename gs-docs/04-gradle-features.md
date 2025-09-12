@@ -4,7 +4,7 @@ In this section we'll discuss how to configure a Gradle project to make use of t
 
 Start by defining publication information in your `gradle.properties` file:
 
-```ini
+```
 libGitUrl=https://github.com/my-org/my-project.git
 libDesc=This is a brief description of what my library does
 libLicense=Apache License, Version 2.0 (choose a license)
@@ -13,7 +13,7 @@ libLicenseUrl=https://opensource.org/licenses/Apache-2.0 (a link to your license
 
 Now include and configure the Gradle plugin in your source tree in `build.gradle.kts`:
 
-```kotlin
+```
 plugins { id("io.vacco.oss.gitflow") version "{{gsVersion}}" }
 
 group = "com.myorg.mylibrary" // your project's target maven coordinates.

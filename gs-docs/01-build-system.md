@@ -18,7 +18,7 @@ Release artifact versions are defined as:
 
 Consider a Gradle project with Kotlin syntax defining an artifact called, `my-library`:
 
-```kotlin
+```
 group = "io.vacco.mylibrary"
 version = "0.1.0"
 ```
