@@ -1,0 +1,99 @@
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Nord color palette for light/dark themes */
+:root {
+  --bg-color: #ECEFF4; /* nord6 */
+  --text-color: #2E3440; /* nord0 */
+  --link-color: #5E81AC; /* nord10 */
+  --code-bg: #E5E9F0; /* nord5 */
+  --code-color: #2E3440; /* nord0 */
+  --border-color: #D8DEE9; /* nord4 */
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #2E3440; /* nord0 */
+    --text-color: #D8DEE9; /* nord4 */
+    --link-color: #88C0D0; /* nord8 */
+    --code-bg: #3B4252; /* nord1 */
+    --code-color: #D8DEE9; /* nord4 */
+    --border-color: #4C566A; /* nord3 */
+  }
+}
+body {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+#sidebar {
+  float: left;
+  width: 250px;
+  margin-right: 20px;
+  padding: 10px;
+  border-right: 1px solid var(--border-color);
+}
+#nav-list {
+  list-style: none;
+  padding: 0;
+}
+#nav-list li {
+  margin: 5px 0;
+}
+#nav-list li.section {
+  margin-left: 20px; /* Indent sections */
+}
+#content {
+  margin-left: 270px;
+  max-width: 800px;
+}
+#content h1, #content h2 {
+  border-bottom: 1px solid var(--border-color);
+}
+#content a {
+  color: var(--link-color);
+}
+#content pre, #content code {
+  font-family: 'Consolas', 'Courier New', monospace;
+  background: var(--code-bg);
+  color: var(--code-color);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+#content pre {
+  padding: 12px;
+  overflow-x: auto;
+}
+/* Hide sidebar on mobile */
+@media (max-width: 768px) {
+  #sidebar { display: none; }
+  #content { margin-left: 0; }
+}
