@@ -1,30 +1,60 @@
-/* Define Poppins font locally */
+/* Define Poppins font locally (body text) */
 @font-face {
   font-family: 'Poppins';
-  src: url('fonts/Poppins-Regular.woff2') format('woff2');
+  src: url('https://github.com/vaccovecrana/org-config/raw/refs/heads/main/assets/fonts/poppins/Poppins-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Poppins';
-  src: url('fonts/Poppins-Medium.woff2') format('woff2');
+  src: url('https://github.com/vaccovecrana/org-config/raw/refs/heads/main/assets/fonts/poppins/Poppins-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Poppins';
-  src: url('fonts/Poppins-SemiBold.woff2') format('woff2');
+  src: url('https://github.com/vaccovecrana/org-config/raw/refs/heads/main/assets/fonts/poppins/Poppins-SemiBold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Poppins';
-  src: url('fonts/Poppins-Bold.woff2') format('woff2');
+  src: url('https://github.com/vaccovecrana/org-config/raw/refs/heads/main/assets/fonts/poppins/Poppins-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
+}
+
+/* Define Maple Mono NF font locally (code blocks) */
+@font-face {
+  font-family: 'Maple Mono';
+  src: url('https://github.com/vaccovecrana/org-config/raw/refs/heads/main/assets/fonts/maple/MapleMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maple Mono';
+  src: url('https://github.com/vaccovecrana/org-config/raw/refs/heads/main/assets/fonts/maple/MapleMono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maple Mono';
+  src: url('https://github.com/vaccovecrana/org-config/raw/refs/heads/main/assets/fonts/maple/MapleMono-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Maple Mono';
+  src: url('https://github.com/vaccovecrana/org-config/raw/refs/heads/main/assets/fonts/maple/MapleMono-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -92,7 +122,7 @@ body {
   color: var(--link-color);
 }
 #content pre, #content code {
-  font-family: 'Consolas', 'Courier New', monospace;
+  font-family: 'Maple Mono NF', Consolas, 'Courier New', monospace; /* Updated to Maple Mono NF */
   background: var(--code-bg);
   color: var(--code-color);
   padding: 4px 8px;
