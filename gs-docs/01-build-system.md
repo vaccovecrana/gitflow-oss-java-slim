@@ -2,7 +2,7 @@
 
 In a nutshell, this build system brings together a few concepts which are common across many code-bases within an organization, scoped down to the problem of managing Java code as shared Maven artifacts. It's possible to implement functionality to perform more advanced tasks like Docker image builds or build status reporting, but let's keep the scope short and simple for now.
 
-![build-system-00](build-system-00.svg)
+![build-system-00](./img/build-system-00.svg)
 
 The diagram above illustrates the flow of release management when you work on a code base using this Gradle plugin/Github action combination. Depending on the type of release artifact being built by Github actions, the artifacts themselves will be routed to different target Maven repositories, if any.
 
@@ -26,11 +26,11 @@ version = "0.1.0"
 During development, the following are examples of intermediate artifact type versions added by this framework:
 
 
-| Artifact Type | Version label                              |
-| :------------ | ------------------------:                  |
-| `SNAPSHOT`    | `my-library-0.1.0-SNAPSHOT`                |
+| Artifact Type | Version label                             |
+|---------------|-------------------------------------------|
+| `SNAPSHOT`    | `my-library-0.1.0-SNAPSHOT`               |
 | `MILESTONE`   | `my-library-0.1.0-MILESTONE-202104081246` |
-| `RELEASE`     | `my-library-0.1.0`                          |
+| `RELEASE`     | `my-library-0.1.0`                        |
 
 Notice that the `MILESTONE` version convention also appends a timestamp component in the form of `YYYYMMDDHHMM`, so as to give the intermediate version a unique number. The reason for this is that most Maven repositories only allow re-reploying `SNAPSHOT` versions, and MAY reject versions which already exist inside the repository.
 

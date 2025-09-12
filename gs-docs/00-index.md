@@ -1,6 +1,6 @@
 # Overview
 
-![icon-light](icon-light.svg)
+![icon-light](./img/icon-light.svg)
 
 `gitflow-oss-java-slim` is a minimal, opinionated java Continuous Integration framework which uses Gradle and Github Actions to support a simplified version of the Gitflow development model.
 
@@ -10,7 +10,6 @@ It is primarily targeted towards Open source Java developers and organizations t
 > NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
 > "OPTIONAL" in this document are to be interpreted as described in
 > [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119).
-
 
 ## Is this framework for me?
 
