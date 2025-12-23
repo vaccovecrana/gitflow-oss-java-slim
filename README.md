@@ -10,8 +10,4 @@ With release `1.0.0`, we lay Java 8 to rest, put Java 11 to the test.
 
 > "Close the world, Open the nExt"
 
-Documentation is available at https://vaccovecrana.github.io/gitflow-oss-java-slim/ and gets generated using `mdbook`.
-
-## mdbook notes
-
-Add `$HOME/.cargo/bin` to `PATH` to be able to run the installed binaries.
+Documentation is available at https://vaccovecrana.github.io/gitflow-oss-java-slim

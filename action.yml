@@ -6,7 +6,7 @@ branding:
   color: white
 runs:
   using: docker
-  image: docker://docker.io/library/gradle:8-jdk21
+  image: docker://docker.io/library/gradle:9-jdk25-ubi
   args: [gradle, build]
 inputs:
   orgConfig:
