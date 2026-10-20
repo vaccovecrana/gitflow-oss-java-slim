@@ -43,17 +43,7 @@ public class GsOrgConfigs {
     }
   }
 
-  public static GsOrgConfig loadLocal(Gson g, File localConfigFile, GsLocalConfig localConfig, long updateDeltaMs) throws Exception {
-    var confHash = Integer.toHexString(localConfig.orgConfigUrl.hashCode());
-    var confName = format(GsConstants.GS_LOCAL_ORG_CONFIG_FMT, confHash);
-    var orgConf = new File(localConfigFile.getParentFile(), confName);
-    var ocUrl = URI.create(localConfig.orgConfigUrl).toURL();
-    sync(ocUrl, orgConf, updateDeltaMs);
-    log.info("Executing local build.");
-    return g.fromJson(new FileReader(orgConf), GsOrgConfig.class);
-  }
-
-  public static GsOrgConfig process(GsOrgConfig orgConfig, GsLocalConfig localConfig) {
+  public static GsOrgConfig process(GsOrgConfig orgConfig) {
     var repos = new GsOrgRepo[] { orgConfig.internalRepo, orgConfig.snapshotsRepo, orgConfig.releasesRepo };
     for (var repo : repos) {
       if (repo != null) {
@@ -62,10 +52,6 @@ public class GsOrgConfigs {
           repo.password = System.getenv(repo.passwordEnvProperty);
         }
       }
-    }
-    if (orgConfig.internalRepo != null && localConfig != null) {
-      orgConfig.internalRepo.username = localConfig.internalRepoUser;
-      orgConfig.internalRepo.password = localConfig.internalRepoPassword;
     }
     for (var repo : repos) {
       if (repo != null && (isEmpty(repo.username) || isEmpty(repo.password))) {
@@ -78,17 +64,18 @@ public class GsOrgConfigs {
     return orgConfig;
   }
 
-  public static GsOrgConfig loadOrgConfig(Gson g, File localConfigFile, String remoteConfigUrl, long updateDeltaMs) {
+  public static GsOrgConfig loadOrgConfig(Gson g, String remoteConfigUrl, long updateDeltaMs) {
     try {
       if (remoteConfigUrl != null) {
-        return process(loadRemote(g, remoteConfigUrl), null);
-      } else if (localConfigFile.exists()) {
-        var localConf = g.fromJson(new FileReader(localConfigFile), GsLocalConfig.class);
-        return process(loadLocal(g, localConfigFile, localConf, updateDeltaMs), localConf);
-      } else throw new IllegalStateException(join("\n",
-        "No CI org config found, and no local org config found.",
-        "If this is a local code checkout, please define a minimal local org configuration"
-      ));
+        var confHash = Integer.toHexString(remoteConfigUrl.hashCode());
+        var confName = format(GsConstants.GS_LOCAL_ORG_CONFIG_FMT, confHash);
+        var confFile = new File(System.getProperty("user.home"), confName);
+        var ocUrl = URI.create(remoteConfigUrl).toURL();
+        sync(ocUrl, confFile, updateDeltaMs);
+        return process(loadRemote(g, remoteConfigUrl));
+      } else {
+        throw new IllegalArgumentException("No CI org config provided");
+      }
     } catch (Exception e) {
       throw new IllegalStateException(e);
     }

@@ -1,5 +1,6 @@
 package io.vacco.oss.gitflow.java;
 
+import io.vacco.oss.gitflow.GsPluginProfileExtension;
 import io.vacco.oss.gitflow.schema.*;
 import org.gradle.api.*;
 import org.gradle.api.logging.*;
@@ -20,27 +21,20 @@ public class GsPluginJavaExtension {
 
   public static final String name = "commonBuildCore";
 
-  private final GsOrgConfig orgConfig;
+  private final Project project;
+  private final GsBuildMeta meta;
 
-  public GsPluginJavaExtension(Project project, GsOrgConfig orgConfig, GsBuildMeta meta) {
-    this.orgConfig = Objects.requireNonNull(orgConfig);
-    var plugins = project.getPlugins();
-
-    project.getRepositories().mavenCentral();
-    defineMavenClassicRepository(project.getRepositories(), orgConfig.internalRepo, null);
-
-    plugins.apply(JavaPlugin.class);
-    plugins.apply(JacocoPlugin.class);
-
-    addBaseConventions(project);
-    setVersionFor(project, null, meta);
-    addReleaseGating(project, meta);
+  public GsPluginJavaExtension(Project project, GsBuildMeta meta) {
+    this.project = Objects.requireNonNull(project);
+    this.meta = Objects.requireNonNull(meta);
   }
 
   private void addBaseConventions(Project p) {
     var ext = p.getExtensions();
     var tasks = p.getTasks();
     ext.configure(JavaPluginExtension.class, jXt -> {
+      var gsExt = ext.getByType(GsPluginProfileExtension.class);
+      var orgConfig = gsExt.orgConfig.get();
       log.warn("Java language level: {}", orgConfig.devConfig.versions.javaVersion);
       jXt.setSourceCompatibility(orgConfig.devConfig.versions.javaVersion);
       jXt.setTargetCompatibility(orgConfig.devConfig.versions.javaVersion);
@@ -65,6 +59,21 @@ public class GsPluginJavaExtension {
         }
       })));
     }
+  }
+
+  public void add() {
+    var gsExt = project.getExtensions().getByType(GsPluginProfileExtension.class);
+    defineMavenClassicRepository(project.getRepositories(), gsExt.orgConfig.get().internalRepo, null);
+    addBaseConventions(project);
+    setVersionFor(project, null, meta);
+    addReleaseGating(project, meta);
+  }
+
+  public void configure() {
+    var plugins = project.getPlugins();
+    project.getRepositories().mavenCentral();
+    plugins.apply(JavaPlugin.class);
+    plugins.apply(JacocoPlugin.class);
   }
 
 }
