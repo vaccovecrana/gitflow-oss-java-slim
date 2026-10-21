@@ -15,7 +15,9 @@ It is a JSON document which consists of a few sections backed by a [JSON schema]
 }
 ```
 
-`orgId` is a simple `String` identifier for your organization (usually a Github username), and is necessary to store temporary files while working with local code bases.
+`orgId` is a simple `String` identifier for your organization (usually a Github username). The framework uses it to label organization-level configuration; it is no longer used to name local cache files, which are derived from the configuration URL.
+
+This document is referenced per project: each project declares its URL in `build.gradle.kts` via `orgConfigUrl(...)`. See the [Github action usage](./02-action-parameters.md) and [Gradle features](./04-gradle-features.md) sections for examples.
 
 The `devConfig` attribute specifies default versions of optional tools that you could use in your code bases. In the current version of this framework, the set of recommended tools has:
 

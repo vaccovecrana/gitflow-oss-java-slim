@@ -8,7 +8,3 @@ runs:
   using: docker
   image: docker://docker.io/library/gradle:9-jdk25-ubi
   args: [gradle, build]
-inputs:
-  orgConfig:
-    description: "URL pointing to an Org Config JSON file to drive the build."
-    required: true

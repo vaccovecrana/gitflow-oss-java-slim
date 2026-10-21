@@ -1,4 +1,4 @@
-# Github action parameters
+# Github action usage
 
 In this framework both Github Actions and Gradle work together to provide development methods for different circumstances. Namely:
 
@@ -16,17 +16,26 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: vaccovecrana/gitflow-oss-java-slim@{{gsVersion}}
-        with:
-          orgConfig: https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config.json
         env:
           SONATYPE_USER: <secrets.MY_ORGS_SONATYPE_USER>
           SONATYPE_PASSWORD: <secrets.MY_ORGS_SONATYPE_PASSWORD>
           MAVEN_SIGNING_PRV: <secrets.MY_ORGS_MAVEN_SIGNING_KEY>
 ```
 
-There are two key parameters that are needed by this framework:
+As of release `1.10.0`, the action no longer takes an `orgConfig` input. The Org config URL is declared per project in `build.gradle.kts`, together with any optional Gradle features:
 
-`orgConfig` is the core piece of this framework which defines common build conventions which will drive the build process for a wide set of projects in your organization. It is defined as a JSON document and it MAY be validated with a JSON schema provided by this framework. It gets sourced from a URL that users in your organization can securely access.
+```
+configure<io.vacco.oss.gitflow.GsPluginProfileExtension> {
+  orgConfigUrl("https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config.json")
+  sharedLibrary(true, true)
+  addJ8Spec()
+  addClasspathHell()
+}
+```
+
+Declaring the URL in the project build file means that local and managed builds resolve the same Org config. The plugin downloads the document and refreshes its local copy every 48 hours.
+
+`orgConfigUrl` is the core piece of this framework which defines common build conventions which will drive the build process for a wide set of projects in your organization. It is defined as a JSON document and it MAY be validated with a JSON schema provided by this framework. It gets sourced from a URL that users in your organization can securely access.
 
 How you implement said access is up to you.
 

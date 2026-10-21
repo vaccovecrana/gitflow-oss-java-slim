@@ -54,16 +54,19 @@ gpg --output private.pgp --armor --export-secret-key jhacker@yoyodyne.com
 
 Set the values required, and upload this to an S3 bucket, Dropbox or a [Github Gist](https://gist.github.com/). Keep the URL where you uploaded this configuration.
 
-## Local development configuration
+## Pointing the project at the Org config
 
-On your local development machine, create a file called `.gsOrgConfig.json` inside your home folder. Include the following contents:
+The Org config URL is declared per project in `build.gradle.kts`, so that local and CI builds resolve the same configuration:
 
 ```
-{
-  "orgId": "my-org-id",
-  "orgConfigUrl": "https://<Location where you uploaded the Org Config file>"
+configure<io.vacco.oss.gitflow.GsPluginProfileExtension> {
+  orgConfigUrl("https://<Location where you uploaded the Org Config file>")
 }
 ```
+
+The plugin downloads this document and keeps a local copy under `~/.gsOrgConfig.org-<url-hash>.json`, refreshed every 48 hours. There is no separate local bootstrap file.
+
+For local builds, repository credentials are read from the environment variables named in the Org config, or from direct username/password values in the document. See the [Maven Publication Repositories](./03.03-maven-repositories.md) section for details.
 
 ## Gradle Project setup
 
@@ -80,8 +83,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: vaccovecrana/gitflow-oss-java-slim@{{gsVersion}}
-        with:
-          orgConfig: https://<Location where you uploaded the Org Config file>
         env:
           SONATYPE_USER: <secrets.MY_ORGS_SONATYPE_USER>
           SONATYPE_PASSWORD: <secrets.MY_ORGS_SONATYPE_PASSWORD>
@@ -106,6 +107,7 @@ group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have
 
 configure<io.vacco.oss.gitflow.GsPluginProfileExtension> {
+  orgConfigUrl("https://<Location where you uploaded the Org Config file>")
   sharedLibrary(false, true) // external library with publication support
   addJ8Spec()
   addClasspathHell()

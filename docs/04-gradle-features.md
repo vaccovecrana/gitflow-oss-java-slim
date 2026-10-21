@@ -20,6 +20,7 @@ group = "com.myorg.mylibrary" // your project's target maven coordinates.
 version = "0.1.0" // or whichever version you have
 
 configure<io.vacco.oss.gitflow.GsPluginProfileExtension> {
+  orgConfigUrl("https://my-bucket.s3.us-east-2.amazonaws.com/my-org-config.json")
   // add other configuration features here
   sharedLibrary(true, true) // publish: true, internal: true
   addJ8Spec()
@@ -36,7 +37,5 @@ The `internal` parameter will only have effect when `publish` is true, and will 
 `addJ8Spec()` will add [j8spec](https://j8spec.github.io/) to your `testImplementation` class path.
 
 `addClasspathHell()` will apply the [Class path Hell Gradle plugin](https://github.com/vaccovecrana/classpath-hell-gradle-plugin).
-
-`addGoogleJavaFormat()` will apply the [Google Java format Gradle plugin](https://github.com/sherter/google-java-format-gradle-plugin) to the build, automatically formatting sources during a build.
 
 > Note: when applying these optional features, all of them can still be customized by their respective declarative configuration blocks. Thus your source project is still free to customize each optional feature as it deems fit.
