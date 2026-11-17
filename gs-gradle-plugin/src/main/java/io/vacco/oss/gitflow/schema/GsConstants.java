@@ -7,7 +7,7 @@ public class GsConstants {
   public static final String GITHUB_REF = "GITHUB_REF";
 
   // Drone environment variables
-  public static final String CI_COMMIT_BRANCH = "CI_COMMIT_BRANCH";
+  public static final String CI_COMMIT_REF = "CI_COMMIT_REF";
   public static final String CI_COMMIT_SHA = "CI_COMMIT_SHA";
 
   // Common variables

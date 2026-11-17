@@ -25,7 +25,7 @@ public class GsBuildMetas {
       meta.branch = System.getenv(GITHUB_REF);
       meta.hash = System.getenv(GITHUB_SHA);
     } else if (System.getenv(CI_COMMIT_SHA) != null) {
-      meta.branch = System.getenv(CI_COMMIT_BRANCH);
+      meta.branch = System.getenv(CI_COMMIT_REF);
       meta.hash = System.getenv(CI_COMMIT_SHA);
     }
 

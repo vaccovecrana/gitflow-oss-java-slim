@@ -11,7 +11,7 @@ repositories {
 }
 
 group = "io.vacco.oss.gitflow"
-version = "1.10.0" // -SNAPSHOT
+version = "1.11.0" // -SNAPSHOT
 
 dependencies {
   api(gradleApi())
